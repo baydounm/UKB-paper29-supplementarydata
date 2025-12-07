@@ -1,0 +1,917 @@
+
+. local covariates_adjusted "baselineage age_admitted i.SEX NonWhite townsend ed
+> ucationbr householdincome householdsize LE8_TOTALSCORE srhbr medicationnum com
+> orbid"
+
+. di "************************************************************"
+************************************************************
+
+. di "* 1. Unmatched Sample Analysis"
+* 1. Unmatched Sample Analysis
+
+. di "************************************************************"
+************************************************************
+
+. use "/opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITY_FINAL.dta", clear
+
+. keep if sample_final == 1
+(230,435 observations deleted)
+
+. stset Age_death, failure(died==1) enter(age_2020) scale(1) id(n_eid)
+
+                id:  n_eid
+     failure event:  died == 1
+obs. time interval:  (Age_death[_n-1], Age_death]
+ enter on or after:  time age_2020
+ exit on or before:  failure
+
+------------------------------------------------------------------------------
+    271,974  total observations
+          3  observations end on or before enter()
+------------------------------------------------------------------------------
+    271,971  observations remaining, representing
+    271,971  subjects
+     17,530  failures in single-failure-per-subject data
+  1,058,365  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  49.54963
+                                          last observed exit t =  89.80151
+
+. di "--- Crude Cox model for Unmatched Sample ---"
+--- Crude Cox model for Unmatched Sample ---
+
+. stcox Treated_ID_level, vce(robust)
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+
+Iteration 0:   log pseudolikelihood = -182924.34
+Iteration 1:   log pseudolikelihood = -182719.67
+Iteration 2:   log pseudolikelihood = -182545.48
+Iteration 3:   log pseudolikelihood = -182540.48
+Iteration 4:   log pseudolikelihood = -182540.48
+Refining estimates:
+Iteration 0:   log pseudolikelihood = -182540.48
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =      271,971             Number of obs    =     271,971
+No. of failures      =       17,530
+Time at risk         =  1058365.101
+                                                Wald chi2(1)     =      943.21
+Log pseudolikelihood =   -182540.48             Prob > chi2      =      0.0000
+
+                             (Std. Err. adjusted for 271,971 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+Treated_ID_~l |   2.503953   .0748348    30.71   0.000     2.361492    2.655007
+-------------------------------------------------------------------------------
+
+. di "--- Adjusted Cox model for Unmatched Sample ---"
+--- Adjusted Cox model for Unmatched Sample ---
+
+. stcox Treated_ID_level `covariates_adjusted', vce(robust)
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+
+Iteration 0:   log pseudolikelihood = -182924.34
+Iteration 1:   log pseudolikelihood = -180271.43
+Iteration 2:   log pseudolikelihood =  -179953.9
+Iteration 3:   log pseudolikelihood = -179945.17
+Iteration 4:   log pseudolikelihood = -179945.15
+Refining estimates:
+Iteration 0:   log pseudolikelihood = -179945.15
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =      271,971             Number of obs    =     271,971
+No. of failures      =       17,530
+Time at risk         =  1058365.101
+                                                Wald chi2(13)    =     6296.09
+Log pseudolikelihood =   -179945.15             Prob > chi2      =      0.0000
+
+                             (Std. Err. adjusted for 271,971 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+Treated_ID_~l |   1.861693   .0577151    20.05   0.000     1.751942     1.97832
+  baselineage |   .8886779   .0057133   -18.36   0.000     .8775502    .8999467
+ age_admitted |   .9997871   .0026955    -0.08   0.937      .994518    1.005084
+        2.SEX |   .6188062   .0097676   -30.41   0.000     .5999551    .6382496
+     NonWhite |   .8117185   .0347173    -4.88   0.000     .7464478    .8826966
+     townsend |   1.031687   .0026298    12.24   0.000     1.026546    1.036854
+  educationbr |   .9830197   .0099929    -1.68   0.092     .9636277    1.002802
+householdin~e |   .8944555   .0079134   -12.61   0.000     .8790793    .9101006
+householdsize |   .9657927    .010019    -3.36   0.001      .946354    .9856306
+LE8_TOTALSC~E |   .9981224   .0000882   -21.26   0.000     .9979495    .9982953
+        srhbr |    1.23188   .0150811    17.03   0.000     1.202674    1.261796
+medicationnum |   1.052822   .0032413    16.72   0.000     1.046488    1.059194
+     comorbid |     1.0265   .0043971     6.11   0.000     1.017918    1.035154
+-------------------------------------------------------------------------------
+
+. estimates store Unmatched_Adjusted
+
+. di "************************************************************"
+************************************************************
+
+. di "* 2. 1:1 Matched Sample (psmatch2 weights)"
+* 2. 1:1 Matched Sample (psmatch2 weights)
+
+. di "************************************************************"
+************************************************************
+
+. use "/opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin.dta", clear
+
+. stset Age_death [pw=_weight], failure(died==1) enter(age_2020) scale(1) id(n_e
+> id)
+
+                id:  n_eid
+     failure event:  died == 1
+obs. time interval:  (Age_death[_n-1], Age_death]
+ enter on or after:  time age_2020
+ exit on or before:  failure
+            weight:  [pweight=_weight]
+
+------------------------------------------------------------------------------
+    271,974  total observations
+          3  observations end on or before enter()
+    258,368  weights invalid                                    PROBABLE ERROR
+------------------------------------------------------------------------------
+     13,603  observations remaining, representing
+     13,603  subjects
+      1,869  failures in single-failure-per-subject data
+ 51,163.387  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  49.96304
+                                          last observed exit t =  86.71595
+
+. di "--- Crude Cox model for 1:1 matched sample (psmatch2 weights) ---"
+--- Crude Cox model for 1:1 matched sample (psmatch2 weights) ---
+
+. stcox _treated, vce(robust)
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=_weight]
+
+(sum of wgt is 13,603)
+Iteration 0:   log pseudolikelihood =  -14241.66
+Iteration 1:   log pseudolikelihood = -14107.368
+Iteration 2:   log pseudolikelihood = -14107.147
+Iteration 3:   log pseudolikelihood = -14107.147
+Refining estimates:
+Iteration 0:   log pseudolikelihood = -14107.147
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =       13,603             Number of obs    =      13,603
+No. of failures      =        1,869
+Time at risk         =  51163.38659
+                                                Wald chi2(1)     =      254.34
+Log pseudolikelihood =   -14107.147             Prob > chi2      =      0.0000
+
+                             (Std. Err. adjusted for 13,603 clusters in n_eid)
+------------------------------------------------------------------------------
+             |               Robust
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+    _treated |   2.192677   .1079448    15.95   0.000     1.990996    2.414789
+------------------------------------------------------------------------------
+
+. di "--- Adjusted Cox model for 1:1 matched sample (psmatch2 weights) ---"
+--- Adjusted Cox model for 1:1 matched sample (psmatch2 weights) ---
+
+. stcox _treated `covariates_adjusted', vce(robust)
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=_weight]
+
+(sum of wgt is 13,603)
+Iteration 0:   log pseudolikelihood =  -14241.66
+Iteration 1:   log pseudolikelihood = -13821.118
+Iteration 2:   log pseudolikelihood = -13816.437
+Iteration 3:   log pseudolikelihood = -13816.432
+Iteration 4:   log pseudolikelihood = -13816.432
+Refining estimates:
+Iteration 0:   log pseudolikelihood = -13816.432
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =       13,603             Number of obs    =      13,603
+No. of failures      =        1,869
+Time at risk         =  51163.38659
+                                                Wald chi2(13)    =      907.09
+Log pseudolikelihood =   -13816.432             Prob > chi2      =      0.0000
+
+                              (Std. Err. adjusted for 13,603 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+     _treated |   2.018744    .102747    13.80   0.000     1.827082    2.230511
+  baselineage |   .8691108    .017125    -7.12   0.000     .8361863    .9033317
+ age_admitted |   1.000673   .0090748     0.07   0.941     .9830435    1.018618
+        2.SEX |   .5412134   .0264249   -12.57   0.000     .4918224    .5955645
+     NonWhite |   .8119109    .113846    -1.49   0.137     .6168124    1.068719
+     townsend |   1.039932   .0073248     5.56   0.000     1.025674    1.054388
+  educationbr |   .9825271   .0309281    -0.56   0.575     .9237412    1.045054
+householdin~e |   .9114533   .0290108    -2.91   0.004     .8563304    .9701246
+householdsize |   1.011373   .0181098     0.63   0.528     .9764939    1.047498
+LE8_TOTALSC~E |   .9988658   .0002599    -4.36   0.000     .9983567    .9993753
+        srhbr |   1.219605    .044299     5.47   0.000     1.135799    1.309594
+medicationnum |   1.043174   .0090261     4.88   0.000     1.025632    1.061015
+     comorbid |   1.011871   .0121308     0.98   0.325     .9883724    1.035929
+-------------------------------------------------------------------------------
+
+. estimates store psmatch2_1_1_Adjusted
+
+. di "************************************************************"
+************************************************************
+
+. di "* 3. 1:1 Matched Sample (IPTW weights)"
+* 3. 1:1 Matched Sample (IPTW weights)
+
+. di "************************************************************"
+************************************************************
+
+. use "/opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin.dta", clear
+
+. gen ipw = _treated/pscore + (1-_treated)/(1-pscore)
+
+. sum ipw, detail
+
+                             ipw
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%      1.00217        1.00073
+ 5%      1.00367       1.000777
+10%     1.005069       1.000845       Obs             271,974
+25%      1.00898       1.000861       Sum of Wgt.     271,974
+
+50%     1.018227                      Mean           2.069574
+                        Largest       Std. Dev.      10.72783
+75%      1.03656       626.0585
+90%     1.064739       653.2291       Variance       115.0864
+95%     1.089285       756.9028       Skewness       23.47239
+99%     31.26884        840.863       Kurtosis        906.478
+
+. local p1 = r(p1)
+
+. local p99 = r(p99)
+
+. replace ipw = `p1' if ipw < `p1'
+(2,719 real changes made)
+
+. replace ipw = `p99' if ipw > `p99'
+(2,719 real changes made)
+
+. stset Age_death [pw=ipw], failure(died==1) enter(age_2020) scale(1) id(n_eid)
+
+                id:  n_eid
+     failure event:  died == 1
+obs. time interval:  (Age_death[_n-1], Age_death]
+ enter on or after:  time age_2020
+ exit on or before:  failure
+            weight:  [pweight=ipw]
+
+------------------------------------------------------------------------------
+    271,974  total observations
+          3  observations end on or before enter()
+------------------------------------------------------------------------------
+    271,971  observations remaining, representing
+    271,971  subjects
+     17,530  failures in single-failure-per-subject data
+  1,058,365  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  49.54963
+                                          last observed exit t =  89.80151
+
+. di "--- Crude Cox model for 1:1 matched sample (IPTW) ---"
+--- Crude Cox model for 1:1 matched sample (IPTW) ---
+
+. stcox _treated, vce(robust)
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=ipw]
+
+(sum of wgt is 428,744.760297894)
+Iteration 0:   log pseudolikelihood = -290030.72
+Iteration 1:   log pseudolikelihood = -287286.26
+Iteration 2:   log pseudolikelihood = -287283.84
+Iteration 3:   log pseudolikelihood = -287283.84
+Refining estimates:
+Iteration 0:   log pseudolikelihood = -287283.84
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =      428,745             Number of obs    =     271,971
+No. of failures      =       43,599
+Time at risk         =  1640320.384
+                                                Wald chi2(1)     =      798.68
+Log pseudolikelihood =   -287283.84             Prob > chi2      =      0.0000
+
+                            (Std. Err. adjusted for 271,971 clusters in n_eid)
+------------------------------------------------------------------------------
+             |               Robust
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+    _treated |   2.475172   .0793771    28.26   0.000     2.324384    2.635742
+------------------------------------------------------------------------------
+
+. di "--- Adjusted Cox model for 1:1 matched sample (IPTW) ---"
+--- Adjusted Cox model for 1:1 matched sample (IPTW) ---
+
+. stcox _treated `covariates_adjusted', vce(robust)
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=ipw]
+
+(sum of wgt is 428,744.760297894)
+Iteration 0:   log pseudolikelihood = -477059.37
+Iteration 1:   log pseudolikelihood = -466875.25
+Iteration 2:   log pseudolikelihood = -466664.26
+Iteration 3:   log pseudolikelihood = -466663.96
+Iteration 4:   log pseudolikelihood = -466663.96
+Refining estimates:
+Iteration 0:   log pseudolikelihood = -466663.96
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =      428,745             Number of obs    =     271,971
+No. of failures      =       43,599
+Time at risk         =  1640320.384
+                                                Wald chi2(13)    =     2043.19
+Log pseudolikelihood =   -466663.96             Prob > chi2      =      0.0000
+
+                             (Std. Err. adjusted for 271,971 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+     _treated |   2.122154   .0755631    21.13   0.000     1.979103    2.275545
+  baselineage |   .8736649   .0137605    -8.57   0.000     .8471069    .9010555
+ age_admitted |   1.004098   .0067074     0.61   0.540     .9910376    1.017331
+        2.SEX |   .5733154   .0223759   -14.25   0.000     .5310948    .6188924
+     NonWhite |   .8029824   .0862594    -2.04   0.041     .6505292    .9911634
+     townsend |   1.033553   .0061623     5.54   0.000     1.021545    1.045701
+  educationbr |   .9939642   .0255076    -0.24   0.814     .9452067    1.045237
+householdin~e |    .894816   .0201536    -4.93   0.000     .8561749    .9352011
+householdsize |   1.012018   .0133814     0.90   0.366     .9861282    1.038588
+LE8_TOTALSC~E |   .9984612   .0002104    -7.31   0.000     .9980488    .9988737
+        srhbr |   1.212036   .0361815     6.44   0.000     1.143157    1.285066
+medicationnum |    1.04657   .0075349     6.32   0.000     1.031906    1.061443
+     comorbid |   1.003907   .0102212     0.38   0.702     .9840721    1.024141
+-------------------------------------------------------------------------------
+
+. estimates store IPTW_1_1_Adjusted
+
+. di "************************************************************"
+************************************************************
+
+. di "* 4. 1:2 Matched Sample (psmatch2 weights)"
+* 4. 1:2 Matched Sample (psmatch2 weights)
+
+. di "************************************************************"
+************************************************************
+
+. use "/opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin_1_2.dta", clear
+
+. stset Age_death [pw=_weight], failure(died==1) enter(age_2020) scale(1) id(n_e
+> id)
+
+                id:  n_eid
+     failure event:  died == 1
+obs. time interval:  (Age_death[_n-1], Age_death]
+ enter on or after:  time age_2020
+ exit on or before:  failure
+            weight:  [pweight=_weight]
+
+------------------------------------------------------------------------------
+    271,974  total observations
+          3  observations end on or before enter()
+    252,375  weights invalid                                    PROBABLE ERROR
+------------------------------------------------------------------------------
+     19,596  observations remaining, representing
+     19,596  subjects
+      2,398  failures in single-failure-per-subject data
+ 74,202.636  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  49.96304
+                                          last observed exit t =  86.71595
+
+. di "--- Crude Cox model for 1:2 matched sample (psmatch2 weights) ---"
+--- Crude Cox model for 1:2 matched sample (psmatch2 weights) ---
+
+. stcox _treated, vce(robust)
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=_weight]
+
+(sum of wgt is 13,602.5)
+Iteration 0:   log pseudolikelihood = -21696.229
+Iteration 1:   log pseudolikelihood = -21514.738
+Iteration 2:   log pseudolikelihood =  -21514.48
+Iteration 3:   log pseudolikelihood =  -21514.48
+Refining estimates:
+Iteration 0:   log pseudolikelihood =  -21514.48
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =       13,602             Number of obs    =      19,596
+No. of failures      =        1,886
+Time at risk         =  51095.29632
+                                                Wald chi2(1)     =      328.71
+Log pseudolikelihood =    -21514.48             Prob > chi2      =      0.0000
+
+                             (Std. Err. adjusted for 19,596 clusters in n_eid)
+------------------------------------------------------------------------------
+             |               Robust
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+    _treated |   2.127837    .088622    18.13   0.000     1.961042    2.308819
+------------------------------------------------------------------------------
+
+. di "--- Adjusted Cox model for 1:2 matched sample (psmatch2 weights) ---"
+--- Adjusted Cox model for 1:2 matched sample (psmatch2 weights) ---
+
+. stcox _treated `covariates_adjusted', vce(robust)
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=_weight]
+
+(sum of wgt is 13,602.5)
+Iteration 0:   log pseudolikelihood = -14371.659
+Iteration 1:   log pseudolikelihood = -13972.275
+Iteration 2:   log pseudolikelihood = -13967.504
+Iteration 3:   log pseudolikelihood = -13967.499
+Iteration 4:   log pseudolikelihood = -13967.499
+Refining estimates:
+Iteration 0:   log pseudolikelihood = -13967.499
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =       13,602             Number of obs    =      19,596
+No. of failures      =        1,886
+Time at risk         =  51095.29632
+                                                Wald chi2(13)    =     1039.67
+Log pseudolikelihood =   -13967.499             Prob > chi2      =      0.0000
+
+                              (Std. Err. adjusted for 19,596 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+     _treated |   1.964728   .0850719    15.60   0.000     1.804869    2.138745
+  baselineage |   .8893448   .0163304    -6.39   0.000     .8579069    .9219348
+ age_admitted |   .9981822   .0084697    -0.21   0.830     .9817191    1.014921
+        2.SEX |    .560028   .0252699   -12.85   0.000     .5126268    .6118123
+     NonWhite |   .8291457   .1067283    -1.46   0.146     .6442635    1.067083
+     townsend |   1.039048   .0068409     5.82   0.000     1.025726    1.052543
+  educationbr |    .987117   .0289453    -0.44   0.658     .9319848    1.045511
+householdin~e |   .9106659   .0269406    -3.16   0.002      .859365    .9650293
+householdsize |   1.007833    .017478     0.45   0.653     .9741524    1.042678
+LE8_TOTALSC~E |   .9987182   .0002415    -5.30   0.000      .998245    .9991916
+        srhbr |   1.223547   .0412909     5.98   0.000     1.145237    1.307212
+medicationnum |   1.047965   .0084128     5.84   0.000     1.031605    1.064584
+     comorbid |   1.000066   .0114004     0.01   0.995     .9779696    1.022662
+-------------------------------------------------------------------------------
+
+. estimates store psmatch2_1_2_Adjusted
+
+. di "************************************************************"
+************************************************************
+
+. di "* 5. 1:2 Matched Sample (IPTW weights)"
+* 5. 1:2 Matched Sample (IPTW weights)
+
+. di "************************************************************"
+************************************************************
+
+. use "/opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin_1_2.dta", clear
+
+. gen ipw = _treated/pscore + (1-_treated)/(1-pscore)
+
+. sum ipw, detail
+
+                             ipw
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%      1.00217        1.00073
+ 5%      1.00367       1.000777
+10%     1.005069       1.000845       Obs             271,974
+25%      1.00898       1.000861       Sum of Wgt.     271,974
+
+50%     1.018227                      Mean           2.069574
+                        Largest       Std. Dev.      10.72783
+75%      1.03656       626.0585
+90%     1.064739       653.2291       Variance       115.0864
+95%     1.089285       756.9028       Skewness       23.47239
+99%     31.26884        840.863       Kurtosis        906.478
+
+. local p1 = r(p1)
+
+. local p99 = r(p99)
+
+. replace ipw = `p1' if ipw < `p1'
+(2,719 real changes made)
+
+. replace ipw = `p99' if ipw > `p99'
+(2,719 real changes made)
+
+. stset Age_death [pw=ipw], failure(died==1) enter(age_2020) scale(1) id(n_eid)
+
+                id:  n_eid
+     failure event:  died == 1
+obs. time interval:  (Age_death[_n-1], Age_death]
+ enter on or after:  time age_2020
+ exit on or before:  failure
+            weight:  [pweight=ipw]
+
+------------------------------------------------------------------------------
+    271,974  total observations
+          3  observations end on or before enter()
+------------------------------------------------------------------------------
+    271,971  observations remaining, representing
+    271,971  subjects
+     17,530  failures in single-failure-per-subject data
+  1,058,365  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  49.54963
+                                          last observed exit t =  89.80151
+
+. di "--- Crude Cox model for 1:2 matched sample (IPTW) ---"
+--- Crude Cox model for 1:2 matched sample (IPTW) ---
+
+. stcox _treated, vce(robust)
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=ipw]
+
+(sum of wgt is 428,744.760297894)
+Iteration 0:   log pseudolikelihood = -290030.72
+Iteration 1:   log pseudolikelihood = -287286.26
+Iteration 2:   log pseudolikelihood = -287283.84
+Iteration 3:   log pseudolikelihood = -287283.84
+Refining estimates:
+Iteration 0:   log pseudolikelihood = -287283.84
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =      428,745             Number of obs    =     271,971
+No. of failures      =       43,599
+Time at risk         =  1640320.384
+                                                Wald chi2(1)     =      798.68
+Log pseudolikelihood =   -287283.84             Prob > chi2      =      0.0000
+
+                            (Std. Err. adjusted for 271,971 clusters in n_eid)
+------------------------------------------------------------------------------
+             |               Robust
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+    _treated |   2.475172   .0793771    28.26   0.000     2.324384    2.635742
+------------------------------------------------------------------------------
+
+. di "--- Adjusted Cox model for 1:2 matched sample (IPTW) ---"
+--- Adjusted Cox model for 1:2 matched sample (IPTW) ---
+
+. stcox _treated `covariates_adjusted', vce(robust)
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=ipw]
+
+(sum of wgt is 428,744.760297894)
+Iteration 0:   log pseudolikelihood = -477059.37
+Iteration 1:   log pseudolikelihood = -466875.25
+Iteration 2:   log pseudolikelihood = -466664.26
+Iteration 3:   log pseudolikelihood = -466663.96
+Iteration 4:   log pseudolikelihood = -466663.96
+Refining estimates:
+Iteration 0:   log pseudolikelihood = -466663.96
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =      428,745             Number of obs    =     271,971
+No. of failures      =       43,599
+Time at risk         =  1640320.384
+                                                Wald chi2(13)    =     2043.19
+Log pseudolikelihood =   -466663.96             Prob > chi2      =      0.0000
+
+                             (Std. Err. adjusted for 271,971 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+     _treated |   2.122154   .0755631    21.13   0.000     1.979103    2.275545
+  baselineage |   .8736649   .0137605    -8.57   0.000     .8471069    .9010555
+ age_admitted |   1.004098   .0067074     0.61   0.540     .9910376    1.017331
+        2.SEX |   .5733154   .0223759   -14.25   0.000     .5310948    .6188924
+     NonWhite |   .8029824   .0862594    -2.04   0.041     .6505292    .9911634
+     townsend |   1.033553   .0061623     5.54   0.000     1.021545    1.045701
+  educationbr |   .9939642   .0255076    -0.24   0.814     .9452067    1.045237
+householdin~e |    .894816   .0201536    -4.93   0.000     .8561749    .9352011
+householdsize |   1.012018   .0133814     0.90   0.366     .9861282    1.038588
+LE8_TOTALSC~E |   .9984612   .0002104    -7.31   0.000     .9980488    .9988737
+        srhbr |   1.212036   .0361815     6.44   0.000     1.143157    1.285066
+medicationnum |    1.04657   .0075349     6.32   0.000     1.031906    1.061443
+     comorbid |   1.003907   .0102212     0.38   0.702     .9840721    1.024141
+-------------------------------------------------------------------------------
+
+. estimates store IPTW_1_2_Adjusted
+
+. di "************************************************************"
+************************************************************
+
+. di "* 6. 1:3 Matched Sample (psmatch2 weights)"
+* 6. 1:3 Matched Sample (psmatch2 weights)
+
+. di "************************************************************"
+************************************************************
+
+. use "/opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin_1_3.dta", clear
+
+. stset Age_death [pw=_weight], failure(died==1) enter(age_2020) scale(1) id(n_e
+> id)
+
+                id:  n_eid
+     failure event:  died == 1
+obs. time interval:  (Age_death[_n-1], Age_death]
+ enter on or after:  time age_2020
+ exit on or before:  failure
+            weight:  [pweight=_weight]
+
+------------------------------------------------------------------------------
+    271,974  total observations
+          3  observations end on or before enter()
+    246,459  weights invalid                                    PROBABLE ERROR
+------------------------------------------------------------------------------
+     25,512  observations remaining, representing
+     25,512  subjects
+      2,903  failures in single-failure-per-subject data
+ 97,070.864  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  49.96304
+                                          last observed exit t =  86.71595
+
+. di "--- Crude Cox model for 1:3 matched sample (psmatch2 weights) ---"
+--- Crude Cox model for 1:3 matched sample (psmatch2 weights) ---
+
+. stcox _treated, vce(robust)
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=_weight]
+
+(sum of wgt is 13,602.6666666694)
+Iteration 0:   log pseudolikelihood = -29172.993
+Iteration 1:   log pseudolikelihood = -28935.589
+Iteration 2:   log pseudolikelihood = -28935.253
+Iteration 3:   log pseudolikelihood = -28935.253
+Refining estimates:
+Iteration 0:   log pseudolikelihood = -28935.253
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =       13,603             Number of obs    =      25,512
+No. of failures      =        1,886
+Time at risk         =  51130.28064
+                                                Wald chi2(1)     =      392.33
+Log pseudolikelihood =   -28935.253             Prob > chi2      =      0.0000
+
+                             (Std. Err. adjusted for 25,512 clusters in n_eid)
+------------------------------------------------------------------------------
+             |               Robust
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+    _treated |   2.131895   .0814787    19.81   0.000     1.978034    2.297723
+------------------------------------------------------------------------------
+
+. di "--- Adjusted Cox model for 1:3 matched sample (psmatch2 weights) ---"
+--- Adjusted Cox model for 1:3 matched sample (psmatch2 weights) ---
+
+. stcox _treated `covariates_adjusted', vce(robust)
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=_weight]
+
+(sum of wgt is 13,602.6666666667)
+Iteration 0:   log pseudolikelihood = -14368.377
+Iteration 1:   log pseudolikelihood = -13967.442
+Iteration 2:   log pseudolikelihood = -13962.707
+Iteration 3:   log pseudolikelihood = -13962.703
+Iteration 4:   log pseudolikelihood = -13962.703
+Refining estimates:
+Iteration 0:   log pseudolikelihood = -13962.703
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =       13,603             Number of obs    =      25,512
+No. of failures      =        1,886
+Time at risk         =  51130.28064
+                                                Wald chi2(13)    =     1145.47
+Log pseudolikelihood =   -13962.703             Prob > chi2      =      0.0000
+
+                              (Std. Err. adjusted for 25,512 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+     _treated |   1.970137   .0787159    16.97   0.000     1.821743    2.130619
+  baselineage |   .8802054   .0156795    -7.16   0.000     .8500045    .9114794
+ age_admitted |   .9987493   .0082216    -0.15   0.879     .9827646    1.014994
+        2.SEX |   .5651101   .0246579   -13.08   0.000     .5187904    .6155654
+     NonWhite |   .8422588   .1037328    -1.39   0.163     .6616242     1.07221
+     townsend |    1.03603   .0065898     5.56   0.000     1.023195    1.049027
+  educationbr |   .9822966   .0280975    -0.62   0.532     .9287418     1.03894
+householdin~e |   .9109955   .0262072    -3.24   0.001     .8610515    .9638364
+householdsize |   1.003271   .0172378     0.19   0.849     .9700484    1.037632
+LE8_TOTALSC~E |   .9986428   .0002344    -5.79   0.000     .9981834    .9991024
+        srhbr |   1.223811   .0399871     6.18   0.000     1.147895    1.304748
+medicationnum |   1.046713   .0082141     5.82   0.000     1.030737    1.062937
+     comorbid |   1.002069     .01102     0.19   0.851      .980701    1.023902
+-------------------------------------------------------------------------------
+
+. estimates store psmatch2_1_3_Adjusted
+
+. di "************************************************************"
+************************************************************
+
+. di "* 7. 1:3 Matched Sample (IPTW weights)"
+* 7. 1:3 Matched Sample (IPTW weights)
+
+. di "************************************************************"
+************************************************************
+
+. use "/opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin_1_3.dta", clear
+
+. gen ipw = _treated/pscore + (1-_treated)/(1-pscore)
+
+. sum ipw, detail
+
+                             ipw
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%      1.00217        1.00073
+ 5%      1.00367       1.000777
+10%     1.005069       1.000845       Obs             271,974
+25%      1.00898       1.000861       Sum of Wgt.     271,974
+
+50%     1.018227                      Mean           2.069574
+                        Largest       Std. Dev.      10.72783
+75%      1.03656       626.0585
+90%     1.064739       653.2291       Variance       115.0864
+95%     1.089285       756.9028       Skewness       23.47239
+99%     31.26884        840.863       Kurtosis        906.478
+
+. local p1 = r(p1)
+
+. local p99 = r(p99)
+
+. replace ipw = `p1' if ipw < `p1'
+(2,719 real changes made)
+
+. replace ipw = `p99' if ipw > `p99'
+(2,719 real changes made)
+
+. stset Age_death [pw=ipw], failure(died==1) enter(age_2020) scale(1) id(n_eid)
+
+                id:  n_eid
+     failure event:  died == 1
+obs. time interval:  (Age_death[_n-1], Age_death]
+ enter on or after:  time age_2020
+ exit on or before:  failure
+            weight:  [pweight=ipw]
+
+------------------------------------------------------------------------------
+    271,974  total observations
+          3  observations end on or before enter()
+------------------------------------------------------------------------------
+    271,971  observations remaining, representing
+    271,971  subjects
+     17,530  failures in single-failure-per-subject data
+  1,058,365  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  49.54963
+                                          last observed exit t =  89.80151
+
+. di "--- Crude Cox model for 1:3 matched sample (IPTW) ---"
+--- Crude Cox model for 1:3 matched sample (IPTW) ---
+
+. stcox _treated, vce(robust)
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=ipw]
+
+(sum of wgt is 428,744.760297894)
+Iteration 0:   log pseudolikelihood = -290030.72
+Iteration 1:   log pseudolikelihood = -287286.26
+Iteration 2:   log pseudolikelihood = -287283.84
+Iteration 3:   log pseudolikelihood = -287283.84
+Refining estimates:
+Iteration 0:   log pseudolikelihood = -287283.84
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =      428,745             Number of obs    =     271,971
+No. of failures      =       43,599
+Time at risk         =  1640320.384
+                                                Wald chi2(1)     =      798.68
+Log pseudolikelihood =   -287283.84             Prob > chi2      =      0.0000
+
+                            (Std. Err. adjusted for 271,971 clusters in n_eid)
+------------------------------------------------------------------------------
+             |               Robust
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+    _treated |   2.475172   .0793771    28.26   0.000     2.324384    2.635742
+------------------------------------------------------------------------------
+
+. di "--- Adjusted Cox model for 1:3 matched sample (IPTW) ---"
+--- Adjusted Cox model for 1:3 matched sample (IPTW) ---
+
+. stcox _treated `covariates_adjusted', vce(robust)
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=ipw]
+
+(sum of wgt is 428,744.760297894)
+Iteration 0:   log pseudolikelihood = -477059.37
+Iteration 1:   log pseudolikelihood = -466875.25
+Iteration 2:   log pseudolikelihood = -466664.26
+Iteration 3:   log pseudolikelihood = -466663.96
+Iteration 4:   log pseudolikelihood = -466663.96
+Refining estimates:
+Iteration 0:   log pseudolikelihood = -466663.96
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =      428,745             Number of obs    =     271,971
+No. of failures      =       43,599
+Time at risk         =  1640320.384
+                                                Wald chi2(13)    =     2043.19
+Log pseudolikelihood =   -466663.96             Prob > chi2      =      0.0000
+
+                             (Std. Err. adjusted for 271,971 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+     _treated |   2.122154   .0755631    21.13   0.000     1.979103    2.275545
+  baselineage |   .8736649   .0137605    -8.57   0.000     .8471069    .9010555
+ age_admitted |   1.004098   .0067074     0.61   0.540     .9910376    1.017331
+        2.SEX |   .5733154   .0223759   -14.25   0.000     .5310948    .6188924
+     NonWhite |   .8029824   .0862594    -2.04   0.041     .6505292    .9911634
+     townsend |   1.033553   .0061623     5.54   0.000     1.021545    1.045701
+  educationbr |   .9939642   .0255076    -0.24   0.814     .9452067    1.045237
+householdin~e |    .894816   .0201536    -4.93   0.000     .8561749    .9352011
+householdsize |   1.012018   .0133814     0.90   0.366     .9861282    1.038588
+LE8_TOTALSC~E |   .9984612   .0002104    -7.31   0.000     .9980488    .9988737
+        srhbr |   1.212036   .0361815     6.44   0.000     1.143157    1.285066
+medicationnum |    1.04657   .0075349     6.32   0.000     1.031906    1.061443
+     comorbid |   1.003907   .0102212     0.38   0.702     .9840721    1.024141
+-------------------------------------------------------------------------------
+
+. estimates store IPTW_1_3_Adjusted
+
+. capture log close

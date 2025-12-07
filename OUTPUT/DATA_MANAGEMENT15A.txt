@@ -1,0 +1,535 @@
+{smcl}
+{com}{sf}{ul off}{txt}
+{com}. clear
+{txt}
+{com}. use n_eid s_23074_0_0 s_23050_0_0 s_23051_0_0  s_23052_0_0 s_23053_0_0 s_23054_0_0 s_23055_0_0 s_23058_0_0 s_23059_0_0 s_23060_0_0 s_23061_0_0 s_23062_0_0 s_23063_0_0 s_23064_0_0 s_23065_0_0 s_23066_0_0 s_23067_0_0 s_23075_0_0 s_23069_0_0 s_23071_0_0 n_23039_0_0 n_23040_0_0 n_23041_0_0 n_23042_0_0 n_23043_0_0  n_23044_0_0 using "/opt/notebooks/SMALLERDATASETUKBfin.dta"
+{txt}
+{com}. save "/opt/notebooks/UKB_HPYLORIPERSIST", replace
+{txt}file /opt/notebooks/UKB_HPYLORIPERSIST.dta saved
+
+{com}. capture drop hpyloriCagA
+{txt}
+{com}. gen hpyloriCagA=.
+{txt}(501,936 missing values generated)
+
+{com}. replace hpyloriCagA=n_23039_0_0
+{txt}(4,754 real changes made)
+
+{com}. capture drop hpyloriCat
+{txt}
+{com}. gen hpyloriCat=.
+{txt}(501,936 missing values generated)
+
+{com}. replace hpyloriCat=n_23043_0_0
+{txt}(9,423 real changes made)
+
+{com}. capture drop hpyloriGroeL
+{txt}
+{com}. gen hpyloriGroeL=.
+{txt}(501,936 missing values generated)
+
+{com}. replace hpyloriGroeL=n_23042_0_0
+{txt}(9,423 real changes made)
+
+{com}. capture drop hpyloriOMP
+{txt}
+{com}. gen hpyloriOMP=.
+{txt}(501,936 missing values generated)
+
+{com}. replace hpyloriOMP=n_23041_0_0
+{txt}(9,423 real changes made)
+
+{com}. capture drop hpyloriUreA
+{txt}
+{com}. gen hpyloriUreA=.
+{txt}(501,936 missing values generated)
+
+{com}. replace hpyloriUreA=n_23044_0_0
+{txt}(9,423 real changes made)
+
+{com}. capture drop hpyloriVacA
+{txt}
+{com}. gen hpyloriVacA=.
+{txt}(501,936 missing values generated)
+
+{com}. replace hpyloriVacA=n_23040_0_0
+{txt}(9,423 real changes made)
+
+{com}. capture drop LnhpyloriCagA LnhpyloriCat LnhpyloriGroeL LnhpyloriOMP LnhpyloriUreA LnhpyloriVacA
+{txt}
+{com}. foreach x of varlist hpyloriCagA hpyloriCat hpyloriGroeL hpyloriOMP hpyloriUreA hpyloriVacA {c -(}
+{txt}  2{com}. gen Ln`x'=ln(`x')
+{txt}  3{com}. {c )-}
+{txt}(497,182 missing values generated)
+(492,513 missing values generated)
+(492,513 missing values generated)
+(492,513 missing values generated)
+(492,513 missing values generated)
+(492,513 missing values generated)
+
+{com}. save "/opt/notebooks/UKB_HPYLORIPERSIST", replace
+{txt}file /opt/notebooks/UKB_HPYLORIPERSIST.dta saved
+
+{com}. capture drop hpylori_seropos2
+{txt}
+{com}. gen hpylori_seropos2=""
+{txt}(501,936 missing values generated)
+
+{com}. replace hpylori_seropos2=s_23074_0_0
+{txt}variable {bf}hpylori_seropos2{sf} was {bf}{res}str1{sf}{txt} now {bf}{res}str5{sf}
+{txt}(9,423 real changes made)
+
+{com}. tab hpylori_seropos2
+
+{txt}hpylori_ser {c |}
+      opos2 {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+      False {c |}{res}      6,440       68.34       68.34
+{txt}       True {c |}{res}      2,983       31.66      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,423      100.00
+{txt}
+{com}. capture drop hpylori_seropos2fin
+{txt}
+{com}. encode hpylori_seropos2,gen(hpylori_seropos2fin)
+{txt}
+{com}. tab hpylori_seropos2fin
+
+{txt}hpylori_ser {c |}
+   opos2fin {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+      False {c |}{res}      6,440       68.34       68.34
+{txt}       True {c |}{res}      2,983       31.66      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,423      100.00
+{txt}
+{com}. capture drop hsv1_seropos
+{txt}
+{com}. gen hsv1_seropos=s_23050_0_0
+{txt}(492,513 missing values generated)
+
+{com}. capture drop hsv1_seroposfin
+{txt}
+{com}. encode hsv1_seropos,gen(hsv1_seroposfin)
+{txt}
+{com}. tab hsv1_seroposfin
+
+{txt}hsv1_seropo {c |}
+       sfin {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+      False {c |}{res}      2,836       30.10       30.10
+{txt}       True {c |}{res}      6,587       69.90      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,423      100.00
+{txt}
+{com}. capture drop hsv2_seropos
+{txt}
+{com}. gen hsv2_seropos=s_23051_0_0
+{txt}(492,513 missing values generated)
+
+{com}. capture drop hsv2_seroposfin
+{txt}
+{com}. encode hsv2_seropos,gen(hsv2_seroposfin)
+{txt}
+{com}. tab hsv2_seroposfin
+
+{txt}hsv2_seropo {c |}
+       sfin {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+      False {c |}{res}      7,899       83.83       83.83
+{txt}       True {c |}{res}      1,524       16.17      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,423      100.00
+{txt}
+{com}. capture drop vzv_seropos
+{txt}
+{com}. gen vzv_seropos=s_23052_0_0
+{txt}(492,513 missing values generated)
+
+{com}. capture drop vzv_seroposfin
+{txt}
+{com}. encode vzv_seropos,gen(vzv_seroposfin)
+{txt}
+{com}. tab vzv_seroposfin
+
+{txt}vzv_seropos {c |}
+        fin {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+      False {c |}{res}        714        7.58        7.58
+{txt}       True {c |}{res}      8,709       92.42      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,423      100.00
+{txt}
+{com}. capture drop ebv_seropos
+{txt}
+{com}. gen ebv_seropos=s_23053_0_0
+{txt}(492,513 missing values generated)
+
+{com}. capture drop ebv_seroposfin
+{txt}
+{com}. encode ebv_seropos,gen(ebv_seroposfin)
+{txt}
+{com}. tab ebv_seroposfin
+
+{txt}ebv_seropos {c |}
+        fin {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+      False {c |}{res}        497        5.27        5.27
+{txt}       True {c |}{res}      8,926       94.73      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,423      100.00
+{txt}
+{com}. capture drop cmv_seropos
+{txt}
+{com}. gen cmv_seropos=s_23054_0_0
+{txt}(492,513 missing values generated)
+
+{com}. capture drop cmv_seroposfin
+{txt}
+{com}. encode cmv_seropos,gen(cmv_seroposfin)
+{txt}
+{com}. tab cmv_seroposfin
+
+{txt}cmv_seropos {c |}
+        fin {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+      False {c |}{res}      3,934       41.75       41.75
+{txt}       True {c |}{res}      5,489       58.25      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,423      100.00
+{txt}
+{com}. capture drop hhv6_seropos
+{txt}
+{com}. gen hhv6_seropos=s_23055_0_0
+{txt}(492,513 missing values generated)
+
+{com}. capture drop hhv6_seroposfin
+{txt}
+{com}. encode hhv6_seropos,gen(hhv6_seroposfin)
+{txt}
+{com}. tab hhv6_seroposfin
+
+{txt}hhv6_seropo {c |}
+       sfin {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+      False {c |}{res}        868        9.21        9.21
+{txt}       True {c |}{res}      8,555       90.79      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,423      100.00
+{txt}
+{com}. capture drop hhv7_seropos
+{txt}
+{com}. gen hhv7_seropos=s_23058_0_0
+{txt}(492,513 missing values generated)
+
+{com}. capture drop hhv7_seroposfin
+{txt}
+{com}. encode hhv7_seropos,gen(hhv7_seroposfin)
+{txt}
+{com}. tab hhv7_seroposfin
+
+{txt}hhv7_seropo {c |}
+       sfin {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+      False {c |}{res}        503        5.34        5.34
+{txt}       True {c |}{res}      8,920       94.66      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,423      100.00
+{txt}
+{com}. capture drop kshv_seropos
+{txt}
+{com}. gen kshv_seropos=s_23059_0_0
+{txt}(492,513 missing values generated)
+
+{com}. capture drop kshv_seroposfin
+{txt}
+{com}. encode kshv_seropos,gen(kshv_seroposfin)
+{txt}
+{com}. tab kshv_seroposfin
+
+{txt}kshv_seropo {c |}
+       sfin {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+      False {c |}{res}      8,664       91.95       91.95
+{txt}       True {c |}{res}        759        8.05      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,423      100.00
+{txt}
+{com}. capture drop hbv_seropos
+{txt}
+{com}. gen hbv_seropos=s_23060_0_0
+{txt}(492,513 missing values generated)
+
+{com}. capture drop hbv_seroposfin
+{txt}
+{com}. encode hbv_seropos,gen(hbv_seroposfin)
+{txt}
+{com}. tab hbv_seroposfin
+
+{txt}hbv_seropos {c |}
+        fin {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+      False {c |}{res}      9,190       97.53       97.53
+{txt}       True {c |}{res}        233        2.47      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,423      100.00
+{txt}
+{com}. capture drop hcv_seropos
+{txt}
+{com}. gen hcv_seropos=s_23061_0_0
+{txt}(492,513 missing values generated)
+
+{com}. capture drop hcv_seroposfin
+{txt}
+{com}. encode hcv_seropos,gen(hcv_seroposfin)
+{txt}
+{com}. tab hcv_seroposfin
+
+{txt}hcv_seropos {c |}
+        fin {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+      False {c |}{res}      9,394       99.69       99.69
+{txt}       True {c |}{res}         29        0.31      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,423      100.00
+{txt}
+{com}. capture drop TG_seropos
+{txt}
+{com}. gen TG_seropos=s_23062_0_0
+{txt}(492,513 missing values generated)
+
+{com}. capture drop TG_seroposfin
+{txt}
+{com}. encode TG_seropos,gen(TG_seroposfin)
+{txt}
+{com}. tab TG_seroposfin
+
+{txt}TG_seroposf {c |}
+         in {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+      False {c |}{res}      6,787       72.03       72.03
+{txt}       True {c |}{res}      2,636       27.97      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,423      100.00
+{txt}
+{com}. capture drop htlv1_seropos
+{txt}
+{com}. gen htlv1_seropos=s_23063_0_0
+{txt}(492,513 missing values generated)
+
+{com}. capture drop htlv1_seroposfin
+{txt}
+{com}. encode htlv1_seropos,gen(htlv1_seroposfin)
+{txt}
+{com}. tab htlv1_seroposfin
+
+{txt}htlv1_serop {c |}
+      osfin {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+      False {c |}{res}      9,276       98.44       98.44
+{txt}       True {c |}{res}        147        1.56      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,423      100.00
+{txt}
+{com}. capture drop hiv1_seropos
+{txt}
+{com}. gen hiv1_seropos=s_23064_0_0
+{txt}(492,513 missing values generated)
+
+{com}. capture drop hiv1_seroposfin
+{txt}
+{com}. encode hiv1_seropos,gen(hiv1_seroposfin)
+{txt}
+{com}. tab hiv1_seroposfin
+
+{txt}hiv1_seropo {c |}
+       sfin {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+      False {c |}{res}      9,405       99.81       99.81
+{txt}       True {c |}{res}         18        0.19      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,423      100.00
+{txt}
+{com}. capture drop bkv_seropos
+{txt}
+{com}. gen bkv_seropos=s_23065_0_0
+{txt}(492,513 missing values generated)
+
+{com}. capture drop bkv_seroposfin
+{txt}
+{com}. encode bkv_seropos,gen(bkv_seroposfin)
+{txt}
+{com}. tab bkv_seroposfin
+
+{txt}bkv_seropos {c |}
+        fin {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+      False {c |}{res}        441        4.68        4.68
+{txt}       True {c |}{res}      8,982       95.32      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,423      100.00
+{txt}
+{com}. capture drop jvc_seropos
+{txt}
+{com}. gen jvc_seropos=s_23066_0_0
+{txt}(492,513 missing values generated)
+
+{com}. capture drop jvc_seroposfin
+{txt}
+{com}. encode jvc_seropos,gen(jvc_seroposfin)
+{txt}
+{com}. tab jvc_seroposfin
+
+{txt}jvc_seropos {c |}
+        fin {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+      False {c |}{res}      4,006       42.51       42.51
+{txt}       True {c |}{res}      5,417       57.49      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,423      100.00
+{txt}
+{com}. capture drop mcv_seropos
+{txt}
+{com}. gen mcv_seropos=s_23067_0_0
+{txt}(492,513 missing values generated)
+
+{com}. capture drop mcv_seroposfin
+{txt}
+{com}. encode mcv_seropos,gen(mcv_seroposfin)
+{txt}
+{com}. tab mcv_seroposfin
+
+{txt}mcv_seropos {c |}
+        fin {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+      False {c |}{res}      3,158       33.51       33.51
+{txt}       True {c |}{res}      6,265       66.49      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,423      100.00
+{txt}
+{com}. capture drop hpv16_seropos
+{txt}
+{com}. gen hpv16_seropos=s_23075_0_0
+{txt}(492,513 missing values generated)
+
+{com}. capture drop hpv16_seroposfin
+{txt}
+{com}. encode hpv16_seropos,gen(hpv16_seroposfin)
+{txt}
+{com}. tab hpv16_seroposfin
+
+{txt}hpv16_serop {c |}
+      osfin {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+      False {c |}{res}      8,990       95.40       95.40
+{txt}       True {c |}{res}        433        4.60      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,423      100.00
+{txt}
+{com}. capture drop hpv18_seropos
+{txt}
+{com}. gen hpv18_seropos=s_23069_0_0
+{txt}(492,513 missing values generated)
+
+{com}. capture drop hpv18_seroposfin
+{txt}
+{com}. encode hpv18_seropos,gen(hpv18_seroposfin)
+{txt}
+{com}. tab hpv18_seroposfin
+
+{txt}hpv18_serop {c |}
+      osfin {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+      False {c |}{res}      9,173       97.35       97.35
+{txt}       True {c |}{res}        250        2.65      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      9,423      100.00
+{txt}
+{com}. capture drop CT_seropos2
+{txt}
+{com}. gen CT_seropos2=s_23071_0_0
+{txt}(494,538 missing values generated)
+
+{com}. capture drop CT_seropos2fin
+{txt}
+{com}. encode CT_seropos2,gen(CT_seropos2fin)
+{txt}
+{com}. tab CT_seropos2fin
+
+{txt}CT_seropos2 {c |}
+        fin {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+      False {c |}{res}      7,160       96.78       96.78
+{txt}       True {c |}{res}        238        3.22      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      7,398      100.00
+{txt}
+{com}. foreach x of varlist hpylori_seropos2fin CT_seropos2fin hpv18_seroposfin hpv16_seroposfin mcv_seroposfin jvc_seroposfin bkv_seroposfin hiv1_seroposfin htlv1_seroposfin TG_seroposfin hcv_seroposfin hbv_seroposfin kshv_seroposfin hhv7_seroposfin hhv6_seroposfin cmv_seroposfin ebv_seroposfin vzv_seroposfin hsv2_seroposfin hsv1_seroposfin {c -(}
+{txt}  2{com}.  recode `x' (1=0) (2=1)
+{txt}  3{com}. {c )-}
+{txt}(hpylori_seropos2fin: 9423 changes made)
+(CT_seropos2fin: 7398 changes made)
+(hpv18_seroposfin: 9423 changes made)
+(hpv16_seroposfin: 9423 changes made)
+(mcv_seroposfin: 9423 changes made)
+(jvc_seroposfin: 9423 changes made)
+(bkv_seroposfin: 9423 changes made)
+(hiv1_seroposfin: 9423 changes made)
+(htlv1_seroposfin: 9423 changes made)
+(TG_seroposfin: 9423 changes made)
+(hcv_seroposfin: 9423 changes made)
+(hbv_seroposfin: 9423 changes made)
+(kshv_seroposfin: 9423 changes made)
+(hhv7_seroposfin: 9423 changes made)
+(hhv6_seroposfin: 9423 changes made)
+(cmv_seroposfin: 9423 changes made)
+(ebv_seroposfin: 9423 changes made)
+(vzv_seroposfin: 9423 changes made)
+(hsv2_seroposfin: 9423 changes made)
+(hsv1_seroposfin: 9423 changes made)
+
+{com}. save "/opt/notebooks/UKB_HPYLORIPERSIST", replace
+{txt}file /opt/notebooks/UKB_HPYLORIPERSIST.dta saved
+
+{com}. capture drop IB_total
+{txt}
+{com}. gen IB_total=hpylori_seropos2fin+CT_seropos2fin+hpv18_seroposfin+hpv16_seroposfin+mcv_seroposfin+jvc_seroposfin+bkv_seroposfin+hiv1_seroposfin+htlv1_seroposfin+TG_seroposfin+hcv_seroposfin +hbv_seroposfin+kshv_seroposfin+hhv7_seroposfin+hhv6_seroposfin+cmv_seroposfin+ebv_seroposfin+vzv_seroposfin+hsv2_seroposfin+hsv1_seroposfin
+{txt}(494,538 missing values generated)
+
+{com}. tab IB_total
+
+   {txt}IB_total {c |}      Freq.     Percent        Cum.
+{hline 12}{c +}{hline 35}
+          0 {c |}{res}          4        0.05        0.05
+{txt}          1 {c |}{res}          3        0.04        0.09
+{txt}          2 {c |}{res}         10        0.14        0.23
+{txt}          3 {c |}{res}         22        0.30        0.53
+{txt}          4 {c |}{res}        126        1.70        2.23
+{txt}          5 {c |}{res}        371        5.01        7.25
+{txt}          6 {c |}{res}        868       11.73       18.98
+{txt}          7 {c |}{res}      1,405       18.99       37.97
+{txt}          8 {c |}{res}      1,671       22.59       60.56
+{txt}          9 {c |}{res}      1,408       19.03       79.59
+{txt}         10 {c |}{res}        891       12.04       91.63
+{txt}         11 {c |}{res}        407        5.50       97.13
+{txt}         12 {c |}{res}        154        2.08       99.22
+{txt}         13 {c |}{res}         34        0.46       99.68
+{txt}         14 {c |}{res}         15        0.20       99.88
+{txt}         15 {c |}{res}          5        0.07       99.95
+{txt}         16 {c |}{res}          2        0.03       99.97
+{txt}         17 {c |}{res}          1        0.01       99.99
+{txt}         19 {c |}{res}          1        0.01      100.00
+{txt}{hline 12}{c +}{hline 35}
+      Total {c |}{res}      7,398      100.00
+{txt}
+{com}. capture drop IB_minhpylori
+{txt}
+{com}. gen IB_minhpylori=CT_seropos2fin+hpv18_seroposfin+hpv16_seroposfin+mcv_seroposfin+jvc_seroposfin+bkv_seroposfin+hiv1_seroposfin+htlv1_seroposfin+TG_seroposfin+hcv_seroposfin +hbv_seroposfin+kshv_seroposfin+hhv7_seroposfin+hhv6_seroposfin+cmv_seroposfin+ebv_seroposfin+vzv_seroposfin+hsv2_seroposfin+hsv1_seroposfin
+{txt}(494,538 missing values generated)
+
+{com}. save "/opt/notebooks/UKB_HPYLORIPERSIST", replace
+{txt}file /opt/notebooks/UKB_HPYLORIPERSIST.dta saved
+
+{com}. capture log close
+{smcl}
+{com}{sf}{ul off}

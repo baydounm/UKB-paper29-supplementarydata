@@ -1,0 +1,448 @@
+--------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /opt/notebooks/TABLE3_COXMODELS_FINEGRAY.txt
+  log type:  text
+ opened on:   5 Dec 2025, 17:20:10
+
+. use "/opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin.dta", clear
+
+. capture drop failure_type
+
+. gen failure_type = 0   
+
+. replace failure_type = 1 if died_of_cvd        == 1
+(3,652 real changes made)
+
+. replace failure_type = 2 if died_of_cancer     == 1
+(6,910 real changes made)
+
+. replace failure_type = 3 if died_of_respiratory== 1
+(1,441 real changes made)
+
+. replace failure_type = 4 if died_of_external   == 1
+(318 real changes made)
+
+. replace failure_type = 5 if died_of_covid19    == 1
+(0 real changes made)
+
+. replace failure_type = 6 if died == 1 & failure_type == 0
+(5,212 real changes made)
+
+. capture label drop failure_lbl
+
+. label define failure_lbl     0 "Censored"     1 "CVD"     2 "Cancer"     3 "Re
+> spiratory"     4 "External Causes"     5 "COVID-19"     6 "Other"
+
+. label values failure_type failure_lbl
+
+. tab failure_type
+
+   failure_type |      Freq.     Percent        Cum.
+----------------+-----------------------------------
+       Censored |    254,441       93.55       93.55
+            CVD |      3,652        1.34       94.90
+         Cancer |      6,910        2.54       97.44
+    Respiratory |      1,441        0.53       97.97
+External Causes |        318        0.12       98.08
+          Other |      5,212        1.92      100.00
+----------------+-----------------------------------
+          Total |    271,974      100.00
+
+. local covariates Treated_ID_level baselineage age_admitted i.SEX NonWhite town
+> send educationbr householdincome householdsize LE8_TOTALSCORE srhbr medication
+> num comorbid
+
+. label variable Treated_ID_level "Z55–Z65 Diagnosis"
+
+. estimates clear
+
+. forvalues i = 1/6 {
+  2.     di ""
+  3.     di "*******************************************************************
+> "
+  4.     di "** Fine-Gray Competing Risks Model for Failure Type: `i' **"
+  5.     di "*******************************************************************
+> "
+  6.     stset Age_death [pw = _weight],         failure(failure_type == `i')   
+>       origin(time age_2020)         scale(1)         id(n_eid)
+  7.     capture drop cr_`i'
+  8.     gen byte cr_`i' = (failure_type > 0 & failure_type != `i') if _d == 0
+  9.     stcrreg `covariates',         compete(cr_`i')         nolog
+ 10.     estimates store FG_Model_`i'
+ 11. }
+
+*******************************************************************
+** Fine-Gray Competing Risks Model for Failure Type: 1 **
+*******************************************************************
+
+                id:  n_eid
+     failure event:  failure_type == 1
+obs. time interval:  (Age_death[_n-1], Age_death]
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time age_2020
+            weight:  [pweight=_weight]
+
+------------------------------------------------------------------------------
+    271,974  total observations
+          3  observations end on or before enter()
+    258,368  weights invalid                                    PROBABLE ERROR
+------------------------------------------------------------------------------
+     13,603  observations remaining, representing
+     13,603  subjects
+        391  failures in single-failure-per-subject data
+ 51,163.387  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =  4.517456
+(258,762 missing values generated)
+
+         failure _d:  failure_type == 1
+   analysis time _t:  (Age_death-origin)
+             origin:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=_weight]
+
+Competing-risks regression                       No. of obs       =     13,603
+                                                 No. of subjects  =     13,603
+Failure event   : failure_~e == 1                No. failed       =        391
+Competing events: cr_1 nonzero, nonmissing       No. competing    =      1,478
+                                                 No. censored     =     11,734
+
+                                                 Wald chi2(13)    =     337.94
+Log pseudolikelihood = -3390.8256                Prob > chi2      =     0.0000
+
+                              (Std. Err. adjusted for 13,603 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t |        SHR   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+Treated_ID_~l |   1.705944   .1883318     4.84   0.000     1.374024    2.118045
+  baselineage |   1.098912   .0237004     4.37   0.000     1.053428     1.14636
+ age_admitted |   .9782741   .0192194    -1.12   0.264     .9413208    1.016678
+        2.SEX |    .478934   .0531546    -6.63   0.000     .3853052    .5953145
+     NonWhite |    .819987   .2445027    -0.67   0.506     .4570848    1.471015
+     townsend |   1.046875   .0166294     2.88   0.004     1.014784     1.07998
+  educationbr |    .955091   .0686608    -0.64   0.523      .829569    1.099606
+householdin~e |    .872079   .0642089    -1.86   0.063     .7548908    1.007459
+householdsize |   1.003749   .0438922     0.09   0.932     .9213056     1.09357
+LE8_TOTALSC~E |   .9980162   .0005458    -3.63   0.000     .9969471    .9990864
+        srhbr |   1.162729   .0869525     2.02   0.044     1.004206    1.346276
+medicationnum |   1.062679    .017672     3.66   0.000     1.028601    1.097886
+     comorbid |   1.034692   .0229552     1.54   0.124     .9906647    1.080676
+-------------------------------------------------------------------------------
+
+*******************************************************************
+** Fine-Gray Competing Risks Model for Failure Type: 2 **
+*******************************************************************
+
+                id:  n_eid
+     failure event:  failure_type == 2
+obs. time interval:  (Age_death[_n-1], Age_death]
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time age_2020
+            weight:  [pweight=_weight]
+
+------------------------------------------------------------------------------
+    271,974  total observations
+          3  observations end on or before enter()
+    258,368  weights invalid                                    PROBABLE ERROR
+------------------------------------------------------------------------------
+     13,603  observations remaining, representing
+     13,603  subjects
+        606  failures in single-failure-per-subject data
+ 51,163.387  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =  4.517456
+(258,977 missing values generated)
+
+         failure _d:  failure_type == 2
+   analysis time _t:  (Age_death-origin)
+             origin:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=_weight]
+
+Competing-risks regression                       No. of obs       =     13,603
+                                                 No. of subjects  =     13,603
+Failure event   : failure_~e == 2                No. failed       =        606
+Competing events: cr_2 nonzero, nonmissing       No. competing    =      1,263
+                                                 No. censored     =     11,734
+
+                                                 Wald chi2(13)    =     200.67
+Log pseudolikelihood = -5417.2171                Prob > chi2      =     0.0000
+
+                              (Std. Err. adjusted for 13,603 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t |        SHR   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+Treated_ID_~l |   1.909955   .1669625     7.40   0.000     1.609213    2.266901
+  baselineage |   1.032181   .0163647     2.00   0.046       1.0006    1.064759
+ age_admitted |   1.030173   .0150748     2.03   0.042     1.001047    1.060147
+        2.SEX |    .747271   .0637298    -3.42   0.001     .6322442    .8832252
+     NonWhite |   .7231459   .1854299    -1.26   0.206     .4374817    1.195342
+     townsend |    1.03733    .012821     2.97   0.003     1.012503    1.062765
+  educationbr |   .9657466   .0538196    -0.63   0.532     .8658189    1.077207
+householdin~e |    .927524   .0502202    -1.39   0.165     .8341371    1.031366
+householdsize |   1.052246   .0213276     2.51   0.012     1.011264    1.094889
+LE8_TOTALSC~E |   .9986539   .0004535    -2.97   0.003     .9977654    .9995432
+        srhbr |   1.073689   .0678819     1.12   0.261     .9485564     1.21533
+medicationnum |   1.010898     .01656     0.66   0.508     .9789566    1.043882
+     comorbid |   .9567811   .0238597    -1.77   0.076     .9111414    1.004707
+-------------------------------------------------------------------------------
+
+*******************************************************************
+** Fine-Gray Competing Risks Model for Failure Type: 3 **
+*******************************************************************
+
+                id:  n_eid
+     failure event:  failure_type == 3
+obs. time interval:  (Age_death[_n-1], Age_death]
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time age_2020
+            weight:  [pweight=_weight]
+
+------------------------------------------------------------------------------
+    271,974  total observations
+          3  observations end on or before enter()
+    258,368  weights invalid                                    PROBABLE ERROR
+------------------------------------------------------------------------------
+     13,603  observations remaining, representing
+     13,603  subjects
+        215  failures in single-failure-per-subject data
+ 51,163.387  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =  4.517456
+(258,586 missing values generated)
+
+         failure _d:  failure_type == 3
+   analysis time _t:  (Age_death-origin)
+             origin:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=_weight]
+
+Competing-risks regression                       No. of obs       =     13,603
+                                                 No. of subjects  =     13,603
+Failure event   : failure_~e == 3                No. failed       =        215
+Competing events: cr_3 nonzero, nonmissing       No. competing    =      1,654
+                                                 No. censored     =     11,734
+
+                                                 Wald chi2(13)    =     179.42
+Log pseudolikelihood = -1824.0196                Prob > chi2      =     0.0000
+
+                              (Std. Err. adjusted for 13,603 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t |        SHR   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+Treated_ID_~l |   2.142298   .3299598     4.95   0.000     1.584078    2.897232
+  baselineage |   1.036645    .028702     1.30   0.194     .9818892    1.094454
+ age_admitted |   1.028362   .0255764     1.12   0.261     .9794358    1.079733
+        2.SEX |   .5519216   .0817788    -4.01   0.000     .4128136    .7379056
+     NonWhite |   .1257232   .1256989    -2.07   0.038     .0177165    .8921796
+     townsend |     1.0205   .0208548     0.99   0.321     .9804336    1.062205
+  educationbr |   .9394147   .0906252    -0.65   0.517     .7775747    1.134939
+householdin~e |   1.000759   .0917161     0.01   0.993     .8362183    1.197675
+householdsize |   1.032746   .0474238     0.70   0.483     .9438568    1.130006
+LE8_TOTALSC~E |   .9988052   .0008118    -1.47   0.141     .9972154    1.000398
+        srhbr |   1.589108   .1813943     4.06   0.000     1.270545    1.987544
+medicationnum |   1.004704   .0263858     0.18   0.858     .9542975    1.057774
+     comorbid |   1.058937   .0406247     1.49   0.136     .9822336    1.141629
+-------------------------------------------------------------------------------
+
+*******************************************************************
+** Fine-Gray Competing Risks Model for Failure Type: 4 **
+*******************************************************************
+
+                id:  n_eid
+     failure event:  failure_type == 4
+obs. time interval:  (Age_death[_n-1], Age_death]
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time age_2020
+            weight:  [pweight=_weight]
+
+------------------------------------------------------------------------------
+    271,974  total observations
+          3  observations end on or before enter()
+    258,368  weights invalid                                    PROBABLE ERROR
+------------------------------------------------------------------------------
+     13,603  observations remaining, representing
+     13,603  subjects
+         31  failures in single-failure-per-subject data
+ 51,163.387  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =  4.517456
+(258,402 missing values generated)
+
+         failure _d:  failure_type == 4
+   analysis time _t:  (Age_death-origin)
+             origin:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=_weight]
+
+Competing-risks regression                       No. of obs       =     13,603
+                                                 No. of subjects  =     13,603
+Failure event   : failure_~e == 4                No. failed       =         31
+Competing events: cr_4 nonzero, nonmissing       No. competing    =      1,838
+                                                 No. censored     =     11,734
+
+                                                 Wald chi2(13)    =      33.51
+Log pseudolikelihood = -284.65408                Prob > chi2      =     0.0014
+
+                              (Std. Err. adjusted for 13,603 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t |        SHR   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+Treated_ID_~l |   2.977731   1.267492     2.56   0.010     1.292902    6.858126
+  baselineage |   .9294707   .0517735    -1.31   0.189     .8333395    1.036691
+ age_admitted |   1.052797    .056322     0.96   0.336     .9479979    1.169181
+        2.SEX |   .4608017   .1832584    -1.95   0.051     .2113468    1.004691
+     NonWhite |    1.78208   1.103644     0.93   0.351     .5293919    5.998977
+     townsend |   1.046805   .0605194     0.79   0.429     .9346624    1.172402
+  educationbr |   1.261539   .2812805     1.04   0.297     .8149135    1.952944
+householdin~e |    .714283   .1538349    -1.56   0.118      .468325    1.089415
+householdsize |   1.085416   .0441462     2.02   0.044      1.00225    1.175483
+LE8_TOTALSC~E |     .99989   .0019251    -0.06   0.954     .9961241     1.00367
+        srhbr |   .7314958   .1859041    -1.23   0.219      .444514    1.203755
+medicationnum |   1.101366   .0561333     1.89   0.058      .996663    1.217068
+     comorbid |   .9543687   .0985615    -0.45   0.651     .7794876    1.168485
+-------------------------------------------------------------------------------
+
+*******************************************************************
+** Fine-Gray Competing Risks Model for Failure Type: 5 **
+*******************************************************************
+
+                id:  n_eid
+     failure event:  failure_type == 5
+obs. time interval:  (Age_death[_n-1], Age_death]
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time age_2020
+            weight:  [pweight=_weight]
+
+------------------------------------------------------------------------------
+    271,974  total observations
+          3  observations end on or before enter()
+    258,368  weights invalid                                    PROBABLE ERROR
+------------------------------------------------------------------------------
+     13,603  observations remaining, representing
+     13,603  subjects
+          0  failures in single-failure-per-subject data
+ 51,163.387  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =  4.517456
+(258,371 missing values generated)
+
+         failure _d:  failure_type == 5
+   analysis time _t:  (Age_death-origin)
+             origin:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=_weight]
+
+Competing-risks regression                       No. of obs       =     13,603
+                                                 No. of subjects  =     13,603
+Failure event   : failure_~e == 5                No. failed       =          0
+Competing events: cr_5 nonzero, nonmissing       No. competing    =      1,869
+                                                 No. censored     =     11,734
+
+                                                 Wald chi2(0)     =          .
+Log pseudolikelihood =          0                Prob > chi2      =          .
+
+                              (Std. Err. adjusted for 13,603 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t |        SHR   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+Treated_ID_~l |          1  (omitted)
+  baselineage |          1  (omitted)
+ age_admitted |          1  (omitted)
+        2.SEX |          1  (omitted)
+     NonWhite |          1  (omitted)
+     townsend |          1  (omitted)
+  educationbr |          1  (omitted)
+householdin~e |          1  (omitted)
+householdsize |          1  (omitted)
+LE8_TOTALSC~E |          1  (omitted)
+        srhbr |          1  (omitted)
+medicationnum |          1  (omitted)
+     comorbid |          1  (omitted)
+-------------------------------------------------------------------------------
+
+*******************************************************************
+** Fine-Gray Competing Risks Model for Failure Type: 6 **
+*******************************************************************
+
+                id:  n_eid
+     failure event:  failure_type == 6
+obs. time interval:  (Age_death[_n-1], Age_death]
+ exit on or before:  failure
+    t for analysis:  (time-origin)
+            origin:  time age_2020
+            weight:  [pweight=_weight]
+
+------------------------------------------------------------------------------
+    271,974  total observations
+          3  observations end on or before enter()
+    258,368  weights invalid                                    PROBABLE ERROR
+------------------------------------------------------------------------------
+     13,603  observations remaining, representing
+     13,603  subjects
+        626  failures in single-failure-per-subject data
+ 51,163.387  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =         0
+                                          last observed exit t =  4.517456
+(258,997 missing values generated)
+
+         failure _d:  failure_type == 6
+   analysis time _t:  (Age_death-origin)
+             origin:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=_weight]
+
+Competing-risks regression                       No. of obs       =     13,603
+                                                 No. of subjects  =     13,603
+Failure event   : failure_~e == 6                No. failed       =        626
+Competing events: cr_6 nonzero, nonmissing       No. competing    =      1,243
+                                                 No. censored     =     11,734
+
+                                                 Wald chi2(13)    =     389.12
+Log pseudolikelihood = -5504.8747                Prob > chi2      =     0.0000
+
+                              (Std. Err. adjusted for 13,603 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t |        SHR   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+Treated_ID_~l |   2.016106   .1840294     7.68   0.000     1.685838    2.411075
+  baselineage |   1.057536   .0174554     3.39   0.001     1.023872    1.092308
+ age_admitted |   1.012811   .0150382     0.86   0.391     .9837617    1.042719
+        2.SEX |   .5505339   .0464301    -7.08   0.000     .4666558    .6494885
+     NonWhite |   1.041875   .2309645     0.19   0.853     .6747145    1.608834
+     townsend |   1.031529   .0125104     2.56   0.010     1.007299    1.056343
+  educationbr |    .972522   .0530383    -0.51   0.609     .8739319    1.082234
+householdin~e |   .8684278   .0488563    -2.51   0.012     .7777617    .9696633
+householdsize |   .9608816   .0399422    -0.96   0.337     .8857004    1.042444
+LE8_TOTALSC~E |   .9999651    .000445    -0.08   0.938     .9990934    1.000838
+        srhbr |   1.172862   .0769031     2.43   0.015     1.031418    1.333703
+medicationnum |   1.055863   .0158535     3.62   0.000     1.025243    1.087397
+     comorbid |   1.020919   .0209896     1.01   0.314     .9805975    1.062897
+-------------------------------------------------------------------------------
+
+. save "/opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin.dta", replace
+file /opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin.dta saved
+
+. log close
+      name:  <unnamed>
+       log:  /opt/notebooks/TABLE3_COXMODELS_FINEGRAY.txt
+  log type:  text
+ closed on:   5 Dec 2025, 17:33:52
+--------------------------------------------------------------------------------

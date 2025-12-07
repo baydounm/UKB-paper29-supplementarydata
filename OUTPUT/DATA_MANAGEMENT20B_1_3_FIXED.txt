@@ -1,0 +1,140 @@
+
+. ssc install psmatch2, replace 
+checking psmatch2 consistency and verifying not already installed...
+all files already exist and are up to date.
+
+. use "/opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITY_FINAL.dta",clear
+
+. qui logit Treated_ID_level baselineage age_admitted i.SEX NonWhite townsend ed
+> ucationbr householdincome if sample_final==1
+
+. predict pscore, p
+(136,832 missing values generated)
+
+. save "/opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin_1_3.dta",replace
+file /opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin_1_3.dta saved
+
+. use "/opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin_1_3.dta",clear
+
+. quietly sum pscore
+
+. local ps_sd = r(sd)
+
+. local caliper_val = `ps_sd' * 0.20 
+
+. psmatch2 Treated_ID_level if sample_final==1, pscore(pscore) n(3)  caliper(`ca
+> liper_val') common
+
+. tab _support, missing
+
+  psmatch2: |
+     Common |
+    support |      Freq.     Percent        Cum.
+------------+-----------------------------------
+ On support |    341,819       68.04       68.04
+          . |    160,590       31.96      100.00
+------------+-----------------------------------
+      Total |    502,409      100.00
+
+. keep if _support == 1
+(160,590 observations deleted)
+
+. di "N reduced to `=_N' after enforcing common support."
+N reduced to 341819 after enforcing common support.
+
+. tab _weight, missing
+
+  psmatch2: |
+  weight of |
+    matched |
+   controls |      Freq.     Percent        Cum.
+------------+-----------------------------------
+   .3333333 |     15,635        4.57        4.57
+   .6666667 |      2,038        0.60        5.17
+          1 |      7,767        2.27        7.44
+   1.333333 |        108        0.03        7.47
+   1.666667 |         32        0.01        7.48
+          2 |          5        0.00        7.48
+   2.666667 |          2        0.00        7.49
+          . |    316,232       92.51      100.00
+------------+-----------------------------------
+      Total |    341,819      100.00
+
+. keep if _weight != 0
+(0 observations deleted)
+
+. di "Final Matched N: `=_N'"
+Final Matched N: 341819
+
+. pstest baselineage age_admitted i.SEX NonWhite townsend educationbr householdi
+> ncome, both graph
+
+--------------------------------------------------------------------------------
+> --------
+                Unmatched |       Mean               %reduct |     t-test    |  
+> V(T)/
+Variable          Matched | Treated Control    %bias  |bias| |    t    p>|t| |  
+> V(C)
+--------------------------+----------------------------------+---------------+--
+> --------
+baselineage            U  | 59.771   56.706     39.0         |  32.23  0.000 |  
+> 0.92*
+                       M  | 59.771   59.528      3.1    92.1 |   1.93  0.053 |  
+> 1.05*
+                          |                                  |               |
+age_admitted           U  | 54.659   58.948    -40.7         | -32.83  0.000 |  
+> 0.82*
+                       M  | 54.659   54.007      6.2    84.8 |   3.26  0.001 |  
+> 0.52*
+                          |                                  |               |
+2.SEX                  U  | .51986   .54066     -4.2         |  -3.52  0.000 |  
+>    .
+                       M  | .51986   .50241      3.5    16.1 |   2.11  0.035 |  
+>    .
+                          |                                  |               |
+NonWhite               U  | .04385   .04976     -2.8         |  -2.30  0.022 |  
+>    .
+                       M  | .04385   .04623     -1.1    59.7 |  -0.69  0.488 |  
+>    .
+                          |                                  |               |
+townsend               U  |-.23338  -1.3933     36.0         |  32.42  0.000 |  
+> 1.29*
+                       M  |-.23338  -.32744      2.9    91.9 |   1.66  0.097 |  
+> 0.99
+                          |                                  |               |
+educationbr            U  | .77938   1.0201    -29.6         | -24.89  0.000 |  
+> 0.99
+                       M  | .77938   .81879     -4.8    83.6 |  -2.93  0.003 |  
+> 0.99
+                          |                                  |               |
+householdincome        U  | 1.7846   2.6019    -74.8         | -58.61  0.000 |  
+> 0.71*
+                       M  | 1.7846   1.8314     -4.3    94.3 |  -2.88  0.004 |  
+> 1.08*
+                          |                                  |               |
+--------------------------------------------------------------------------------
+> --------
+* if variance ratio outside [0.96; 1.05] for U and [0.96; 1.05] for M
+
+--------------------------------------------------------------------------------
+> ---
+ Sample    | Ps R2   LR chi2   p>chi2   MeanBias   MedBias      B      R     %Va
+> r
+-----------+--------------------------------------------------------------------
+> ---
+ Unmatched | 0.142  10030.01    0.000     32.4      36.0     129.0*   0.90     8
+> 0
+ Matched   | 0.001     28.79    0.000      3.7       3.5       8.9    0.63     6
+> 0
+--------------------------------------------------------------------------------
+> ---
+* if B>25%, R outside [0.5; 2]
+
+. graph save "/opt/notebooks/psmatch_balance_1_3.gph", replace
+(note: file /opt/notebooks/psmatch_balance_1_3.gph not found)
+(file /opt/notebooks/psmatch_balance_1_3.gph saved)
+
+. save "/opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin_1_3.dta",replace
+file /opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin_1_3.dta saved
+
+. capture log close

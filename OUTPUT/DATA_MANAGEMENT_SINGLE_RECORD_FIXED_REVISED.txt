@@ -1,0 +1,43 @@
+
+
+
+
+
+
+
+
+
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+       n_eid |    502,163     3511986     1450310    1000016    6024093
+
+
+(0 observations deleted)
+
+
+
+(6,714,646 observations deleted)
+
+
+(10,489,975 observations deleted)
+
+
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+date_admit~d |    351,586    19642.39    1096.941      18263      22280
+
+
+Duplicates in terms of n_eid
+
+
+  dup_check |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    351,586      100.00      100.00
+------------+-----------------------------------
+      Total |    351,586      100.00
+
+
+file /opt/notebooks/HESIN_UKB_TreatedSubset_SingleRecord_FIXED.dta saved
+

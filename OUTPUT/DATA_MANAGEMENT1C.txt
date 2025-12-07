@@ -1,0 +1,38 @@
+
+. use /opt/notebooks/SMALLERDATASETUKB, clear
+
+. capture drop _merge
+
+. sort n_eid
+
+. save /opt/notebooks/SMALLERDATASETUKB, replace
+file /opt/notebooks/SMALLERDATASETUKB.dta saved
+
+. use /opt/notebooks/withdrawals_final, clear
+
+. capture drop _merge
+
+. sort n_eid
+
+. save /opt/notebooks/withdrawals_final, replace
+file /opt/notebooks/withdrawals_final.dta saved
+
+. use /opt/notebooks/SMALLERDATASETUKB,clear
+
+. capture drop _merge
+
+. sort n_eid
+
+. save /opt/notebooks/SMALLERDATASETUKB, replace
+file /opt/notebooks/SMALLERDATASETUKB.dta saved
+
+. merge n_eid using /opt/notebooks/withdrawals_final
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. keep if withdrew==.
+(246 observations deleted)
+
+. save /opt/notebooks/SMALLERDATASETUKBfin, replace
+file /opt/notebooks/SMALLERDATASETUKBfin.dta saved
+
+. capture log close

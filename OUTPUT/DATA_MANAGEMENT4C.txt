@@ -1,0 +1,269 @@
+
+. use  n_eid  n_262*_0_0  using "/opt/notebooks/SMALLERDATASETUKBfin",clear
+
+. save "/opt/notebooks/UKB_PGS", replace
+file /opt/notebooks/UKB_PGS.dta saved
+
+. sort n_eid
+
+. capture drop _merge
+
+. save "/opt/notebooks/UKB_PGS",replace
+file /opt/notebooks/UKB_PGS.dta saved
+
+. use "/opt/notebooks/APOE_GENOTYPE", clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save "/opt/notebooks/APOE_GENOTYPE",replace
+file /opt/notebooks/APOE_GENOTYPE.dta saved
+
+. use "/opt/notebooks/AD_PRS_76SNPs", clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save "/opt/notebooks/AD_PRS_76SNPs",replace
+file /opt/notebooks/AD_PRS_76SNPs.dta saved
+
+. use "/opt/notebooks/UKB_PGS",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. merge n_eid using "/opt/notebooks/APOE_GENOTYPE"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. sort n_eid
+
+. capture drop _merge
+
+. merge n_eid using "/opt/notebooks/AD_PRS_76SNPs"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+(note: variable n_eid was long, now double to accommodate using data's values)
+
+. sort n_eid
+
+. capture drop _merge
+
+. save "/opt/notebooks/UKB_PGS", replace
+file /opt/notebooks/UKB_PGS.dta saved
+
+. use "/opt/notebooks/GENETIC_PCS20",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save,replace
+file /opt/notebooks/GENETIC_PCS20.dta saved
+
+. use "/opt/notebooks/UKB_PGS",clear
+
+. capture drop AD_PGS
+
+. gen AD_PGS=n_26206_0_0
+(16,683 missing values generated)
+
+. save "/opt/notebooks/UKB_PGS", replace
+file /opt/notebooks/UKB_PGS.dta saved
+
+. sort n_eid
+
+. capture drop _merge
+
+. merge n_eid using "/opt/notebooks/GENETIC_PCS20"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. save "/opt/notebooks/UKB_PGS", replace
+file /opt/notebooks/UKB_PGS.dta saved
+
+. sort n_eid
+
+. capture drop _merge
+
+. save "/opt/notebooks/UKB_PGS", replace
+file /opt/notebooks/UKB_PGS.dta saved
+
+. use "/opt/notebooks/ADDEMENTIA_UKB",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save, replace
+file /opt/notebooks/ADDEMENTIA_UKB.dta saved
+
+. use "/opt/notebooks/PD_UKB",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save, replace
+file /opt/notebooks/PD_UKB.dta saved
+
+. use "/opt/notebooks/MORT_UKB",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save, replace
+file /opt/notebooks/MORT_UKB.dta saved
+
+. use "/opt/notebooks/ADIS_UKBfin",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save, replace
+file /opt/notebooks/ADIS_UKBfin.dta saved
+
+. use "/opt/notebooks/MS_UKBfin",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save, replace
+file /opt/notebooks/MS_UKBfin.dta saved
+
+. use "/opt/notebooks/SLE_UKBfin",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save, replace
+file /opt/notebooks/SLE_UKBfin.dta saved
+
+. use "/opt/notebooks/RA_UKBfin",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save, replace
+file /opt/notebooks/RA_UKBfin.dta saved
+
+. use "/opt/notebooks/COGN_UKB",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save, replace
+file /opt/notebooks/COGN_UKB.dta saved
+
+. use "/opt/notebooks/LE8_UKB",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save, replace
+file /opt/notebooks/LE8_UKB.dta saved
+
+. merge n_eid using "/opt/notebooks/COGN_UKB"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. capture drop _merge
+
+. sort n_eid
+
+. merge n_eid using "/opt/notebooks/ADDEMENTIA_UKB"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. capture drop _merge
+
+. sort n_eid
+
+. merge n_eid using "/opt/notebooks/PD_UKB"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. capture drop _merge
+
+. sort n_eid
+
+. merge n_eid using "/opt/notebooks/MORT_UKB"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. capture drop _merge
+
+. sort n_eid
+
+. merge n_eid using "/opt/notebooks/ADIS_UKBfin"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. capture drop _merge
+
+. sort n_eid
+
+. merge n_eid using "/opt/notebooks/MS_UKBfin"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. capture drop _merge
+
+. sort n_eid
+
+. merge n_eid using "/opt/notebooks/SLE_UKBfin"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. capture drop _merge
+
+. sort n_eid
+
+. merge n_eid using "/opt/notebooks/RA_UKBfin"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. capture drop _merge
+
+. sort n_eid
+
+. merge n_eid using "/opt/notebooks/UKB_PGS"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+(note: variable n_eid was long, now double to accommodate using data's values)
+
+. save "/opt/notebooks/UKB_PAPER10_STATAFIX_RSTUDIO_TRANSLATION", replace
+file /opt/notebooks/UKB_PAPER10_STATAFIX_RSTUDIO_TRANSLATION.dta saved
+
+. use "/opt/notebooks/UKB_PAPER10_STATAFIX_RSTUDIO_TRANSLATION",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save, replace
+file /opt/notebooks/UKB_PAPER10_STATAFIX_RSTUDIO_TRANSLATION.dta saved
+
+. use "/opt/notebooks/withdrawals_final",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save, replace
+file /opt/notebooks/withdrawals_final.dta saved
+
+. use "/opt/notebooks/UKB_PAPER10_STATAFIX_RSTUDIO_TRANSLATION",clear
+
+. merge n_eid using "/opt/notebooks/withdrawals_final"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. save, replace
+file /opt/notebooks/UKB_PAPER10_STATAFIX_RSTUDIO_TRANSLATION.dta saved
+
+. sort n_eid
+
+. capture drop _merge
+
+. save "/opt/notebooks/UKB_PAPER10_STATAFIX_RSTUDIO_TRANSLATION", replace
+file /opt/notebooks/UKB_PAPER10_STATAFIX_RSTUDIO_TRANSLATION.dta saved
+
+. capture log close

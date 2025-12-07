@@ -1,0 +1,84 @@
+
+. use "/opt/notebooks/SMALLERDATASETUKB_GENOMIC", clear
+
+. save "/opt/notebooks/SMALLERDATASETUKB_GENOMIC", replace
+file /opt/notebooks/SMALLERDATASETUKB_GENOMIC.dta saved
+
+. tab1 s_affy16020316 s_affy16020324
+
+-> tabulation of s_affy16020316  
+
+   rs429358 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+        0 0 |     73,878       15.13       15.13
+        C C |      9,869        2.02       17.16
+        C T |    108,323       22.19       39.35
+        T T |    296,079       60.65      100.00
+------------+-----------------------------------
+      Total |    488,149      100.00
+
+-> tabulation of s_affy16020324  
+
+     rs7412 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+        0 0 |     51,475       10.54       10.54
+        C C |    369,916       75.78       86.32
+        T C |     64,277       13.17       99.49
+        T T |      2,481        0.51      100.00
+------------+-----------------------------------
+      Total |    488,149      100.00
+
+. capture drop rs429358
+
+. gen rs429358=s_affy16020316
+(14,240 missing values generated)
+
+. capture drop rs7412
+
+. gen rs7412=s_affy16020324
+(14,240 missing values generated)
+
+. capture drop APOE_genotype
+
+. gen APOE_genotype=""
+(502,389 missing values generated)
+
+. replace APOE_genotype="Apo-ε1/ε1" if rs429358=="C C" & rs7412=="T T"
+(0 real changes made)
+
+. replace APOE_genotype="Apo-ε1/ε2" if rs429358=="C T" & rs7412=="T T"
+variable APOE_genotype was str1 now str11
+(3 real changes made)
+
+. replace APOE_genotype="Apo-ε1/ε3 or ε2/ε4" if rs429358=="C T" & rs7412=="C T"
+(0 real changes made)
+
+. replace APOE_genotype="Apo-ε1/ε4" if rs429358=="C C" & rs7412=="C T"
+(0 real changes made)
+
+. replace APOE_genotype="Apo-ε2/ε2" if rs429358=="T T" & rs7412=="T T"
+(2,334 real changes made)
+
+. replace APOE_genotype="Apo-ε2/ε3" if rs429358=="T T" & rs7412=="C T"
+(0 real changes made)
+
+. replace APOE_genotype="Apo-ε3/ε3" if rs429358=="T T" & rs7412=="C C"
+(242,595 real changes made)
+
+. replace APOE_genotype="Apo-ε3/ε4" if rs429358=="C T" & rs7412=="C C"
+(97,552 real changes made)
+
+. replace APOE_genotype="Apo-ε4/ε4" if rs429358=="C C" & rs7412=="C C"
+(9,829 real changes made)
+
+. replace APOE_genotype="Unknown" if rs429358=="0 0" | rs7412=="0 0"
+(75,111 real changes made)
+
+. replace APOE_genotype="All others" if rs429358~="" & rs7412~="" & APOE_genotyp
+> e==""
+(60,725 real changes made)
+
+. save "/opt/notebooks/SMALLERDATASETUKB_GENOMIC", replace
+file /opt/notebooks/SMALLERDATASETUKB_GENOMIC.dta saved
+
+. capture log close

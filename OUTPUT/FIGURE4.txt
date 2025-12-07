@@ -1,0 +1,522 @@
+
+. use "/opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin.dta", clear
+
+. capture confirm variable failure_type
+
+. if _rc {
+.     gen failure_type = 0 
+.     replace failure_type = 1 if died_of_cvd        == 1
+.     replace failure_type = 2 if died_of_cancer     == 1
+.     replace failure_type = 3 if died_of_respiratory== 1
+.     replace failure_type = 4 if died_of_external   == 1
+.     replace failure_type = 5 if died_of_covid19    == 1
+.     replace failure_type = 6 if died == 1 & failure_type == 0 
+.     label define failure_lbl         0 "Censored"         1 "CVD"         2 "C
+> ancer"         3 "Respiratory"         4 "External Causes"         5 "COVID-19
+> "         6 "Other"
+.     label values failure_type failure_lbl
+. }
+
+. tab failure_type
+
+   failure_type |      Freq.     Percent        Cum.
+----------------+-----------------------------------
+       Censored |    254,441       93.55       93.55
+            CVD |      3,652        1.34       94.90
+         Cancer |      6,910        2.54       97.44
+    Respiratory |      1,441        0.53       97.97
+External Causes |        318        0.12       98.08
+          Other |      5,212        1.92      100.00
+----------------+-----------------------------------
+          Total |    271,974      100.00
+
+. save "/opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin.dta",replace
+file /opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin.dta saved
+
+. di "************************************************************"
+************************************************************
+
+. di "* Summary for Unmatched Sample (sample_final == 1)"
+* Summary for Unmatched Sample (sample_final == 1)
+
+. di "************************************************************"
+************************************************************
+
+. use "/opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin.dta", clear
+
+. stset Age_death, failure(died==1) enter(age_2020) scale(1) id(n_eid)
+
+                id:  n_eid
+     failure event:  died == 1
+obs. time interval:  (Age_death[_n-1], Age_death]
+ enter on or after:  time age_2020
+ exit on or before:  failure
+
+------------------------------------------------------------------------------
+    271,974  total observations
+          3  observations end on or before enter()
+------------------------------------------------------------------------------
+    271,971  observations remaining, representing
+    271,971  subjects
+     17,530  failures in single-failure-per-subject data
+  1,058,365  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  49.54963
+                                          last observed exit t =  89.80151
+
+. di ""
+
+
+. di "--- All-Cause Deaths (Unmatched Sample) ---"
+--- All-Cause Deaths (Unmatched Sample) ---
+
+. tab died if sample_final==1
+
+       died |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    254,441       93.55       93.55
+          1 |     17,533        6.45      100.00
+------------+-----------------------------------
+      Total |    271,974      100.00
+
+. di ""
+
+
+. di "--- Cause-Specific Deaths (Unmatched Sample) ---"
+--- Cause-Specific Deaths (Unmatched Sample) ---
+
+. tab failure_type if died==1 & sample_final==1
+
+   failure_type |      Freq.     Percent        Cum.
+----------------+-----------------------------------
+            CVD |      3,652       20.83       20.83
+         Cancer |      6,910       39.41       60.24
+    Respiratory |      1,441        8.22       68.46
+External Causes |        318        1.81       70.27
+          Other |      5,212       29.73      100.00
+----------------+-----------------------------------
+          Total |     17,533      100.00
+
+. di ""
+
+
+. di "************************************************************"
+************************************************************
+
+. di "* Summary for 1:1 Matched Sample (_weight < .)"
+* Summary for 1:1 Matched Sample (_weight < .)
+
+. di "************************************************************"
+************************************************************
+
+. stset Age_death [pw=_weight], failure(died==1) enter(age_2020) scale(1) id(n_e
+> id)
+
+                id:  n_eid
+     failure event:  died == 1
+obs. time interval:  (Age_death[_n-1], Age_death]
+ enter on or after:  time age_2020
+ exit on or before:  failure
+            weight:  [pweight=_weight]
+
+------------------------------------------------------------------------------
+    271,974  total observations
+          3  observations end on or before enter()
+    258,368  weights invalid                                    PROBABLE ERROR
+------------------------------------------------------------------------------
+     13,603  observations remaining, representing
+     13,603  subjects
+      1,869  failures in single-failure-per-subject data
+ 51,163.387  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  49.96304
+                                          last observed exit t =  86.71595
+
+. di ""
+
+
+. di "--- All-Cause Deaths (Matched Sample, Weighted) ---"
+--- All-Cause Deaths (Matched Sample, Weighted) ---
+
+. tab died if _weight < . & sample_final == 1
+
+       died |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |     11,734       86.25       86.25
+          1 |      1,870       13.75      100.00
+------------+-----------------------------------
+      Total |     13,604      100.00
+
+. di ""
+
+
+. di "--- Cause-Specific Deaths (Matched Sample, Weighted) ---"
+--- Cause-Specific Deaths (Matched Sample, Weighted) ---
+
+. tab failure_type [iw=_weight] if died==1
+
+   failure_type |      Freq.     Percent        Cum.
+----------------+-----------------------------------
+            CVD |        391       20.91       20.91
+         Cancer |        606       32.41       53.32
+    Respiratory |        216       11.55       64.87
+External Causes |         31        1.66       66.52
+          Other |        626       33.48      100.00
+----------------+-----------------------------------
+          Total |      1,870      100.00
+
+. di ""
+
+
+. di "************************************************************"
+************************************************************
+
+. di "* Cause of Death Structure: Overall Unmatched Sample"
+* Cause of Death Structure: Overall Unmatched Sample
+
+. di "************************************************************"
+************************************************************
+
+. tab failure_type if sample_final == 1 & died==1
+
+   failure_type |      Freq.     Percent        Cum.
+----------------+-----------------------------------
+            CVD |      3,652       20.83       20.83
+         Cancer |      6,910       39.41       60.24
+    Respiratory |      1,441        8.22       68.46
+External Causes |        318        1.81       70.27
+          Other |      5,212       29.73      100.00
+----------------+-----------------------------------
+          Total |     17,533      100.00
+
+. di ""
+
+
+. di "************************************************************"
+************************************************************
+
+. di "* Cause of Death Structure: Unmatched No Diagnosis Group (Treated_ID_level
+>  == 0)"
+* Cause of Death Structure: Unmatched No Diagnosis Group (Treated_ID_level == 0)
+
+. di "************************************************************"
+************************************************************
+
+. tab failure_type if sample_final == 1 & Treated_ID_level == 0 & died==1
+
+   failure_type |      Freq.     Percent        Cum.
+----------------+-----------------------------------
+            CVD |      3,393       20.86       20.86
+         Cancer |      6,511       40.04       60.90
+    Respiratory |      1,285        7.90       68.80
+External Causes |        295        1.81       70.61
+          Other |      4,779       29.39      100.00
+----------------+-----------------------------------
+          Total |     16,263      100.00
+
+. di ""
+
+
+. di "************************************************************"
+************************************************************
+
+. di "* Cause of Death Structure: Unmatched Diagnosis Group (Treated_ID_level ==
+>  1)"
+* Cause of Death Structure: Unmatched Diagnosis Group (Treated_ID_level == 1)
+
+. di "************************************************************"
+************************************************************
+
+. tab failure_type if sample_final == 1 & Treated_ID_level == 1 & died==1
+
+   failure_type |      Freq.     Percent        Cum.
+----------------+-----------------------------------
+            CVD |        259       20.39       20.39
+         Cancer |        399       31.42       51.81
+    Respiratory |        156       12.28       64.09
+External Causes |         23        1.81       65.91
+          Other |        433       34.09      100.00
+----------------+-----------------------------------
+          Total |      1,270      100.00
+
+. di ""
+
+
+. di "************************************************************"
+************************************************************
+
+. di "* Unmatched Diagnosis Sub-Groups"
+* Unmatched Diagnosis Sub-Groups
+
+. di "************************************************************"
+************************************************************
+
+. capture confirm variable diag_Z59_housing_count
+
+. if !_rc { 
+.     di ""
+
+.     di "--- Housing Issues ( Unmatched) ---"
+--- Housing Issues ( Unmatched) ---
+.     tab diag_Z59_housing_count if sample_final == 1
+
+diag_Z59_ho |
+using_count |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    271,688       99.89       99.89
+          1 |        160        0.06       99.95
+          2 |         63        0.02       99.98
+          3 |         30        0.01       99.99
+          4 |         16        0.01       99.99
+          5 |          4        0.00      100.00
+          6 |          7        0.00      100.00
+          8 |          3        0.00      100.00
+          9 |          1        0.00      100.00
+         10 |          1        0.00      100.00
+         11 |          1        0.00      100.00
+------------+-----------------------------------
+      Total |    271,974      100.00
+. }
+
+. capture confirm variable diag_Z60_Z65_psychosocial_count
+
+. if !_rc { 
+.     di ""
+
+.     di "--- Psychosocial Issues ( Unmatched) ---"
+--- Psychosocial Issues ( Unmatched) ---
+.     tab diag_Z60_Z65_psychosocial_count  if sample_final == 1
+
+diag_Z60_Z6 |
+5_psychosoc |
+  ial_count |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    266,616       98.03       98.03
+          1 |      3,501        1.29       99.32
+          2 |      1,130        0.42       99.73
+          3 |        336        0.12       99.86
+          4 |        166        0.06       99.92
+          5 |         90        0.03       99.95
+          6 |         46        0.02       99.97
+          7 |         24        0.01       99.98
+          8 |         22        0.01       99.98
+          9 |          9        0.00       99.99
+         10 |          7        0.00       99.99
+         11 |         10        0.00       99.99
+         12 |          5        0.00      100.00
+         13 |          6        0.00      100.00
+         14 |          1        0.00      100.00
+         15 |          1        0.00      100.00
+         19 |          2        0.00      100.00
+         25 |          1        0.00      100.00
+         32 |          1        0.00      100.00
+------------+-----------------------------------
+      Total |    271,974      100.00
+. }
+
+. capture confirm variable diag_Z55_Z56_work_count
+
+. if !_rc { 
+.     di ""
+
+.     di "--- Work-Related Issues (Unmatched) ---"
+--- Work-Related Issues (Unmatched) ---
+.     tab diag_Z55_Z56_work_count if sample_final == 1
+
+diag_Z55_Z5 |
+6_work_coun |
+          t |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    271,715       99.90       99.90
+          1 |        210        0.08       99.98
+          2 |         42        0.02      100.00
+          3 |          5        0.00      100.00
+          4 |          1        0.00      100.00
+          5 |          1        0.00      100.00
+------------+-----------------------------------
+      Total |    271,974      100.00
+. }
+
+. capture confirm variable diag_allothers
+
+. if !_rc { 
+.     di ""
+
+.     di "--- All other Issues (Unmatched) ---"
+--- All other Issues (Unmatched) ---
+.     tab diag_allothers if sample_final == 1
+
+diag_alloth |
+        ers |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    270,908       99.61       99.61
+          1 |      1,066        0.39      100.00
+------------+-----------------------------------
+      Total |    271,974      100.00
+. }
+
+. di ""
+
+
+. di "************************************************************"
+************************************************************
+
+. di "* Cause of Death Structure: Unmatched Diagnosis Sub-Groups"
+* Cause of Death Structure: Unmatched Diagnosis Sub-Groups
+
+. di "************************************************************"
+************************************************************
+
+. capture confirm variable diag_Z59_housing_count
+
+. if !_rc { 
+.     di ""
+
+.     di "--- Housing Issues (diag_Z59_housing_count > 0, Unmatched) ---"
+--- Housing Issues (diag_Z59_housing_count > 0, Unmatched) ---
+.     tab failure_type if sample_final == 1 & diag_Z59_housing_count > 0 & died=
+> =1
+
+   failure_type |      Freq.     Percent        Cum.
+----------------+-----------------------------------
+            CVD |         11       17.46       17.46
+         Cancer |         13       20.63       38.10
+    Respiratory |         10       15.87       53.97
+External Causes |          1        1.59       55.56
+          Other |         28       44.44      100.00
+----------------+-----------------------------------
+          Total |         63      100.00
+. }
+
+. capture confirm variable diag_Z60_Z65_psychosocial_count
+
+. if !_rc { 
+.     di ""
+
+.     di "--- Psychosocial Issues (diag_Z60_Z65_psychosocial_count > 0, Unmatche
+> d) ---"
+--- Psychosocial Issues (diag_Z60_Z65_psychosocial_count > 0, Unmatched) ---
+.     tab failure_type if sample_final == 1 & diag_Z60_Z65_psychosocial_count > 
+> 0 & died==1
+
+   failure_type |      Freq.     Percent        Cum.
+----------------+-----------------------------------
+            CVD |        210       22.65       22.65
+         Cancer |        265       28.59       51.24
+    Respiratory |         96       10.36       61.60
+External Causes |         20        2.16       63.75
+          Other |        336       36.25      100.00
+----------------+-----------------------------------
+          Total |        927      100.00
+.     }
+
+. capture confirm variable diag_Z55_Z56_work_count
+
+. if !_rc { 
+.     di ""
+
+.     di "--- Work-Related Issues (diag_Z55_Z56_work_count > 0, Unmatched) ---"
+--- Work-Related Issues (diag_Z55_Z56_work_count > 0, Unmatched) ---
+.     tab failure_type if sample_final == 1 & diag_Z55_Z56_work_count > 0 & died
+> ==1
+
+   failure_type |      Freq.     Percent        Cum.
+----------------+-----------------------------------
+            CVD |          5       27.78       27.78
+         Cancer |          6       33.33       61.11
+    Respiratory |          2       11.11       72.22
+          Other |          5       27.78      100.00
+----------------+-----------------------------------
+          Total |         18      100.00
+. }
+
+. capture confirm variable diag_allothers
+
+. if !_rc { 
+.     di ""
+
+.     di "--- All other Issues (diag_allothers > 0, Unmatched) ---"
+--- All other Issues (diag_allothers > 0, Unmatched) ---
+.     tab failure_type if sample_final == 1 & diag_allothers > 0 & died==1
+
+   failure_type |      Freq.     Percent        Cum.
+----------------+-----------------------------------
+            CVD |         40       14.13       14.13
+         Cancer |        118       41.70       55.83
+    Respiratory |         50       17.67       73.50
+External Causes |          2        0.71       74.20
+          Other |         73       25.80      100.00
+----------------+-----------------------------------
+          Total |        283      100.00
+.     }
+
+. use /opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin.dta, clear
+
+. tab diag_Z59_housing_counts diag_Z60_Z65_psychosocial_counts
+
+diag_Z59_h | diag_Z60_Z65_psychoso
+ousing_cou |      cial_counts
+       nts |         0          1 |     Total
+-----------+----------------------+----------
+         0 |   266,431      5,257 |   271,688 
+         1 |       185        101 |       286 
+-----------+----------------------+----------
+     Total |   266,616      5,358 |   271,974 
+
+. tab diag_Z55_Z56_work_counts diag_allothers
+
+diag_Z55_Z |
+56_work_co |    diag_allothers
+      unts |         0          1 |     Total
+-----------+----------------------+----------
+         0 |   270,649      1,066 |   271,715 
+         1 |       259          0 |       259 
+-----------+----------------------+----------
+     Total |   270,908      1,066 |   271,974 
+
+. tab diag_Z59_housing_counts diag_allothers
+
+diag_Z59_h |
+ousing_cou |    diag_allothers
+       nts |         0          1 |     Total
+-----------+----------------------+----------
+         0 |   270,622      1,066 |   271,688 
+         1 |       286          0 |       286 
+-----------+----------------------+----------
+     Total |   270,908      1,066 |   271,974 
+
+. tab diag_Z60_Z65_psychosocial_counts diag_allothers
+
+diag_Z60_Z |
+65_psychos |
+ocial_coun |    diag_allothers
+        ts |         0          1 |     Total
+-----------+----------------------+----------
+         0 |   265,550      1,066 |   266,616 
+         1 |     5,358          0 |     5,358 
+-----------+----------------------+----------
+     Total |   270,908      1,066 |   271,974 
+
+. tab diag_Z55_Z56_work_counts diag_Z60_Z65_psychosocial_counts
+
+diag_Z55_Z | diag_Z60_Z65_psychoso
+56_work_co |      cial_counts
+      unts |         0          1 |     Total
+-----------+----------------------+----------
+         0 |   266,418      5,297 |   271,715 
+         1 |       198         61 |       259 
+-----------+----------------------+----------
+     Total |   266,616      5,358 |   271,974 
+
+. tab diag_Z55_Z56_work_counts diag_Z59_housing_counts
+
+diag_Z55_Z | diag_Z59_housing_coun
+56_work_co |          ts
+      unts |         0          1 |     Total
+-----------+----------------------+----------
+         0 |   271,441        274 |   271,715 
+         1 |       247         12 |       259 
+-----------+----------------------+----------
+     Total |   271,688        286 |   271,974 
+
+. capture log close

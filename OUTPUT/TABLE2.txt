@@ -1,0 +1,349 @@
+
+. use "/opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin.dta", clear
+
+. save "/opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin.dta", replace
+file /opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin.dta saved
+
+. stset Age_death, failure(died==1) enter(age_2020) scale(1) id(n_eid)
+
+                id:  n_eid
+     failure event:  died == 1
+obs. time interval:  (Age_death[_n-1], Age_death]
+ enter on or after:  time age_2020
+ exit on or before:  failure
+
+------------------------------------------------------------------------------
+    271,974  total observations
+          3  observations end on or before enter()
+------------------------------------------------------------------------------
+    271,971  observations remaining, representing
+    271,971  subjects
+     17,530  failures in single-failure-per-subject data
+  1,058,365  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  49.54963
+                                          last observed exit t =  89.80151
+
+. cap noi strate _treated, per(1000)
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+
+Estimated failure rates
+Number of records  =       271971
+
+  +--------------------------------------------------------+
+  |  _treated       D         Y     Rate    Lower    Upper |
+  |--------------------------------------------------------|
+  | Untreated   16261   1.0e+03   15.735   15.495   15.979 |
+  |   Treated    1269   24.9547   50.852   48.130   53.728 |
+  +--------------------------------------------------------+
+   Notes: Rate = D/Y = failures/person-time (per 1000).
+          Lower and Upper are bounds of 95% confidence intervals.
+
+
+. if _rc == 0 {
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.svg"', width(600) replace
+(note: file /home/dnanexus/.stata_kernel_cache/graph1.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph1.svg written in SVG format)
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.pdf"', replace
+(file /home/dnanexus/.stata_kernel_cache/graph1.pdf written in PDF format)
+.     global stata_kernel_graph_counter = $stata_kernel_graph_counter + 1
+. }            
+
+. stcox _treated
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+
+Iteration 0:   log likelihood = -182924.34
+Iteration 1:   log likelihood = -182719.67
+Iteration 2:   log likelihood = -182545.48
+Iteration 3:   log likelihood = -182540.48
+Iteration 4:   log likelihood = -182540.48
+Refining estimates:
+Iteration 0:   log likelihood = -182540.48
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =      271,971                  Number of obs    =     271,971
+No. of failures =       17,530
+Time at risk    =  1058365.101
+                                                LR chi2(1)       =      767.73
+Log likelihood  =   -182540.48                  Prob > chi2      =      0.0000
+
+------------------------------------------------------------------------------
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+    _treated |   2.503953   .0732402    31.38   0.000     2.364442    2.651696
+------------------------------------------------------------------------------
+
+. stcox _treated baselineage age_admitted i.SEX NonWhite townsend educationbr ho
+> useholdincome
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+
+Iteration 0:   log likelihood = -182924.34
+Iteration 1:   log likelihood = -181396.87
+Iteration 2:   log likelihood = -181206.27
+Iteration 3:   log likelihood =  -181200.7
+Iteration 4:   log likelihood = -181200.69
+Refining estimates:
+Iteration 0:   log likelihood = -181200.69
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =      271,971                  Number of obs    =     271,971
+No. of failures =       17,530
+Time at risk    =  1058365.101
+                                                LR chi2(8)       =     3447.31
+Log likelihood  =   -181200.69                  Prob > chi2      =      0.0000
+
+-------------------------------------------------------------------------------
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+     _treated |   2.144203   .0636363    25.70   0.000     2.023036    2.272627
+  baselineage |   .9033536   .0054536   -16.84   0.000     .8927278    .9141059
+ age_admitted |   .9804556   .0025266    -7.66   0.000      .975516    .9854203
+        2.SEX |   .5987555   .0093111   -32.98   0.000     .5807814    .6172858
+     NonWhite |     .83283   .0352092    -4.33   0.000     .7666029    .9047785
+     townsend |   1.048323   .0026263    18.84   0.000     1.043188    1.053483
+  educationbr |   .9357704   .0094225    -6.59   0.000     .9174836    .9544216
+householdin~e |   .8385281   .0070062   -21.08   0.000      .824908    .8523731
+-------------------------------------------------------------------------------
+
+. stcox _treated baselineage age_admitted i.SEX NonWhite townsend educationbr ho
+> useholdincome householdsize LE8_TOTALSCORE srhbr medicationnum comorbid
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+
+Iteration 0:   log likelihood = -182924.34
+Iteration 1:   log likelihood = -180271.43
+Iteration 2:   log likelihood =  -179953.9
+Iteration 3:   log likelihood = -179945.17
+Iteration 4:   log likelihood = -179945.15
+Refining estimates:
+Iteration 0:   log likelihood = -179945.15
+
+Cox regression -- Breslow method for ties
+
+No. of subjects =      271,971                  Number of obs    =     271,971
+No. of failures =       17,530
+Time at risk    =  1058365.101
+                                                LR chi2(13)      =     5958.38
+Log likelihood  =   -179945.15                  Prob > chi2      =      0.0000
+
+-------------------------------------------------------------------------------
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+     _treated |   1.861693   .0558432    20.72   0.000     1.755398    1.974425
+  baselineage |   .8886779   .0053749   -19.51   0.000     .8782055    .8992751
+ age_admitted |   .9997871   .0026075    -0.08   0.935     .9946895    1.004911
+        2.SEX |   .6188062    .009732   -30.52   0.000     .6000227    .6381777
+     NonWhite |   .8117185   .0345313    -4.90   0.000     .7467831    .8823003
+     townsend |   1.031687   .0026291    12.24   0.000     1.026547    1.036853
+  educationbr |   .9830197   .0100296    -1.68   0.093     .9635572    1.002875
+householdin~e |   .8944555   .0077458   -12.88   0.000      .879402    .9097666
+householdsize |   .9657927   .0083322    -4.03   0.000     .9495992    .9822623
+LE8_TOTALSC~E |   .9981224    .000086   -21.82   0.000     .9979539    .9982909
+        srhbr |    1.23188    .014737    17.43   0.000     1.203332    1.261106
+medicationnum |   1.052822   .0031746    17.07   0.000     1.046618    1.059062
+     comorbid |     1.0265   .0044464     6.04   0.000     1.017822    1.035251
+-------------------------------------------------------------------------------
+
+. save "/opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin.dta", replace
+file /opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin.dta saved
+
+. stset Age_death [pw=_weight], failure(died==1) enter(age_2020) scale(1) id(n_e
+> id)
+
+                id:  n_eid
+     failure event:  died == 1
+obs. time interval:  (Age_death[_n-1], Age_death]
+ enter on or after:  time age_2020
+ exit on or before:  failure
+            weight:  [pweight=_weight]
+
+------------------------------------------------------------------------------
+    271,974  total observations
+          3  observations end on or before enter()
+    258,368  weights invalid                                    PROBABLE ERROR
+------------------------------------------------------------------------------
+     13,603  observations remaining, representing
+     13,603  subjects
+      1,869  failures in single-failure-per-subject data
+ 51,163.387  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  49.96304
+                                          last observed exit t =  86.71595
+
+. cap noi strate _treated, per(1000)
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=_weight]
+
+Estimated failure rates
+
+Number of records  =       13603
+Number of clusters =       13603
+
+  +-------------------------------------------------------+
+  |  _treated      D         Y     Rate    Lower    Upper |
+  |-------------------------------------------------------|
+  | Untreated    600   26.2086   22.893   21.162   24.804 |
+  |   Treated   1269   24.9547   50.852   48.183   53.703 |
+  +-------------------------------------------------------+
+   Notes: Rate = D/Y = failures/person-time (per 1000).
+          Lower and Upper are bounds of 95% jackknife
+          confidence intervals.
+
+
+. if _rc == 0 {
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.svg"', width(600) replace
+(note: file /home/dnanexus/.stata_kernel_cache/graph2.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph2.svg written in SVG format)
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.pdf"', replace
+(file /home/dnanexus/.stata_kernel_cache/graph2.pdf written in PDF format)
+.     global stata_kernel_graph_counter = $stata_kernel_graph_counter + 1
+. }            
+
+. stcox _treated, vce(robust)
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=_weight]
+
+(sum of wgt is 13,603)
+Iteration 0:   log pseudolikelihood =  -14241.66
+Iteration 1:   log pseudolikelihood = -14107.368
+Iteration 2:   log pseudolikelihood = -14107.147
+Iteration 3:   log pseudolikelihood = -14107.147
+Refining estimates:
+Iteration 0:   log pseudolikelihood = -14107.147
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =       13,603             Number of obs    =      13,603
+No. of failures      =        1,869
+Time at risk         =  51163.38659
+                                                Wald chi2(1)     =      254.34
+Log pseudolikelihood =   -14107.147             Prob > chi2      =      0.0000
+
+                             (Std. Err. adjusted for 13,603 clusters in n_eid)
+------------------------------------------------------------------------------
+             |               Robust
+          _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+    _treated |   2.192677   .1079448    15.95   0.000     1.990996    2.414789
+------------------------------------------------------------------------------
+
+. stcox _treated baselineage age_admitted i.SEX NonWhite townsend educationbr ho
+> useholdincome, vce(robust)
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=_weight]
+
+(sum of wgt is 13,603)
+Iteration 0:   log pseudolikelihood =  -14241.66
+Iteration 1:   log pseudolikelihood = -13912.083
+Iteration 2:   log pseudolikelihood = -13911.441
+Iteration 3:   log pseudolikelihood = -13911.441
+Refining estimates:
+Iteration 0:   log pseudolikelihood = -13911.441
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =       13,603             Number of obs    =      13,603
+No. of failures      =        1,869
+Time at risk         =  51163.38659
+                                                Wald chi2(8)     =      672.29
+Log pseudolikelihood =   -13911.441             Prob > chi2      =      0.0000
+
+                              (Std. Err. adjusted for 13,603 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+     _treated |   2.213377   .1093759    16.08   0.000     2.009058    2.438474
+  baselineage |   .8815933   .0173208    -6.41   0.000     .8482906    .9162036
+ age_admitted |   .9805966   .0088804    -2.16   0.030     .9633449    .9981573
+        2.SEX |   .5264669   .0252461   -13.38   0.000     .4792396    .5783483
+     NonWhite |   .8158734   .1138527    -1.46   0.145     .6206406     1.07252
+     townsend |   1.053312   .0072285     7.57   0.000     1.039239    1.067575
+  educationbr |   .9456277   .0296303    -1.78   0.074     .8893006    1.005522
+householdin~e |   .8558199   .0268154    -4.97   0.000     .8048441    .9100244
+-------------------------------------------------------------------------------
+
+. stcox _treated baselineage age_admitted i.SEX NonWhite townsend educationbr ho
+> useholdincome householdsize LE8_TOTALSCORE srhbr medicationnum comorbid, vce(r
+> obust)
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=_weight]
+
+(sum of wgt is 13,603)
+Iteration 0:   log pseudolikelihood =  -14241.66
+Iteration 1:   log pseudolikelihood = -13821.118
+Iteration 2:   log pseudolikelihood = -13816.437
+Iteration 3:   log pseudolikelihood = -13816.432
+Iteration 4:   log pseudolikelihood = -13816.432
+Refining estimates:
+Iteration 0:   log pseudolikelihood = -13816.432
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =       13,603             Number of obs    =      13,603
+No. of failures      =        1,869
+Time at risk         =  51163.38659
+                                                Wald chi2(13)    =      907.09
+Log pseudolikelihood =   -13816.432             Prob > chi2      =      0.0000
+
+                              (Std. Err. adjusted for 13,603 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+     _treated |   2.018744    .102747    13.80   0.000     1.827082    2.230511
+  baselineage |   .8691108    .017125    -7.12   0.000     .8361863    .9033317
+ age_admitted |   1.000673   .0090748     0.07   0.941     .9830435    1.018618
+        2.SEX |   .5412134   .0264249   -12.57   0.000     .4918224    .5955645
+     NonWhite |   .8119109    .113846    -1.49   0.137     .6168124    1.068719
+     townsend |   1.039932   .0073248     5.56   0.000     1.025674    1.054388
+  educationbr |   .9825271   .0309281    -0.56   0.575     .9237412    1.045054
+householdin~e |   .9114533   .0290108    -2.91   0.004     .8563304    .9701246
+householdsize |   1.011373   .0181098     0.63   0.528     .9764939    1.047498
+LE8_TOTALSC~E |   .9988658   .0002599    -4.36   0.000     .9983567    .9993753
+        srhbr |   1.219605    .044299     5.47   0.000     1.135799    1.309594
+medicationnum |   1.043174   .0090261     4.88   0.000     1.025632    1.061015
+     comorbid |   1.011871   .0121308     0.98   0.325     .9883724    1.035929
+-------------------------------------------------------------------------------
+
+. save "/opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin.dta",replace
+file /opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin.dta saved
+
+. capture log close

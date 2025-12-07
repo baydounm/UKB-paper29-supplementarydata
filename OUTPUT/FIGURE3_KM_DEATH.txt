@@ -1,0 +1,214 @@
+
+. cd "/opt/notebooks/"
+/opt/notebooks
+
+. use "UKB_PAPER29_HESIN_Z_MORTALITYfin.dta", clear
+
+. tab sample_final
+
+sample_fina |
+          l |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |    271,974      100.00      100.00
+------------+-----------------------------------
+      Total |    271,974      100.00
+
+. capture drop age_start_40
+
+. gen age_start_40 = max(age_2020, 40)
+
+. capture drop if Age_death <= age_start_40
+
+. capture drop Age_death_85
+
+. gen Age_death_85 = min(Age_death, 85)
+
+. gen died_85 = died
+
+. replace died_85 = 0 if Age_death > 85
+(165 real changes made)
+
+. replace age_start_40 = min(age_start_40, 85)
+(1 real change made)
+
+. capture preserve
+
+. keep if sample_final == 1
+(0 observations deleted)
+
+. stset Age_death_85, failure(died_85 == 1) enter(age_start_40) id(n_eid) scale(
+> 1)
+
+                id:  n_eid
+     failure event:  died_85 == 1
+obs. time interval:  (Age_death_85[_n-1], Age_death_85]
+ enter on or after:  time age_start_40
+ exit on or before:  failure
+
+------------------------------------------------------------------------------
+    271,971  total observations
+          1  observation ends on or before enter()
+------------------------------------------------------------------------------
+    271,970  observations remaining, representing
+    271,970  subjects
+     17,365  failures in single-failure-per-subject data
+  1,057,366  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  49.54963
+                                          last observed exit t =        85
+
+. sts graph, by(_treated) gwood     xlabel(40(5)85, labsize(small))     ylabel(0
+> (.1)1, labsize(small))     xtitle("Age at follow-up (years)")     ytitle("KM e
+> stimated survival probability (95% CI)")     title("All-cause mortality 2020–2
+> 023 (Unmatched, Age 40–85)")     legend(order(1 "No Z55–Z65 codes" 2 "≥1 Z55–Z
+> 65 code") pos(5) ring(0) cols(1))     name(FIG3_unmatched, replace)
+
+         failure _d:  died_85 == 1
+   analysis time _t:  Age_death_85
+  enter on or after:  time age_start_40
+                 id:  n_eid
+
+. graph save "/opt/notebooks/FIGURE3_UNMATCHED.gph", replace
+(note: file /opt/notebooks/FIGURE3_UNMATCHED.gph not found)
+(file /opt/notebooks/FIGURE3_UNMATCHED.gph saved)
+
+. sts graph, by(_treated) gwood     xlabel(40(5)85, labsize(small))     ylabel(0
+> (.1)1, labsize(small))     xtitle("Age at follow-up (years)")     ytitle("KM e
+> stimated survival probability (95% CI)")     title("All-cause mortality 2020–2
+> 023 (Unmatched, Age 40–85)")     legend(order(1 "No Z55–Z65 codes" 2 "≥1 Z55–Z
+> 65 code") pos(5) ring(0) cols(1))     risktable     name(FIG3_unmatched_RT, re
+> place)
+
+         failure _d:  died_85 == 1
+   analysis time _t:  Age_death_85
+  enter on or after:  time age_start_40
+                 id:  n_eid
+
+. graph save "/opt/notebooks/FIGURE3_UNMATCHEDRT.gph", replace
+(note: file /opt/notebooks/FIGURE3_UNMATCHEDRT.gph not found)
+(file /opt/notebooks/FIGURE3_UNMATCHEDRT.gph saved)
+
+. sts test _treated
+
+         failure _d:  died_85 == 1
+   analysis time _t:  Age_death_85
+  enter on or after:  time age_start_40
+                 id:  n_eid
+
+
+Log-rank test for equality of survivor functions
+------------------------------------------------
+
+          |   Events         Events
+_treated  |  observed       expected
+----------+-------------------------
+Untreated |     16107       16842.24
+Treated   |      1258         522.76
+----------+-------------------------
+Total     |     17365       17365.00
+
+                chi2(1) =    1069.34
+                Pr>chi2 =     0.0000
+
+. capture restore
+
+. capture preserve
+
+. keep if sample_final == 1 & _weight < .
+(258,368 observations deleted)
+
+. stset Age_death_85 [pw = _weight], failure(died_85 == 1) enter(age_start_40) i
+> d(n_eid) scale(1)
+
+                id:  n_eid
+     failure event:  died_85 == 1
+obs. time interval:  (Age_death_85[_n-1], Age_death_85]
+ enter on or after:  time age_start_40
+ exit on or before:  failure
+            weight:  [pweight=_weight]
+
+------------------------------------------------------------------------------
+     13,603  total observations
+          0  exclusions
+------------------------------------------------------------------------------
+     13,603  observations remaining, representing
+     13,603  subjects
+      1,855  failures in single-failure-per-subject data
+ 51,064.942  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  49.96304
+                                          last observed exit t =        85
+
+. sts graph, by(_treated)     xlabel(40(5)85, labsize(small))     ylabel(0(.1)1,
+>  labsize(small))     xtitle("Age at follow-up (years)")     ytitle("KM estimat
+> ed survival probability")     title("All-cause mortality 2020–2023 (1:1 matche
+> d, Age 40–85)")     legend(order(1 "No Z55–Z65 codes" 2 "≥1 Z55–Z65 code") pos
+> (5) ring(0) cols(1))     name(FIG3_matched, replace)
+
+         failure _d:  died_85 == 1
+   analysis time _t:  Age_death_85
+  enter on or after:  time age_start_40
+                 id:  n_eid
+             weight:  [pweight=_weight]
+
+. graph save "/opt/notebooks/FIGURE3_MATCHED.gph", replace
+(note: file /opt/notebooks/FIGURE3_MATCHED.gph not found)
+(file /opt/notebooks/FIGURE3_MATCHED.gph saved)
+
+. sts graph, by(_treated)     xlabel(40(5)85, labsize(small))     ylabel(0(.1)1,
+>  labsize(small))     xtitle("Age at follow-up (years)")     ytitle("KM estimat
+> ed survival probability")     title("All-cause mortality 2020–2023 (1:1 matche
+> d, Age 40–85)")     legend(order(1 "No Z55–Z65 codes" 2 "≥1 Z55–Z65 code") pos
+> (5) ring(0) cols(1))     risktable     name(FIG3_matched_RT, replace)
+
+         failure _d:  died_85 == 1
+   analysis time _t:  Age_death_85
+  enter on or after:  time age_start_40
+                 id:  n_eid
+             weight:  [pweight=_weight]
+
+. graph save "/opt/notebooks/FIGURE3_MATCHEDRT.gph", replace
+(note: file /opt/notebooks/FIGURE3_MATCHEDRT.gph not found)
+(file /opt/notebooks/FIGURE3_MATCHEDRT.gph saved)
+
+. sts test _treated
+
+         failure _d:  died_85 == 1
+   analysis time _t:  Age_death_85
+  enter on or after:  time age_start_40
+                 id:  n_eid
+             weight:  [pweight=_weight]
+
+
+Cox regression-based test for equality of survival curves
+---------------------------------------------------------
+
+          |   Events         Events       Relative
+_treated  |  observed       expected       hazard
+----------+--------------------------------------
+Untreated |    597.00         944.48       0.6807
+Treated   |   1258.00         910.52       1.4902
+----------+--------------------------------------
+Total     |   1855.00        1855.00       1.0000
+
+           Wald chi2(1) =     251.72
+                Pr>chi2 =     0.0000
+
+. cap noi graph combine "/opt/notebooks/FIGURE3_UNMATCHED.gph" "/opt/notebooks/F
+> IGURE3_MATCHED.gph", col(2) xcommon xrange(40 85)     title("All-cause mortali
+> ty by Z55–Z65 status (Age 40–85)")
+option xrange() not allowed
+
+. if _rc == 0 {
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.svg"', width(600) replace
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.pdf"', replace
+.     global stata_kernel_graph_counter = $stata_kernel_graph_counter + 1
+. }            
+
+. graph save "/opt/notebooks/FIGURE3_KM_COMBINED.gph", replace
+(note: file /opt/notebooks/FIGURE3_KM_COMBINED.gph not found)
+(file /opt/notebooks/FIGURE3_KM_COMBINED.gph saved)
+
+. capture log close

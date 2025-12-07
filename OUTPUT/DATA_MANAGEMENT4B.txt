@@ -1,0 +1,3954 @@
+
+. use n_eid n_21022_0_0 n_20009_0_* n_20002_0_* s_41202_0_* n_34_0_0 s_52_0_0 s_
+> 53_0_0 s_40000_*_0  n_40007_*_0  s_42018_0_0 s_42020_0_0 using "/opt/notebooks
+> /SMALLERDATASETUKBfin"
+
+. save "/opt/notebooks/ADDEMENTIA_UKB",replace
+file /opt/notebooks/ADDEMENTIA_UKB.dta saved
+
+. use "/opt/notebooks/ADDEMENTIA_UKB",clear
+
+. capture drop birthyear
+
+. gen birthyear=n_34_0_0
+
+. capture drop n_52_0_0
+
+. gen n_52_0_0=.
+(501,936 missing values generated)
+
+. replace n_52_0_0=1 if s_52_0_0=="January"
+(42,398 real changes made)
+
+. replace n_52_0_0=2 if s_52_0_0=="February"
+(39,909 real changes made)
+
+. replace n_52_0_0=3 if s_52_0_0=="March"
+(45,048 real changes made)
+
+. replace n_52_0_0=4 if s_52_0_0=="April"
+(43,014 real changes made)
+
+. replace n_52_0_0=5 if s_52_0_0=="May"
+(45,077 real changes made)
+
+. replace n_52_0_0=6 if s_52_0_0=="June"
+(42,386 real changes made)
+
+. replace n_52_0_0=7 if s_52_0_0=="July"
+(42,558 real changes made)
+
+. replace n_52_0_0=8 if s_52_0_0=="August"
+(41,419 real changes made)
+
+. replace n_52_0_0=9 if s_52_0_0=="September"
+(40,875 real changes made)
+
+. replace n_52_0_0=10 if s_52_0_0=="October"
+(40,567 real changes made)
+
+. replace n_52_0_0=11 if s_52_0_0=="November"
+(38,327 real changes made)
+
+. replace n_52_0_0=12 if s_52_0_0=="December"
+(40,358 real changes made)
+
+. capture drop birthmonth
+
+. gen birthmonth=n_52_0_0
+
+. capture drop birthdate
+
+. gen birthdate=mdy(birthmonth,14,birthyear)
+
+. capture gen double ts_53_0_0 = date(s_53_0_0,"YMD")
+
+. capture format ts_53_0_0 %td
+
+. capture label variable ts_53_0_0 "Date of attending assessment centre"
+
+. capture gen double ts_53_1_0 = date(s_53_1_0,"YMD")
+
+. capture format ts_53_1_0 %td
+
+. capture label variable ts_53_1_0 "Date of attending assessment centre"
+
+. capture gen double ts_53_2_0 = date(s_53_2_0,"YMD")
+
+. capture format ts_53_2_0 %td
+
+. capture label variable ts_53_2_0 "Date of attending assessment centre"
+
+. capture gen double ts_53_3_0 = date(s_53_3_0,"YMD")
+
+. capture format ts_53_3_0 %td
+
+. capture label variable ts_53_3_0 "Date of attending assessment centre"
+
+. capture gen double ts_40000_0_0 = date(s_40000_0_0,"YMD")
+
+. capture format ts_40000_0_0 %td
+
+. capture label variable ts_40000_0_0 "Date of death"
+
+. capture gen double ts_40000_1_0 = date(s_40000_1_0,"YMD")
+
+. capture format ts_40000_1_0 %td
+
+. capture label variable ts_40000_1_0 "Date of death"
+
+. format %18.14f n_40007_0_0
+
+. format %18.14f n_40007_1_0
+
+. capture gen double ts_42018_0_0 = date(s_42018_0_0,"YMD")
+
+. capture format ts_42018_0_0 %td
+
+. capture label variable ts_42018_0_0 "Date of all cause dementia report"
+
+. capture gen double ts_42020_0_0 = date(s_42020_0_0,"YMD")
+
+. capture format ts_42020_0_0 %td
+
+. capture label variable ts_42020_0_0 "Date of alzheimers disease report"
+
+. capture gen double ts_42030_0_0 = date(s_42030_0_0,"YMD")
+
+. capture format ts_42030_0_0 %td
+
+. capture label variable ts_42030_0_0 "Date of all cause parkinsonism report"
+
+. capture gen double ts_42032_0_0 = date(s_42032_0_0,"YMD")
+
+. capture format ts_42032_0_0 %td
+
+. capture label variable ts_42032_0_0 "Date of parkinsons disease report"
+
+. capture drop startdate
+
+. gen startdate=ts_53_0_0
+
+. format startdate %d
+
+. capture drop baselineage
+
+. gen baselineage=(startdate-birthdate)/365.25
+
+. format ts_42018_0_0 %d
+
+. capture drop DEMENTIA_EARLIESTDATE
+
+. gen DEMENTIA_EARLIESTDATE= ts_42018_0_0
+(491,167 missing values generated)
+
+. capture drop dem_diag
+
+. gen dem_diag=.
+(501,936 missing values generated)
+
+. replace dem_diag=1 if DEMENTIA_EARLIESTDATE~=.
+(10,769 real changes made)
+
+. replace dem_diag=0 if dem_diag~=1
+(491,167 real changes made)
+
+. format ts_42020_0_0 %d
+
+. capture drop AD_EARLIESTDATE
+
+. gen AD_EARLIESTDATE = ts_42020_0_0
+(497,143 missing values generated)
+
+. capture drop ad_diag
+
+. gen ad_diag=.
+(501,936 missing values generated)
+
+. replace ad_diag=1 if AD_EARLIESTDATE~=.
+(4,793 real changes made)
+
+. replace ad_diag=0 if ad_diag~=1
+(497,143 real changes made)
+
+. capture drop birthyear
+
+. gen birthyear=n_34_0_0
+
+. capture drop birthmonth
+
+. gen birthmonth=n_52_0_0
+
+. capture drop birthdate
+
+. gen birthdate=mdy(birthmonth,14,birthyear)
+
+. capture drop startdate
+
+. gen startdate=ts_53_0_0
+
+. format startdate %d
+
+. capture drop baselineage
+
+. gen baselineage=(startdate-birthdate)/365.25
+
+. capture drop deathdate
+
+. gen deathdate = ts_40000_0_0
+(446,913 missing values generated)
+
+. replace deathdate =  ts_40000_1_0 if deathdate ==.
+(0 real changes made)
+
+. format deathdate %d
+
+. label var deathdate "date of death"
+
+. capture drop died
+
+. gen died=.
+(501,936 missing values generated)
+
+. replace died=1 if deathdate~=.
+(55,023 real changes made)
+
+. replace died=0 if deathdate==.
+(446,913 real changes made)
+
+. capture drop deathage
+
+. gen deathage=.
+(501,936 missing values generated)
+
+. replace deathage=n_40007_0_0 if n_40007_0_0~=.
+(55,023 real changes made)
+
+. replace deathage=n_40007_1_0 if n_40007_1_0~=.
+(0 real changes made)
+
+. capture drop doexit
+
+. gen doexit = deathdate if died==1
+(446,913 missing values generated)
+
+. replace doexit = d(1jan2024) if doexit==. & died==0
+(446,913 real changes made)
+
+. format doexit %d
+
+. capture drop time0_0dem timeyrs0_0dem
+
+. gen time0_0dem = doexit - startdate if died==0
+(55,023 missing values generated)
+
+. gen timeyrs0_0dem = time0_0/365.25
+(55,023 missing values generated)
+
+. label var time0_0dem "follow up time in days if no incident outcome and surviv
+> ed, days"
+
+. label var timeyrs0_0dem "follow up time in years if no incident outcome and su
+> rvived, years"
+
+. capture drop time1_0dem timeyrs1_0dem
+
+. gen time1_0dem = doexit - startdate if died==1
+(446,913 missing values generated)
+
+. gen timeyrs1_0dem = time1_0 /365.25
+(446,913 missing values generated)
+
+. label var time1_0dem "follow up time in days if no incident outcome and died, 
+> days"
+
+. label var timeyrs1_0dem "follow up time in years if no incident outcome and di
+> ed, years"
+
+. capture drop time01_1Adem
+
+. capture drop time01_1Ayearsdem
+
+. gen time01_1Adem = DEMENTIA_EARLIESTDATE - startdate
+(491,167 missing values generated)
+
+. gen time01_1Ayearsdem = time01_1A/365.25
+(491,167 missing values generated)
+
+. replace time01_1Ayearsdem=time01_1Ayearsdem if time01_1Ayearsdem>-10
+(0 real changes made)
+
+. label var time01_1Adem "follow up time in days if Dementia incident outcome an
+> d died/survived, days"
+
+. label var time01_1Ayearsdem "follow up time in days if Dementia incident outco
+> me and died/survived, years"
+
+. capture drop time01_1BAD
+
+. capture drop time01_1ByearsAD
+
+. gen time01_1BAD = AD_EARLIESTDATE - startdate
+(497,143 missing values generated)
+
+. gen time01_1ByearsAD = time01_1BAD/365.25
+(497,143 missing values generated)
+
+. replace time01_1ByearsAD=time01_1ByearsAD if time01_1ByearsAD>-10
+(0 real changes made)
+
+. label var time01_1BAD "follow up time in days if AD incident outcome and died/
+> survived, days"
+
+. label var time01_1ByearsAD "follow up time in years if AD incident outcome and
+>  died/survived, years"
+
+. capture drop time_dementia
+
+. gen time_dementia=.
+(501,936 missing values generated)
+
+. replace time_dementia=timeyrs1_0dem  if dem_diag==0 & died==1
+(47,931 real changes made)
+
+. replace time_dementia=time01_1Ayearsdem   if dem_diag==1
+(10,769 real changes made)
+
+. replace time_dementia=timeyrs0_0dem   if time_dementia==.
+(443,236 real changes made)
+
+. capture drop Age_dementia
+
+. gen Age_dementia=.
+(501,936 missing values generated)
+
+. replace Age_dementia=baselineage+time_dementia
+(501,936 real changes made)
+
+. capture stset,clear
+
+. stset Age_dementia, failure(dem_diag==1) enter(baselineage) id(n_eid) scale(1)
+
+                id:  n_eid
+     failure event:  dem_diag == 1
+obs. time interval:  (Age_dementia[_n-1], Age_dementia]
+ enter on or after:  time baselineage
+ exit on or before:  failure
+
+------------------------------------------------------------------------------
+    501,936  total observations
+        226  observations end on or before enter()
+------------------------------------------------------------------------------
+    501,710  observations remaining, representing
+    501,710  subjects
+     10,543  failures in single-failure-per-subject data
+  7,182,082  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  37.41821
+                                          last observed exit t =  89.80151
+
+. capture drop _d_dementia
+
+. gen _d_dementia=_d
+(226 missing values generated)
+
+. capture drop _t_dementia
+
+. gen _t_dementia=_t
+(226 missing values generated)
+
+. capture drop timeyrs0_0AD
+
+. gen timeyrs0_0AD=timeyrs0_0dem
+(55,023 missing values generated)
+
+. capture drop time_AD
+
+. gen time_AD=.
+(501,936 missing values generated)
+
+. replace time_AD=timeyrs1_0dem  if ad_diag==0 & died==1
+(51,865 real changes made)
+
+. replace time_AD=time01_1ByearsAD   if ad_diag==1
+(4,793 real changes made)
+
+. replace time_AD=timeyrs0_0dem   if time_AD==.
+(445,278 real changes made)
+
+. capture drop Age_AD
+
+. gen Age_AD=.
+(501,936 missing values generated)
+
+. replace Age_AD=baselineage+time_AD
+(501,936 real changes made)
+
+. capture stset,clear
+
+. stset Age_AD, failure(ad_diag==1) enter(baselineage) id(n_eid) scale(1)
+
+                id:  n_eid
+     failure event:  ad_diag == 1
+obs. time interval:  (Age_AD[_n-1], Age_AD]
+ enter on or after:  time baselineage
+ exit on or before:  failure
+
+------------------------------------------------------------------------------
+    501,936  total observations
+         18  observations end on or before enter()
+------------------------------------------------------------------------------
+    501,918  observations remaining, representing
+    501,918  subjects
+      4,775  failures in single-failure-per-subject data
+  7,200,246  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  37.41821
+                                          last observed exit t =  89.80151
+
+. capture drop _d_AD
+
+. gen _d_AD=_d
+(18 missing values generated)
+
+. capture drop _t_AD
+
+. gen _t_AD=_t
+(18 missing values generated)
+
+. su time* Age* _t* _d*, det
+
+      follow up time in days if no incident outcome and
+                       survived, days
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%         4930           4840
+ 5%         4965           4840
+10%         5012           4840       Obs             446,913
+25%         5196           4840       Sum of Wgt.     446,913
+
+50%         5448                      Mean           5451.312
+                        Largest       Std. Dev.      313.2057
+75%         5696           6503
+90%         5858           6503       Variance       98097.81
+95%         5950           6503       Skewness       .1879071
+99%         6081           6503       Kurtosis       2.448868
+
+     follow up time in years if no incident outcome and
+                       survived, years
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%      13.4976        13.2512
+ 5%     13.59343        13.2512
+10%     13.72211        13.2512       Obs             446,913
+25%     14.22587        13.2512       Sum of Wgt.     446,913
+
+50%     14.91581                      Mean           14.92488
+                        Largest       Std. Dev.      .8575105
+75%      15.5948       17.80424
+90%     16.03833       17.80424       Variance       .7353242
+95%     16.29021       17.80424       Skewness       .1879071
+99%     16.64887       17.80424       Kurtosis       2.448868
+
+      follow up time in days if no incident outcome and
+                         died, days
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%          239              4
+ 5%          779              5
+10%         1286              7       Obs              55,023
+25%         2490              8       Sum of Wgt.      55,023
+
+50%         3891                      Mean           3600.688
+                        Largest       Std. Dev.       1510.34
+75%         4854           6601
+90%         5376           6606       Variance        2281125
+95%         5604           6608       Skewness      -.4979649
+99%         5921           6618       Kurtosis       2.238239
+
+     follow up time in years if no incident outcome and
+                         died, years
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     .6543463       .0109514
+ 5%     2.132786       .0136893
+10%     3.520876        .019165       Obs              55,023
+25%     6.817248       .0219028       Sum of Wgt.      55,023
+
+50%     10.65298                      Mean           9.858148
+                        Largest       Std. Dev.      4.135084
+75%     13.28953       18.07255
+90%     14.71869       18.08624       Variance       17.09892
+95%     15.34292       18.09172       Skewness      -.4979649
+99%     16.21082        18.1191       Kurtosis       2.238239
+
+         follow up time in days if Dementia incident
+               outcome and died/survived, days
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%        -1067         -23474
+ 5%         1175         -19986
+10%         1927         -18813       Obs              10,769
+25%         2986         -16218       Sum of Wgt.      10,769
+
+50%         3943                      Mean           3666.072
+                        Largest       Std. Dev.      1455.993
+75%         4637           6453
+90%         5106           6506       Variance        2119916
+95%         5372           6522       Skewness      -2.835552
+99%         5813           6608       Kurtosis        32.2983
+
+         follow up time in days if Dementia incident
+              outcome and died/survived, years
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%    -2.921287      -64.26831
+ 5%     3.216975      -54.71869
+10%     5.275838      -51.50719       Obs              10,769
+25%     8.175222      -44.40247       Sum of Wgt.      10,769
+
+50%     10.79535                      Mean           10.03716
+                        Largest       Std. Dev.      3.986292
+75%     12.69541       17.66735
+90%     13.97947       17.81246       Variance       15.89053
+95%     14.70773       17.85626       Skewness      -2.835552
+99%     15.91513       18.09172       Kurtosis        32.2983
+
+      follow up time in days if AD incident outcome and
+                     died/survived, days
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%          604          -1887
+ 5%         1634          -1785
+10%         2212          -1697       Obs               4,793
+25%         3171          -1476       Sum of Wgt.       4,793
+
+50%         4091                      Mean           3860.223
+                        Largest       Std. Dev.      1163.036
+75%         4719           6421
+90%         5139           6450       Variance        1352653
+95%         5379           6506       Skewness      -.8371988
+99%         5795           6522       Kurtosis       3.665421
+
+     follow up time in years if AD incident outcome and
+                    died/survived, years
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     1.653662      -5.166325
+ 5%     4.473648      -4.887064
+10%     6.056126      -4.646133       Obs               4,793
+25%     8.681725      -4.041068       Sum of Wgt.       4,793
+
+50%     11.20055                      Mean           10.56872
+                        Largest       Std. Dev.       3.18422
+75%     12.91992       17.57974
+90%     14.06982       17.65914       Variance       10.13926
+95%      14.7269       17.81246       Skewness      -.8371988
+99%     15.86585       17.85626       Kurtosis       3.665421
+
+                        time_dementia
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     3.080082      -64.26831
+ 5%     9.434634      -54.71869
+10%     13.48665      -51.50719       Obs             501,936
+25%     13.95209      -44.40247       Sum of Wgt.     501,936
+
+50%     14.78166                      Mean           14.30667
+                        Largest       Std. Dev.      2.357324
+75%      15.5154       18.01506
+90%     15.95893       18.07255       Variance       5.556976
+95%     16.24641       18.09172       Skewness      -3.472294
+99%     16.64066        18.1191       Kurtosis       22.09605
+
+                        timeyrs0_0AD
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%      13.4976        13.2512
+ 5%     13.59343        13.2512
+10%     13.72211        13.2512       Obs             446,913
+25%     14.22587        13.2512       Sum of Wgt.     446,913
+
+50%     14.91581                      Mean           14.92488
+                        Largest       Std. Dev.      .8575105
+75%      15.5948       17.80424
+90%     16.03833       17.80424       Variance       .7353242
+95%     16.29021       17.80424       Skewness       .1879071
+99%     16.64887       17.80424       Kurtosis       2.448868
+
+                           time_AD
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     3.247091      -5.166325
+ 5%     9.804244      -4.887064
+10%     13.50308      -4.646133       Obs             501,936
+25%     13.97125      -4.041068       Sum of Wgt.     501,936
+
+50%     14.78987                      Mean           14.34488
+                        Largest       Std. Dev.      2.277521
+75%     15.51814       18.07255
+90%     15.96167       18.08624       Variance         5.1871
+95%     16.24914       18.09172       Skewness      -3.296228
+99%     16.64066        18.1191       Kurtosis       15.91845
+
+                        Age_dementia
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     55.12936        .030117
+ 5%     57.53867       .5475693
+10%     59.54826       6.502396       Obs             501,936
+25%      65.0486       18.45037       Sum of Wgt.     501,936
+
+50%      72.3833                      Mean           71.34349
+                        Largest       Std. Dev.      8.002929
+75%     77.71663       87.63313
+90%     81.38261       87.63313       Variance       64.04688
+95%     83.04723       87.80014       Skewness      -.3025209
+99%     84.87885       89.80151       Kurtosis       2.149752
+
+                           Age_AD
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     55.12936       40.37783
+ 5%     57.54962         40.846
+10%     59.54826        41.1718       Obs             501,936
+25%      65.0486       41.36618       Sum of Wgt.     501,936
+
+50%     72.46817                      Mean           71.38171
+                        Largest       Std. Dev.      8.009773
+75%     77.79466       87.63313
+90%     81.43738       87.63313       Variance       64.15646
+95%     83.04723       87.80014       Skewness      -.2976572
+99%     84.87885       89.80151       Kurtosis       2.102862
+
+                         _t_dementia
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     55.12936       40.37783
+ 5%     57.54962         40.846
+10%     59.54826        41.1718       Obs             501,710
+25%      65.0486       41.36618       Sum of Wgt.     501,710
+
+50%      72.3833                      Mean           71.34964
+                        Largest       Std. Dev.      7.996444
+75%     77.71663       87.63313
+90%     81.38261       87.63313       Variance       63.94312
+95%     83.04723       87.80014       Skewness      -.2970474
+99%     84.87885       89.80151       Kurtosis       2.107771
+
+               Analysis time when record ends
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     55.12936       40.37783
+ 5%     57.54962         40.846
+10%     59.54826        41.1718       Obs             501,918
+25%      65.0486       41.36618       Sum of Wgt.     501,918
+
+50%     72.46817                      Mean           71.38204
+                        Largest       Std. Dev.      8.009671
+75%     77.79603       87.63313
+90%     81.44011       87.63313       Variance       64.15482
+95%     83.04723       87.80014       Skewness      -.2977029
+99%     84.87885       89.80151       Kurtosis       2.102915
+
+              Analysis time when record begins
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     40.95551       37.41821
+ 5%     42.78166       38.87201
+10%     44.88159       39.19507       Obs             501,918
+25%     50.55715       39.66051       Sum of Wgt.     501,918
+
+50%     58.28337                      Mean           57.03658
+                        Largest       Std. Dev.      8.090547
+75%     63.69336       72.11225
+90%     67.18138       72.43806       Variance       65.45695
+95%     68.60233       72.91171       Skewness      -.3196346
+99%     69.83436       73.69199       Kurtosis       1.994171
+
+                            _t_AD
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     55.12936       40.37783
+ 5%     57.54962         40.846
+10%     59.54826        41.1718       Obs             501,918
+25%      65.0486       41.36618       Sum of Wgt.     501,918
+
+50%     72.46817                      Mean           71.38204
+                        Largest       Std. Dev.      8.009671
+75%     77.79603       87.63313
+90%     81.44011       87.63313       Variance       64.15482
+95%     83.04723       87.80014       Skewness      -.2977029
+99%     84.87885       89.80151       Kurtosis       2.102915
+
+                         _d_dementia
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs             501,710
+25%            0              0       Sum of Wgt.     501,710
+
+50%            0                      Mean           .0210141
+                        Largest       Std. Dev.      .1434314
+75%            0              1
+90%            0              1       Variance       .0205726
+95%            0              1       Skewness       6.678959
+99%            1              1       Kurtosis       45.60849
+
+                 1 if failure; 0 if censored
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs             501,918
+25%            0              0       Sum of Wgt.     501,918
+
+50%            0                      Mean           .0095135
+                        Largest       Std. Dev.      .0970722
+75%            0              1
+90%            0              1       Variance        .009423
+95%            0              1       Skewness       10.10561
+99%            0              1       Kurtosis       103.1233
+
+                            _d_AD
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs             501,918
+25%            0              0       Sum of Wgt.     501,918
+
+50%            0                      Mean           .0095135
+                        Largest       Std. Dev.      .0970722
+75%            0              1
+90%            0              1       Variance        .009423
+95%            0              1       Skewness       10.10561
+99%            0              1       Kurtosis       103.1233
+
+. tab1 dem_diag ad_diag
+
+-> tabulation of dem_diag  
+
+   dem_diag |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    491,167       97.85       97.85
+          1 |     10,769        2.15      100.00
+------------+-----------------------------------
+      Total |    501,936      100.00
+
+-> tabulation of ad_diag  
+
+    ad_diag |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    497,143       99.05       99.05
+          1 |      4,793        0.95      100.00
+------------+-----------------------------------
+      Total |    501,936      100.00
+
+. capture stset,clear
+
+. save, replace
+file /opt/notebooks/ADDEMENTIA_UKB.dta saved
+
+. use n_eid n_21022_0_0 n_20009_0_* n_20002_0_* s_41202_0_* n_34_0_0 s_52_0_0 s_
+> 53_0_0 s_40000_*_0  n_40007_*_0  s_42030_0_0 s_42032_0_0 using "/opt/notebooks
+> /SMALLERDATASETUKBfin", clear
+
+. save "/opt/notebooks/PD_UKB",replace
+file /opt/notebooks/PD_UKB.dta saved
+
+. use "/opt/notebooks/PD_UKB",clear
+
+. capture drop birthyear
+
+. gen birthyear=n_34_0_0
+
+. capture drop n_52_0_0
+
+. gen n_52_0_0=.
+(501,936 missing values generated)
+
+. replace n_52_0_0=1 if s_52_0_0=="January"
+(42,398 real changes made)
+
+. replace n_52_0_0=2 if s_52_0_0=="February"
+(39,909 real changes made)
+
+. replace n_52_0_0=3 if s_52_0_0=="March"
+(45,048 real changes made)
+
+. replace n_52_0_0=4 if s_52_0_0=="April"
+(43,014 real changes made)
+
+. replace n_52_0_0=5 if s_52_0_0=="May"
+(45,077 real changes made)
+
+. replace n_52_0_0=6 if s_52_0_0=="June"
+(42,386 real changes made)
+
+. replace n_52_0_0=7 if s_52_0_0=="July"
+(42,558 real changes made)
+
+. replace n_52_0_0=8 if s_52_0_0=="August"
+(41,419 real changes made)
+
+. replace n_52_0_0=9 if s_52_0_0=="September"
+(40,875 real changes made)
+
+. replace n_52_0_0=10 if s_52_0_0=="October"
+(40,567 real changes made)
+
+. replace n_52_0_0=11 if s_52_0_0=="November"
+(38,327 real changes made)
+
+. replace n_52_0_0=12 if s_52_0_0=="December"
+(40,358 real changes made)
+
+. capture drop birthmonth
+
+. gen birthmonth=n_52_0_0
+
+. capture drop birthdate
+
+. gen birthdate=mdy(birthmonth,14,birthyear)
+
+. capture gen double ts_53_0_0 = date(s_53_0_0,"YMD")
+
+. capture format ts_53_0_0 %td
+
+. capture label variable ts_53_0_0 "Date of attending assessment centre"
+
+. capture gen double ts_53_1_0 = date(s_53_1_0,"YMD")
+
+. capture format ts_53_1_0 %td
+
+. capture label variable ts_53_1_0 "Date of attending assessment centre"
+
+. capture gen double ts_53_2_0 = date(s_53_2_0,"YMD")
+
+. capture format ts_53_2_0 %td
+
+. capture label variable ts_53_2_0 "Date of attending assessment centre"
+
+. capture gen double ts_53_3_0 = date(s_53_3_0,"YMD")
+
+. capture format ts_53_3_0 %td
+
+. capture label variable ts_53_3_0 "Date of attending assessment centre"
+
+. capture gen double ts_40000_0_0 = date(s_40000_0_0,"YMD")
+
+. capture format ts_40000_0_0 %td
+
+. capture label variable ts_40000_0_0 "Date of death"
+
+. capture gen double ts_40000_1_0 = date(s_40000_1_0,"YMD")
+
+. capture format ts_40000_1_0 %td
+
+. capture label variable ts_40000_1_0 "Date of death"
+
+. format %18.14f n_40007_0_0
+
+. format %18.14f n_40007_1_0
+
+. capture gen double ts_42018_0_0 = date(s_42018_0_0,"YMD")
+
+. capture format ts_42018_0_0 %td
+
+. capture label variable ts_42018_0_0 "Date of all cause dementia report"
+
+. capture gen double ts_42020_0_0 = date(s_42020_0_0,"YMD")
+
+. capture format ts_42020_0_0 %td
+
+. capture label variable ts_42020_0_0 "Date of alzheimers disease report"
+
+. capture gen double ts_42030_0_0 = date(s_42030_0_0,"YMD")
+
+. capture format ts_42030_0_0 %td
+
+. capture label variable ts_42030_0_0 "Date of all cause parkinsonism report"
+
+. capture gen double ts_42032_0_0 = date(s_42032_0_0,"YMD")
+
+. capture format ts_42032_0_0 %td
+
+. capture label variable ts_42032_0_0 "Date of parkinsons disease report"
+
+. capture drop startdate
+
+. gen startdate=ts_53_0_0
+
+. format startdate %d
+
+. capture drop baselineage
+
+. gen baselineage=(startdate-birthdate)/365.25
+
+. format ts_42032_0_0 %d
+
+. capture drop PD_EARLIESTDATE
+
+. gen PD_EARLIESTDATE= ts_42032_0_0
+(497,431 missing values generated)
+
+. capture drop PD_diag
+
+. gen PD_diag=.
+(501,936 missing values generated)
+
+. replace PD_diag=1 if PD_EARLIESTDATE~=.
+(4,505 real changes made)
+
+. replace PD_diag=0 if PD_diag~=1
+(497,431 real changes made)
+
+. su PD_EARLIESTDATE
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+PD_EARLIES~E |      4,505    20257.39    2556.219       3470      23565
+
+. tab PD_diag
+
+    PD_diag |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    497,431       99.10       99.10
+          1 |      4,505        0.90      100.00
+------------+-----------------------------------
+      Total |    501,936      100.00
+
+. capture drop startdate
+
+. gen startdate=ts_53_0_0
+
+. format startdate %d
+
+. capture drop baselineage
+
+. gen baselineage=(startdate-birthdate)/365.25
+
+. capture drop deathdate
+
+. gen deathdate = ts_40000_0_0
+(446,913 missing values generated)
+
+. replace deathdate =  ts_40000_1_0 if deathdate ==.
+(0 real changes made)
+
+. format deathdate %d
+
+. label var deathdate "date of death"
+
+. capture drop died
+
+. gen died=.
+(501,936 missing values generated)
+
+. replace died=1 if deathdate~=.
+(55,023 real changes made)
+
+. replace died=0 if deathdate==.
+(446,913 real changes made)
+
+. capture drop deathage
+
+. gen deathage=.
+(501,936 missing values generated)
+
+. replace deathage=n_40007_0_0 if n_40007_0_0~=.
+(55,023 real changes made)
+
+. replace deathage=n_40007_1_0 if n_40007_1_0~=.
+(0 real changes made)
+
+. capture drop doexit
+
+. gen doexit = deathdate if died==1
+(446,913 missing values generated)
+
+. replace doexit = d(1jan2024) if doexit==. & died==0
+(446,913 real changes made)
+
+. format doexit %d
+
+. capture drop time0_0 timeyrs0_0PD
+
+. gen time0_0PD = doexit - startdate if died==0
+(55,023 missing values generated)
+
+. gen timeyrs0_0PD = time0_0PD/365.25
+(55,023 missing values generated)
+
+. label var time0_0PD "follow up time in days if no incident outcome and survive
+> d, days"
+
+. label var timeyrs0_0PD "follow up time in years if no incident outcome and sur
+> vived, years"
+
+. capture drop time1_0PD timeyrs1_0PD
+
+. gen time1_0PD = doexit - startdate if died==1
+(446,913 missing values generated)
+
+. gen timeyrs1_0PD = time1_0PD /365.25
+(446,913 missing values generated)
+
+. label var time1_0PD "follow up time in days if no incident outcome and died, d
+> ays"
+
+. label var timeyrs1_0PD "follow up time in years if no incident outcome and die
+> d, years"
+
+. capture drop time01_1APD
+
+. capture drop time01_1AyearsPD
+
+. gen time01_1APD = PD_EARLIESTDATE - startdate
+(497,431 missing values generated)
+
+. gen time01_1AyearsPD = time01_1A/365.25
+(497,431 missing values generated)
+
+. replace time01_1AyearsPD=time01_1AyearsPD if time01_1AyearsPD>-10
+(0 real changes made)
+
+. label var time01_1APD "follow up time in days if Dementia incident outcome and
+>  died/survived, days"
+
+. label var time01_1AyearsPD "follow up time in days if Dementia incident outcom
+> e and died/survived, years"
+
+. capture drop time_PD
+
+. gen time_PD=.
+(501,936 missing values generated)
+
+. replace time_PD=timeyrs1_0PD  if PD_diag==0 & died==1
+(52,664 real changes made)
+
+. replace time_PD=time01_1AyearsPD   if PD_diag==1
+(4,505 real changes made)
+
+. replace time_PD=timeyrs0_0PD   if time_PD==.
+(444,767 real changes made)
+
+. capture drop Age_PD
+
+. gen Age_PD=.
+(501,936 missing values generated)
+
+. replace Age_PD=baselineage+time_PD
+(501,936 real changes made)
+
+. capture stset,clear
+
+. stset Age_PD, failure(PD_diag==1) enter(baselineage) id(n_eid) scale(1)
+
+                id:  n_eid
+     failure event:  PD_diag == 1
+obs. time interval:  (Age_PD[_n-1], Age_PD]
+ enter on or after:  time baselineage
+ exit on or before:  failure
+
+------------------------------------------------------------------------------
+    501,936  total observations
+        899  observations end on or before enter()
+------------------------------------------------------------------------------
+    501,037  observations remaining, representing
+    501,037  subjects
+      3,606  failures in single-failure-per-subject data
+  7,187,779  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  37.41821
+                                          last observed exit t =  89.80151
+
+. capture drop _d_PD
+
+. gen _d_PD=_d
+(899 missing values generated)
+
+. capture drop _t_PD
+
+. gen _t_PD=_t
+(899 missing values generated)
+
+. su time* Age* _t* _d*, det
+
+      follow up time in days if no incident outcome and
+                       survived, days
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%         4930           4840
+ 5%         4965           4840
+10%         5012           4840       Obs             446,913
+25%         5196           4840       Sum of Wgt.     446,913
+
+50%         5448                      Mean           5451.312
+                        Largest       Std. Dev.      313.2057
+75%         5696           6503
+90%         5858           6503       Variance       98097.81
+95%         5950           6503       Skewness       .1879071
+99%         6081           6503       Kurtosis       2.448868
+
+     follow up time in years if no incident outcome and
+                       survived, years
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%      13.4976        13.2512
+ 5%     13.59343        13.2512
+10%     13.72211        13.2512       Obs             446,913
+25%     14.22587        13.2512       Sum of Wgt.     446,913
+
+50%     14.91581                      Mean           14.92488
+                        Largest       Std. Dev.      .8575105
+75%      15.5948       17.80424
+90%     16.03833       17.80424       Variance       .7353242
+95%     16.29021       17.80424       Skewness       .1879071
+99%     16.64887       17.80424       Kurtosis       2.448868
+
+      follow up time in days if no incident outcome and
+                         died, days
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%          239              4
+ 5%          779              5
+10%         1286              7       Obs              55,023
+25%         2490              8       Sum of Wgt.      55,023
+
+50%         3891                      Mean           3600.688
+                        Largest       Std. Dev.       1510.34
+75%         4854           6601
+90%         5376           6606       Variance        2281125
+95%         5604           6608       Skewness      -.4979649
+99%         5921           6618       Kurtosis       2.238239
+
+     follow up time in years if no incident outcome and
+                         died, years
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     .6543463       .0109514
+ 5%     2.132786       .0136893
+10%     3.520876        .019165       Obs              55,023
+25%     6.817248       .0219028       Sum of Wgt.      55,023
+
+50%     10.65298                      Mean           9.858148
+                        Largest       Std. Dev.      4.135084
+75%     13.28953       18.07255
+90%     14.71869       18.08624       Variance       17.09892
+95%     15.34292       18.09172       Skewness      -.4979649
+99%     16.21082        18.1191       Kurtosis       2.238239
+
+         follow up time in days if Dementia incident
+               outcome and died/survived, days
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%        -5593         -14486
+ 5%        -2872          -9891
+10%        -1498          -9637       Obs               4,505
+25%         1297          -7935       Sum of Wgt.       4,505
+
+50%         3170                      Mean           2358.498
+                        Largest       Std. Dev.      2561.279
+75%         4212           6018
+90%         4809           6027       Variance        6560150
+95%         5047           6039       Skewness      -1.314318
+99%         5514           6269       Kurtosis       4.547873
+
+         follow up time in days if Dementia incident
+              outcome and died/survived, years
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     -15.3128      -39.66051
+ 5%    -7.863108      -27.08008
+10%    -4.101301      -26.38467       Obs               4,505
+25%     3.550992      -21.72485       Sum of Wgt.       4,505
+
+50%     8.678987                      Mean           6.457215
+                        Largest       Std. Dev.        7.0124
+75%     11.53183       16.47639
+90%     13.16632       16.50103       Variance       49.17375
+95%     13.81793       16.53388       Skewness      -1.314318
+99%     15.09651       17.16359       Kurtosis       4.547873
+
+                           time_PD
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     2.787132      -39.66051
+ 5%     9.590692      -27.08008
+10%     13.50034      -26.38467       Obs             501,936
+25%     13.96851      -21.72485       Sum of Wgt.     501,936
+
+50%     14.78713                      Mean           14.31025
+                        Largest       Std. Dev.      2.436986
+75%     15.51814       18.07255
+90%     15.95893       18.08624       Variance         5.9389
+95%     16.24914       18.09172       Skewness      -3.813511
+99%     16.64066        18.1191       Kurtosis       23.45731
+
+                           Age_PD
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     55.04723       25.46475
+ 5%     57.46749       30.63107
+10%     59.54825       31.87954       Obs             501,936
+25%      65.0486       36.48186       Sum of Wgt.     501,936
+
+50%      72.3833                      Mean           71.34708
+                        Largest       Std. Dev.      8.038351
+75%     77.71664       87.63313
+90%     81.46748       87.63313       Variance       64.61508
+95%     83.04723       87.80014       Skewness      -.3002935
+99%     84.87885       89.80151       Kurtosis       2.126319
+
+               Analysis time when record ends
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     55.12936       40.37783
+ 5%     57.54962         40.846
+10%     59.54826        41.1718       Obs             501,037
+25%      65.0486       41.36618       Sum of Wgt.     501,037
+
+50%      72.3833                      Mean           71.37239
+                        Largest       Std. Dev.      8.017598
+75%      77.8015       87.63313
+90%     81.46748       87.63313       Variance       64.28187
+95%     83.04723       87.80014       Skewness      -.2942904
+99%     84.87885       89.80151       Kurtosis       2.100843
+
+              Analysis time when record begins
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     40.95551       37.41821
+ 5%     42.77618       38.87201
+10%     44.87337       39.19507       Obs             501,037
+25%      50.5462       39.66051       Sum of Wgt.     501,037
+
+50%     58.26694                      Mean           57.02658
+                        Largest       Std. Dev.      8.090817
+75%     63.68241       72.11225
+90%      67.1759       72.43806       Variance       65.46132
+95%     68.59959       72.91171       Skewness      -.3182028
+99%     69.83436       73.69199       Kurtosis       1.993165
+
+                            _t_PD
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     55.12936       40.37783
+ 5%     57.54962         40.846
+10%     59.54826        41.1718       Obs             501,037
+25%      65.0486       41.36618       Sum of Wgt.     501,037
+
+50%      72.3833                      Mean           71.37239
+                        Largest       Std. Dev.      8.017598
+75%      77.8015       87.63313
+90%     81.46748       87.63313       Variance       64.28187
+95%     83.04723       87.80014       Skewness      -.2942904
+99%     84.87885       89.80151       Kurtosis       2.100843
+
+                 1 if failure; 0 if censored
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs             501,037
+25%            0              0       Sum of Wgt.     501,037
+
+50%            0                      Mean           .0071971
+                        Largest       Std. Dev.      .0845298
+75%            0              1
+90%            0              1       Variance       .0071453
+95%            0              1       Skewness       11.65987
+99%            0              1       Kurtosis       136.9526
+
+                            _d_PD
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs             501,037
+25%            0              0       Sum of Wgt.     501,037
+
+50%            0                      Mean           .0071971
+                        Largest       Std. Dev.      .0845298
+75%            0              1
+90%            0              1       Variance       .0071453
+95%            0              1       Skewness       11.65987
+99%            0              1       Kurtosis       136.9526
+
+. tab1 PD_diag
+
+-> tabulation of PD_diag  
+
+    PD_diag |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    497,431       99.10       99.10
+          1 |      4,505        0.90      100.00
+------------+-----------------------------------
+      Total |    501,936      100.00
+
+. save, replace
+file /opt/notebooks/PD_UKB.dta saved
+
+. use n_eid n_21022_0_0 n_20009_0_* n_20002_0_* s_41202_0_* n_34_0_0 s_52_0_0 s_
+> 53_0_0 s_40000_*_0 s_40001_*_0  n_40007_*_0  s_42030_0_0 s_42032_0_0 using  "/
+> opt/notebooks/SMALLERDATASETUKBfin", clear
+
+. save "/opt/notebooks/MORT_UKB",replace
+file /opt/notebooks/MORT_UKB.dta saved
+
+. use "/opt/notebooks/MORT_UKB",clear
+
+. capture drop birthyear
+
+. gen birthyear=n_34_0_0
+
+. capture drop n_52_0_0
+
+. gen n_52_0_0=.
+(501,936 missing values generated)
+
+. replace n_52_0_0=1 if s_52_0_0=="January"
+(42,398 real changes made)
+
+. replace n_52_0_0=2 if s_52_0_0=="February"
+(39,909 real changes made)
+
+. replace n_52_0_0=3 if s_52_0_0=="March"
+(45,048 real changes made)
+
+. replace n_52_0_0=4 if s_52_0_0=="April"
+(43,014 real changes made)
+
+. replace n_52_0_0=5 if s_52_0_0=="May"
+(45,077 real changes made)
+
+. replace n_52_0_0=6 if s_52_0_0=="June"
+(42,386 real changes made)
+
+. replace n_52_0_0=7 if s_52_0_0=="July"
+(42,558 real changes made)
+
+. replace n_52_0_0=8 if s_52_0_0=="August"
+(41,419 real changes made)
+
+. replace n_52_0_0=9 if s_52_0_0=="September"
+(40,875 real changes made)
+
+. replace n_52_0_0=10 if s_52_0_0=="October"
+(40,567 real changes made)
+
+. replace n_52_0_0=11 if s_52_0_0=="November"
+(38,327 real changes made)
+
+. replace n_52_0_0=12 if s_52_0_0=="December"
+(40,358 real changes made)
+
+. capture drop birthmonth
+
+. gen birthmonth=n_52_0_0
+
+. capture drop birthdate
+
+. gen birthdate=mdy(birthmonth,14,birthyear)
+
+. capture gen double ts_53_0_0 = date(s_53_0_0,"YMD")
+
+. capture format ts_53_0_0 %td
+
+. capture label variable ts_53_0_0 "Date of attending assessment centre"
+
+. capture gen double ts_53_1_0 = date(s_53_1_0,"YMD")
+
+. capture format ts_53_1_0 %td
+
+. capture label variable ts_53_1_0 "Date of attending assessment centre"
+
+. capture gen double ts_53_2_0 = date(s_53_2_0,"YMD")
+
+. capture format ts_53_2_0 %td
+
+. capture label variable ts_53_2_0 "Date of attending assessment centre"
+
+. capture gen double ts_53_3_0 = date(s_53_3_0,"YMD")
+
+. capture format ts_53_3_0 %td
+
+. capture label variable ts_53_3_0 "Date of attending assessment centre"
+
+. capture gen double ts_40000_0_0 = date(s_40000_0_0,"YMD")
+
+. capture format ts_40000_0_0 %td
+
+. capture label variable ts_40000_0_0 "Date of death"
+
+. capture gen double ts_40000_1_0 = date(s_40000_1_0,"YMD")
+
+. capture format ts_40000_1_0 %td
+
+. capture label variable ts_40000_1_0 "Date of death"
+
+. format %18.14f n_40007_0_0
+
+. format %18.14f n_40007_1_0
+
+. capture gen double ts_42018_0_0 = date(s_42018_0_0,"YMD")
+
+. capture format ts_42018_0_0 %td
+
+. capture label variable ts_42018_0_0 "Date of all cause dementia report"
+
+. capture gen double ts_42020_0_0 = date(s_42020_0_0,"YMD")
+
+. capture format ts_42020_0_0 %td
+
+. capture label variable ts_42020_0_0 "Date of alzheimers disease report"
+
+. capture gen double ts_42030_0_0 = date(s_42030_0_0,"YMD")
+
+. capture format ts_42030_0_0 %td
+
+. capture label variable ts_42030_0_0 "Date of all cause parkinsonism report"
+
+. capture gen double ts_42032_0_0 = date(s_42032_0_0,"YMD")
+
+. capture format ts_42032_0_0 %td
+
+. capture label variable ts_42032_0_0 "Date of parkinsons disease report"
+
+. capture drop startdate
+
+. gen startdate=ts_53_0_0
+
+. format startdate %d
+
+. capture drop baselineage
+
+. gen baselineage=(startdate-birthdate)/365.25
+
+. capture drop deathdate
+
+. gen deathdate = ts_40000_0_0
+(446,913 missing values generated)
+
+. replace deathdate =  ts_40000_1_0 if deathdate ==.
+(0 real changes made)
+
+. format deathdate %d
+
+. label var deathdate "date of death"
+
+. capture drop died
+
+. gen died=.
+(501,936 missing values generated)
+
+. replace died=1 if deathdate~=.
+(55,023 real changes made)
+
+. replace died=0 if deathdate==.
+(446,913 real changes made)
+
+. gen died_of_cancer = 0
+
+. replace died_of_cancer = 1 if substr(s_40001_0_0, 1, 1) == "C" | (substr(s_400
+> 01_0_0, 1, 1) == "D" & inrange(real(substr(s_40001_0_0, 2, 2)), 0, 48))
+(25,510 real changes made)
+
+. label variable died_of_cancer "Died of Cancer/Neoplasm (C00-D48) vs. not"
+
+. gen died_of_cvd = 0
+
+. replace died_of_cvd = 1 if substr(s_40001_0_0, 1, 1) == "I"
+(11,614 real changes made)
+
+. label variable died_of_cvd "Died of Cardiovascular Disease (I00-I99) vs. not"
+
+. gen died_of_respiratory = 0
+
+. replace died_of_respiratory = 1 if substr(s_40001_0_0, 1, 1) == "J"
+(4,206 real changes made)
+
+. label variable died_of_respiratory "Died of Respiratory Disease (J00-J99) vs. 
+> not"
+
+. gen died_of_external = 0
+
+. replace died_of_external = 1 if inlist(substr(s_40001_0_0, 1, 1), "V", "W", "X
+> ", "Y")
+(1,455 real changes made)
+
+. label variable died_of_external "Died of External Causes (V01-Y89) vs. not"
+
+. gen died_of_covid19 = 0
+
+. replace died_of_covid19 = 1 if s_40001_0_0 == "U071" | s_40001_0_0 == "U072"
+(0 real changes made)
+
+. label variable died_of_covid19 "Died of COVID-19 (U07.1/U07.2) vs. not"
+
+. mvencode died_of_cancer died_of_cvd died_of_respiratory died_of_external died_
+> of_covid19, mv(-1)
+
+. capture drop deathage
+
+. gen deathage=.
+(501,936 missing values generated)
+
+. replace deathage=n_40007_0_0 if n_40007_0_0~=.
+(55,023 real changes made)
+
+. replace deathage=n_40007_1_0 if n_40007_1_0~=.
+(0 real changes made)
+
+. capture drop doexit
+
+. gen doexit = deathdate if died==1
+(446,913 missing values generated)
+
+. replace doexit = d(1jan2024) if doexit==. & died==0
+(446,913 real changes made)
+
+. format doexit %d
+
+. capture drop time0_0 timeyrs0_0
+
+. gen time0_0 = doexit - startdate if died==0
+(55,023 missing values generated)
+
+. gen timeyrs0_0 = time0_0/365.25
+(55,023 missing values generated)
+
+. label var time0_0 "follow up time in days if no incident outcome and survived,
+>  days"
+
+. label var timeyrs0_0 "follow up time in years if no incident outcome and survi
+> ved, years"
+
+. capture drop time1_0 timeyrs1_0
+
+. gen time1_0 = doexit - startdate if died==1
+(446,913 missing values generated)
+
+. gen timeyrs1_0 = time1_0 /365.25
+(446,913 missing values generated)
+
+. label var time1_0 "follow up time in days if no incident outcome and died, day
+> s"
+
+. label var timeyrs1_0 "follow up time in years if no incident outcome and died,
+>  years"
+
+. capture drop time_death
+
+. gen time_death=.
+(501,936 missing values generated)
+
+. replace time_death=timeyrs1_0  if  died==1
+(55,023 real changes made)
+
+. replace time_death=timeyrs0_0   if died==0
+(446,913 real changes made)
+
+. capture drop Age_death
+
+. gen Age_death=.
+(501,936 missing values generated)
+
+. replace Age_death=baselineage+time_death
+(501,936 real changes made)
+
+. capture stset,clear
+
+. stset Age_death, failure(died==1) enter(baselineage) id(n_eid) scale(1)
+
+                id:  n_eid
+     failure event:  died == 1
+obs. time interval:  (Age_death[_n-1], Age_death]
+ enter on or after:  time baselineage
+ exit on or before:  failure
+
+------------------------------------------------------------------------------
+    501,936  total observations
+          0  exclusions
+------------------------------------------------------------------------------
+    501,936  observations remaining, representing
+    501,936  subjects
+     55,023  failures in single-failure-per-subject data
+  7,212,547  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  37.41821
+                                          last observed exit t =  89.80151
+
+. capture drop _d_death
+
+. gen _d_death=_d
+
+. capture drop _t_death
+
+. gen _t_death=_t
+
+. su time* Age* _t* _d*, det
+
+      follow up time in days if no incident outcome and
+                       survived, days
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%         4930           4840
+ 5%         4965           4840
+10%         5012           4840       Obs             446,913
+25%         5196           4840       Sum of Wgt.     446,913
+
+50%         5448                      Mean           5451.312
+                        Largest       Std. Dev.      313.2057
+75%         5696           6503
+90%         5858           6503       Variance       98097.81
+95%         5950           6503       Skewness       .1879071
+99%         6081           6503       Kurtosis       2.448868
+
+     follow up time in years if no incident outcome and
+                       survived, years
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%      13.4976        13.2512
+ 5%     13.59343        13.2512
+10%     13.72211        13.2512       Obs             446,913
+25%     14.22587        13.2512       Sum of Wgt.     446,913
+
+50%     14.91581                      Mean           14.92488
+                        Largest       Std. Dev.      .8575105
+75%      15.5948       17.80424
+90%     16.03833       17.80424       Variance       .7353242
+95%     16.29021       17.80424       Skewness       .1879071
+99%     16.64887       17.80424       Kurtosis       2.448868
+
+      follow up time in days if no incident outcome and
+                         died, days
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%          239              4
+ 5%          779              5
+10%         1286              7       Obs              55,023
+25%         2490              8       Sum of Wgt.      55,023
+
+50%         3891                      Mean           3600.688
+                        Largest       Std. Dev.       1510.34
+75%         4854           6601
+90%         5376           6606       Variance        2281125
+95%         5604           6608       Skewness      -.4979649
+99%         5921           6618       Kurtosis       2.238239
+
+     follow up time in years if no incident outcome and
+                         died, years
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     .6543463       .0109514
+ 5%     2.132786       .0136893
+10%     3.520876        .019165       Obs              55,023
+25%     6.817248       .0219028       Sum of Wgt.      55,023
+
+50%     10.65298                      Mean           9.858148
+                        Largest       Std. Dev.      4.135084
+75%     13.28953       18.07255
+90%     14.71869       18.08624       Variance       17.09892
+95%     15.34292       18.09172       Skewness      -.4979649
+99%     16.21082        18.1191       Kurtosis       2.238239
+
+                         time_death
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     3.290897       .0109514
+ 5%     10.08624       .0136893
+10%     13.51677        .019165       Obs             501,936
+25%     13.99042       .0219028       Sum of Wgt.     501,936
+
+50%     14.79261                      Mean           14.36946
+                        Largest       Std. Dev.      2.243833
+75%     15.52088       18.07255
+90%     15.96167       18.08624       Variance       5.034785
+95%     16.24914       18.09172       Skewness      -3.358623
+99%     16.64066        18.1191       Kurtosis       16.50474
+
+                          Age_death
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     55.12936       40.37783
+ 5%     57.54962         40.846
+10%     59.54826        41.1718       Obs             501,936
+25%      65.0486       41.36618       Sum of Wgt.     501,936
+
+50%     72.46817                      Mean           71.40628
+                        Largest       Std. Dev.       8.02413
+75%     77.80151       87.63313
+90%     81.46749       87.65229       Variance       64.38666
+95%     83.12936       87.80014       Skewness      -.2979772
+99%     84.87885       89.80151       Kurtosis       2.099708
+
+               Analysis time when record ends
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     55.12936       40.37783
+ 5%     57.54962         40.846
+10%     59.54826        41.1718       Obs             501,936
+25%      65.0486       41.36618       Sum of Wgt.     501,936
+
+50%     72.46817                      Mean           71.40628
+                        Largest       Std. Dev.       8.02413
+75%     77.80151       87.63313
+90%     81.46749       87.65229       Variance       64.38666
+95%     83.12936       87.80014       Skewness      -.2979772
+99%     84.87885       89.80151       Kurtosis       2.099708
+
+              Analysis time when record begins
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     40.95551       37.41821
+ 5%     42.78166       38.87201
+10%     44.88159       39.19507       Obs             501,936
+25%     50.55715       39.66051       Sum of Wgt.     501,936
+
+50%     58.28337                      Mean           57.03682
+                        Largest       Std. Dev.      8.090545
+75%     63.69336       72.11225
+90%     67.18138       72.43806       Variance       65.45692
+95%     68.60233       72.91171       Skewness      -.3196685
+99%     69.83436       73.69199       Kurtosis         1.9942
+
+                          _t_death
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     55.12936       40.37783
+ 5%     57.54962         40.846
+10%     59.54826        41.1718       Obs             501,936
+25%      65.0486       41.36618       Sum of Wgt.     501,936
+
+50%     72.46817                      Mean           71.40628
+                        Largest       Std. Dev.       8.02413
+75%     77.80151       87.63313
+90%     81.46749       87.65229       Variance       64.38666
+95%     83.12936       87.80014       Skewness      -.2979772
+99%     84.87885       89.80151       Kurtosis       2.099708
+
+                 1 if failure; 0 if censored
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs             501,936
+25%            0              0       Sum of Wgt.     501,936
+
+50%            0                      Mean           .1096215
+                        Largest       Std. Dev.      .3124178
+75%            0              1
+90%            1              1       Variance       .0976049
+95%            1              1       Skewness       2.499082
+99%            1              1       Kurtosis       7.245412
+
+                          _d_death
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs             501,936
+25%            0              0       Sum of Wgt.     501,936
+
+50%            0                      Mean           .1096215
+                        Largest       Std. Dev.      .3124178
+75%            0              1
+90%            1              1       Variance       .0976049
+95%            1              1       Skewness       2.499082
+99%            1              1       Kurtosis       7.245412
+
+. tab1 died
+
+-> tabulation of died  
+
+       died |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    446,913       89.04       89.04
+          1 |     55,023       10.96      100.00
+------------+-----------------------------------
+      Total |    501,936      100.00
+
+. save, replace
+file /opt/notebooks/MORT_UKB.dta saved
+
+. use n_eid n_21022_0_0 n_20009_0_* n_20002_0_* s_41202_0_* n_34_0_0 s_52_0_0 s_
+> 53_0_0 s_40000_*_0  n_40007_*_0   using "/opt/notebooks/SMALLERDATASETUKBfin",
+>  clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save "/opt/notebooks/ADIS_UKB",replace
+file /opt/notebooks/ADIS_UKB.dta saved
+
+. use n_eid tsa* using "/opt/notebooks/DATES_SMALL",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save "/opt/notebooks/ADIS_UKB2",replace
+file /opt/notebooks/ADIS_UKB2.dta saved
+
+. use "/opt/notebooks/ADIS_UKB",clear
+
+. merge n_eid using "/opt/notebooks/ADIS_UKB2"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. tab _merge
+
+     _merge |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          3 |    501,936      100.00      100.00
+------------+-----------------------------------
+      Total |    501,936      100.00
+
+. sort n_eid
+
+. save "/opt/notebooks/ADIS_UKBfin",replace
+file /opt/notebooks/ADIS_UKBfin.dta saved
+
+. capture drop birthyear
+
+. gen birthyear=n_34_0_0
+
+. capture drop n_52_0_0
+
+. gen n_52_0_0=.
+(501,936 missing values generated)
+
+. replace n_52_0_0=1 if s_52_0_0=="January"
+(42,398 real changes made)
+
+. replace n_52_0_0=2 if s_52_0_0=="February"
+(39,909 real changes made)
+
+. replace n_52_0_0=3 if s_52_0_0=="March"
+(45,048 real changes made)
+
+. replace n_52_0_0=4 if s_52_0_0=="April"
+(43,014 real changes made)
+
+. replace n_52_0_0=5 if s_52_0_0=="May"
+(45,077 real changes made)
+
+. replace n_52_0_0=6 if s_52_0_0=="June"
+(42,386 real changes made)
+
+. replace n_52_0_0=7 if s_52_0_0=="July"
+(42,558 real changes made)
+
+. replace n_52_0_0=8 if s_52_0_0=="August"
+(41,419 real changes made)
+
+. replace n_52_0_0=9 if s_52_0_0=="September"
+(40,875 real changes made)
+
+. replace n_52_0_0=10 if s_52_0_0=="October"
+(40,567 real changes made)
+
+. replace n_52_0_0=11 if s_52_0_0=="November"
+(38,327 real changes made)
+
+. replace n_52_0_0=12 if s_52_0_0=="December"
+(40,358 real changes made)
+
+. capture drop birthmonth
+
+. gen birthmonth=n_52_0_0
+
+. capture drop birthdate
+
+. gen birthdate=mdy(birthmonth,14,birthyear)
+
+. capture gen double ts_53_0_0 = date(s_53_0_0,"YMD")
+
+. capture format ts_53_0_0 %td
+
+. capture label variable ts_53_0_0 "Date of attending assessment centre"
+
+. capture gen double ts_53_1_0 = date(s_53_1_0,"YMD")
+
+. capture format ts_53_1_0 %td
+
+. capture label variable ts_53_1_0 "Date of attending assessment centre"
+
+. capture gen double ts_53_2_0 = date(s_53_2_0,"YMD")
+
+. capture format ts_53_2_0 %td
+
+. capture label variable ts_53_2_0 "Date of attending assessment centre"
+
+. capture gen double ts_53_3_0 = date(s_53_3_0,"YMD")
+
+. capture format ts_53_3_0 %td
+
+. capture label variable ts_53_3_0 "Date of attending assessment centre"
+
+. capture gen double ts_40000_0_0 = date(s_40000_0_0,"YMD")
+
+. capture format ts_40000_0_0 %td
+
+. capture label variable ts_40000_0_0 "Date of death"
+
+. capture gen double ts_40000_1_0 = date(s_40000_1_0,"YMD")
+
+. capture format ts_40000_1_0 %td
+
+. capture label variable ts_40000_1_0 "Date of death"
+
+. format %18.14f n_40007_0_0
+
+. format %18.14f n_40007_1_0
+
+. capture drop startdate
+
+. gen startdate=ts_53_0_0
+
+. format startdate %d
+
+. capture drop baselineage
+
+. gen baselineage=(startdate-birthdate)/365.25
+
+. capture drop ADIS_EARLIESTDATE
+
+. egen ADIS_EARLIESTDATE= rmin(tsa_*)
+(423,789 missing values generated)
+
+. capture drop ADIS_diag
+
+. gen ADIS_diag=.
+(501,936 missing values generated)
+
+. replace ADIS_diag=1 if ADIS_EARLIESTDATE~=.
+(78,147 real changes made)
+
+. replace ADIS_diag=0 if ADIS_diag~=1
+(423,789 real changes made)
+
+. su ADIS_EARLIESTDATE
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+ADIS_EARLI~E |     78,147    16207.67    5658.536      -7489      23558
+
+. tab ADIS_diag
+
+  ADIS_diag |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    423,789       84.43       84.43
+          1 |     78,147       15.57      100.00
+------------+-----------------------------------
+      Total |    501,936      100.00
+
+. capture drop startdate
+
+. gen startdate=ts_53_0_0
+
+. format startdate %d
+
+. capture drop baselineage
+
+. gen baselineage=(startdate-birthdate)/365.25
+
+. capture drop deathdate
+
+. gen deathdate = ts_40000_0_0
+(446,913 missing values generated)
+
+. replace deathdate =  ts_40000_1_0 if deathdate ==.
+(0 real changes made)
+
+. format deathdate %d
+
+. label var deathdate "date of death"
+
+. capture drop died
+
+. gen died=.
+(501,936 missing values generated)
+
+. replace died=1 if deathdate~=.
+(55,023 real changes made)
+
+. replace died=0 if deathdate==.
+(446,913 real changes made)
+
+. capture drop deathage
+
+. gen deathage=.
+(501,936 missing values generated)
+
+. replace deathage=n_40007_0_0 if n_40007_0_0~=.
+(55,023 real changes made)
+
+. replace deathage=n_40007_1_0 if n_40007_1_0~=.
+(0 real changes made)
+
+. capture drop doexit
+
+. gen doexit = deathdate if died==1
+(446,913 missing values generated)
+
+. replace doexit = d(1jan2024) if doexit==. & died==0
+(446,913 real changes made)
+
+. format doexit %d
+
+. capture drop time0_0 timeyrs0_0ADIS
+
+. gen time0_0ADIS = doexit - startdate if died==0
+(55,023 missing values generated)
+
+. gen timeyrs0_0ADIS = time0_0ADIS/365.25
+(55,023 missing values generated)
+
+. label var time0_0ADIS "follow up time in days if no incident outcome and survi
+> ved, days"
+
+. label var timeyrs0_0ADIS "follow up time in years if no incident outcome and s
+> urvived, years"
+
+. capture drop time1_0ADIS timeyrs1_0ADIS
+
+. gen time1_0ADIS = doexit - startdate if died==1
+(446,913 missing values generated)
+
+. gen timeyrs1_0ADIS = time1_0ADIS /365.25
+(446,913 missing values generated)
+
+. label var time1_0ADIS "follow up time in days if no incident outcome and died,
+>  days"
+
+. label var timeyrs1_0ADIS "follow up time in years if no incident outcome and d
+> ied, years"
+
+. capture drop time01_1AADIS
+
+. capture drop time01_1AyearsADIS
+
+. gen time01_1AADIS = ADIS_EARLIESTDATE - startdate
+(423,789 missing values generated)
+
+. gen time01_1AyearsADIS = time01_1AADIS/365.25
+(423,789 missing values generated)
+
+. replace time01_1AyearsADIS=time01_1AyearsADIS if time01_1AyearsADIS>-10
+(0 real changes made)
+
+. label var time01_1AADIS "follow up time in days if Dementia incident outcome a
+> nd died/survived, days"
+
+. label var time01_1AyearsADIS "follow up time in days if Dementia incident outc
+> ome and died/survived, years"
+
+. capture drop time_ADIS
+
+. gen time_ADIS=.
+(501,936 missing values generated)
+
+. replace time_ADIS=timeyrs1_0ADIS  if ADIS_diag==0 & died==1
+(38,491 real changes made)
+
+. replace time_ADIS=time01_1AyearsADIS   if ADIS_diag==1
+(78,147 real changes made)
+
+. replace time_ADIS=timeyrs0_0ADIS   if time_ADIS==.
+(385,298 real changes made)
+
+. capture drop Age_ADIS
+
+. gen Age_ADIS=.
+(501,936 missing values generated)
+
+. replace Age_ADIS=baselineage+time_ADIS
+(501,936 real changes made)
+
+. capture stset,clear
+
+. stset Age_ADIS, failure(ADIS_diag==1) enter(baselineage) id(n_eid) scale(1)
+
+                id:  n_eid
+     failure event:  ADIS_diag == 1
+obs. time interval:  (Age_ADIS[_n-1], Age_ADIS]
+ enter on or after:  time baselineage
+ exit on or before:  failure
+
+------------------------------------------------------------------------------
+    501,936  total observations
+     41,319  observations end on or before enter()
+------------------------------------------------------------------------------
+    460,617  observations remaining, representing
+    460,617  subjects
+     36,828  failures in single-failure-per-subject data
+  6,397,381  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  37.41821
+                                          last observed exit t =  89.80151
+
+. capture drop _d_ADIS
+
+. gen _d_ADIS=_d
+(41,319 missing values generated)
+
+. capture drop _t_ADIS
+
+. gen _t_ADIS=_t
+(41,319 missing values generated)
+
+. su time* Age* _t* _d*, det
+
+      follow up time in days if no incident outcome and
+                       survived, days
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%         4930           4840
+ 5%         4965           4840
+10%         5012           4840       Obs             446,913
+25%         5196           4840       Sum of Wgt.     446,913
+
+50%         5448                      Mean           5451.312
+                        Largest       Std. Dev.      313.2057
+75%         5696           6503
+90%         5858           6503       Variance       98097.81
+95%         5950           6503       Skewness       .1879071
+99%         6081           6503       Kurtosis       2.448868
+
+     follow up time in years if no incident outcome and
+                       survived, years
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%      13.4976        13.2512
+ 5%     13.59343        13.2512
+10%     13.72211        13.2512       Obs             446,913
+25%     14.22587        13.2512       Sum of Wgt.     446,913
+
+50%     14.91581                      Mean           14.92488
+                        Largest       Std. Dev.      .8575105
+75%      15.5948       17.80424
+90%     16.03833       17.80424       Variance       .7353242
+95%     16.29021       17.80424       Skewness       .1879071
+99%     16.64887       17.80424       Kurtosis       2.448868
+
+      follow up time in days if no incident outcome and
+                         died, days
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%          239              4
+ 5%          779              5
+10%         1286              7       Obs              55,023
+25%         2490              8       Sum of Wgt.      55,023
+
+50%         3891                      Mean           3600.688
+                        Largest       Std. Dev.       1510.34
+75%         4854           6601
+90%         5376           6606       Variance        2281125
+95%         5604           6608       Skewness      -.4979649
+99%         5921           6618       Kurtosis       2.238239
+
+     follow up time in years if no incident outcome and
+                         died, years
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     .6543463       .0109514
+ 5%     2.132786       .0136893
+10%     3.520876        .019165       Obs              55,023
+25%     6.817248       .0219028       Sum of Wgt.      55,023
+
+50%     10.65298                      Mean           9.858148
+                        Largest       Std. Dev.      4.135084
+75%     13.28953       18.07255
+90%     14.71869       18.08624       Variance       17.09892
+95%     15.34292       18.09172       Skewness      -.4979649
+99%     16.21082        18.1191       Kurtosis       2.238239
+
+         follow up time in days if Dementia incident
+               outcome and died/survived, days
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%       -18802         -25415
+ 5%       -13810         -25002
+10%       -10465         -24939       Obs              78,147
+25%        -4096         -24930       Sum of Wgt.      78,147
+
+50%         -331                      Mean          -1702.972
+                        Largest       Std. Dev.      5655.257
+75%         2616           6114
+90%         4088           6197       Variance       3.20e+07
+95%         4569           6219       Skewness      -1.194038
+99%         5118           6466       Kurtosis       3.989118
+
+         follow up time in days if Dementia incident
+              outcome and died/survived, years
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%    -51.47707      -69.58248
+ 5%    -37.80972      -68.45174
+10%    -28.65161      -68.27926       Obs              78,147
+25%    -11.21424      -68.25462       Sum of Wgt.      78,147
+
+50%    -.9062286                      Mean          -4.662484
+                        Largest       Std. Dev.      15.48325
+75%     7.162218       16.73922
+90%     11.19233       16.96646       Variance        239.731
+95%     12.50924       17.02669       Skewness      -1.194038
+99%     14.01232       17.70294       Kurtosis       3.989118
+
+                          time_ADIS
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     -34.8063      -69.58248
+ 5%    -7.819302      -68.45174
+10%     2.806297      -68.27926       Obs             501,936
+25%     13.58522      -68.25462       Sum of Wgt.     501,936
+
+50%     14.53525                      Mean           11.47455
+                        Largest       Std. Dev.      9.442743
+75%     15.40041       18.07255
+90%     15.90691       18.08624       Variance       89.16539
+95%      16.2026       18.09172       Skewness      -3.710354
+99%     16.62423        18.1191       Kurtosis       18.78549
+
+                          Age_ADIS
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     21.54689      -.1204643
+ 5%     48.58042      -.1177292
+10%     56.55031      -.1177292       Obs             501,936
+25%     62.38193      -.0355949       Sum of Wgt.     501,936
+
+50%     70.54893                      Mean           68.51137
+                        Largest       Std. Dev.       11.8632
+75%     76.87885       87.63313
+90%     80.87885       87.65229       Variance       140.7356
+95%     82.71594       87.80014       Skewness      -1.698353
+99%     84.71732       89.80151       Kurtosis       7.855192
+
+               Analysis time when record ends
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%      54.0397       40.37783
+ 5%      57.0486       40.59959
+10%     59.04723         40.846       Obs             460,617
+25%     64.46817       40.95277       Sum of Wgt.     460,617
+
+50%     71.71526                      Mean           70.82155
+                        Largest       Std. Dev.      8.172232
+75%     77.29774       87.63313
+90%     81.13073       87.65229       Variance       66.78537
+95%     82.87748       87.80014       Skewness       -.297563
+99%     84.80219       89.80151       Kurtosis       2.222257
+
+              Analysis time when record begins
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     40.94182       37.41821
+ 5%     42.72964       38.87201
+10%     44.79398       39.19507       Obs             460,617
+25%     50.39562       39.66051       Sum of Wgt.     460,617
+
+50%     58.14374                      Mean           56.93283
+                        Largest       Std. Dev.      8.107804
+75%     63.60575       71.15674
+90%     67.14031       72.11225       Variance       65.73649
+95%     68.57495       72.91171       Skewness      -.3045139
+99%     69.82889       73.69199       Kurtosis       1.979107
+
+                           _t_ADIS
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%      54.0397       40.37783
+ 5%      57.0486       40.59959
+10%     59.04723         40.846       Obs             460,617
+25%     64.46817       40.95277       Sum of Wgt.     460,617
+
+50%     71.71526                      Mean           70.82155
+                        Largest       Std. Dev.      8.172232
+75%     77.29774       87.63313
+90%     81.13073       87.65229       Variance       66.78537
+95%     82.87748       87.80014       Skewness       -.297563
+99%     84.80219       89.80151       Kurtosis       2.222257
+
+                 1 if failure; 0 if censored
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs             460,617
+25%            0              0       Sum of Wgt.     460,617
+
+50%            0                      Mean           .0799536
+                        Largest       Std. Dev.      .2712217
+75%            0              1
+90%            0              1       Variance       .0735612
+95%            1              1       Skewness       3.097443
+99%            1              1       Kurtosis       10.59415
+
+                           _d_ADIS
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs             460,617
+25%            0              0       Sum of Wgt.     460,617
+
+50%            0                      Mean           .0799536
+                        Largest       Std. Dev.      .2712217
+75%            0              1
+90%            0              1       Variance       .0735612
+95%            1              1       Skewness       3.097443
+99%            1              1       Kurtosis       10.59415
+
+. tab1 ADIS_diag
+
+-> tabulation of ADIS_diag  
+
+  ADIS_diag |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    423,789       84.43       84.43
+          1 |     78,147       15.57      100.00
+------------+-----------------------------------
+      Total |    501,936      100.00
+
+. save "/opt/notebooks/ADIS_UKBfin", replace
+file /opt/notebooks/ADIS_UKBfin.dta saved
+
+. use n_eid n_21022_0_0 n_20009_0_* n_20002_0_* s_41202_0_* n_34_0_0 s_52_0_0 s_
+> 53_0_0 s_40000_*_0  n_40007_*_0  using "/opt/notebooks/SMALLERDATASETUKBfin", 
+> clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save "/opt/notebooks/MS_UKB",replace
+file /opt/notebooks/MS_UKB.dta saved
+
+. use n_eid tsa* using "/opt/notebooks/DATES_SMALL",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save "/opt/notebooks/MS_UKB2",replace
+file /opt/notebooks/MS_UKB2.dta saved
+
+. use "/opt/notebooks/MS_UKB",clear
+
+. merge n_eid using "/opt/notebooks/MS_UKB2"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. tab _merge
+
+     _merge |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          3 |    501,936      100.00      100.00
+------------+-----------------------------------
+      Total |    501,936      100.00
+
+. sort n_eid
+
+. save "/opt/notebooks/MS_UKBfin",replace
+file /opt/notebooks/MS_UKBfin.dta saved
+
+. capture drop birthyear
+
+. gen birthyear=n_34_0_0
+
+. capture drop n_52_0_0
+
+. gen n_52_0_0=.
+(501,936 missing values generated)
+
+. replace n_52_0_0=1 if s_52_0_0=="January"
+(42,398 real changes made)
+
+. replace n_52_0_0=2 if s_52_0_0=="February"
+(39,909 real changes made)
+
+. replace n_52_0_0=3 if s_52_0_0=="March"
+(45,048 real changes made)
+
+. replace n_52_0_0=4 if s_52_0_0=="April"
+(43,014 real changes made)
+
+. replace n_52_0_0=5 if s_52_0_0=="May"
+(45,077 real changes made)
+
+. replace n_52_0_0=6 if s_52_0_0=="June"
+(42,386 real changes made)
+
+. replace n_52_0_0=7 if s_52_0_0=="July"
+(42,558 real changes made)
+
+. replace n_52_0_0=8 if s_52_0_0=="August"
+(41,419 real changes made)
+
+. replace n_52_0_0=9 if s_52_0_0=="September"
+(40,875 real changes made)
+
+. replace n_52_0_0=10 if s_52_0_0=="October"
+(40,567 real changes made)
+
+. replace n_52_0_0=11 if s_52_0_0=="November"
+(38,327 real changes made)
+
+. replace n_52_0_0=12 if s_52_0_0=="December"
+(40,358 real changes made)
+
+. capture drop birthmonth
+
+. gen birthmonth=n_52_0_0
+
+. capture drop birthdate
+
+. gen birthdate=mdy(birthmonth,14,birthyear)
+
+. capture gen double ts_53_0_0 = date(s_53_0_0,"YMD")
+
+. capture format ts_53_0_0 %td
+
+. capture label variable ts_53_0_0 "Date of attending assessment centre"
+
+. capture gen double ts_53_1_0 = date(s_53_1_0,"YMD")
+
+. capture format ts_53_1_0 %td
+
+. capture label variable ts_53_1_0 "Date of attending assessment centre"
+
+. capture gen double ts_53_2_0 = date(s_53_2_0,"YMD")
+
+. capture format ts_53_2_0 %td
+
+. capture label variable ts_53_2_0 "Date of attending assessment centre"
+
+. capture gen double ts_53_3_0 = date(s_53_3_0,"YMD")
+
+. capture format ts_53_3_0 %td
+
+. capture label variable ts_53_3_0 "Date of attending assessment centre"
+
+. capture gen double ts_40000_0_0 = date(s_40000_0_0,"YMD")
+
+. capture format ts_40000_0_0 %td
+
+. capture label variable ts_40000_0_0 "Date of death"
+
+. capture gen double ts_40000_1_0 = date(s_40000_1_0,"YMD")
+
+. capture format ts_40000_1_0 %td
+
+. capture label variable ts_40000_1_0 "Date of death"
+
+. format %18.14f n_40007_0_0
+
+. format %18.14f n_40007_1_0
+
+. capture drop startdate
+
+. gen startdate=ts_53_0_0
+
+. format startdate %d
+
+. capture drop baselineage
+
+. gen baselineage=(startdate-birthdate)/365.25
+
+. capture drop MS_EARLIESTDATE
+
+. egen MS_EARLIESTDATE= rmin(tsa_131042_0_0)
+(499,340 missing values generated)
+
+. capture drop MS_diag
+
+. gen MS_diag=.
+(501,936 missing values generated)
+
+. replace MS_diag=1 if MS_EARLIESTDATE~=.
+(2,596 real changes made)
+
+. replace MS_diag=0 if MS_diag~=1
+(499,340 real changes made)
+
+. su MS_EARLIESTDATE
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+MS_EARLIES~E |      2,596    14170.05    4808.719      -6666      23192
+
+. tab MS_diag
+
+    MS_diag |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    499,340       99.48       99.48
+          1 |      2,596        0.52      100.00
+------------+-----------------------------------
+      Total |    501,936      100.00
+
+. capture drop startdate
+
+. gen startdate=ts_53_0_0
+
+. format startdate %d
+
+. capture drop baselineage
+
+. gen baselineage=(startdate-birthdate)/365.25
+
+. capture drop deathdate
+
+. gen deathdate = ts_40000_0_0
+(446,913 missing values generated)
+
+. replace deathdate =  ts_40000_1_0 if deathdate ==.
+(0 real changes made)
+
+. format deathdate %d
+
+. label var deathdate "date of death"
+
+. capture drop died
+
+. gen died=.
+(501,936 missing values generated)
+
+. replace died=1 if deathdate~=.
+(55,023 real changes made)
+
+. replace died=0 if deathdate==.
+(446,913 real changes made)
+
+. capture drop deathage
+
+. gen deathage=.
+(501,936 missing values generated)
+
+. replace deathage=n_40007_0_0 if n_40007_0_0~=.
+(55,023 real changes made)
+
+. replace deathage=n_40007_1_0 if n_40007_1_0~=.
+(0 real changes made)
+
+. capture drop doexit
+
+. gen doexit = deathdate if died==1
+(446,913 missing values generated)
+
+. replace doexit = d(1jan2024) if doexit==. & died==0
+(446,913 real changes made)
+
+. format doexit %d
+
+. capture drop time0_0 timeyrs0_0MS
+
+. gen time0_0MS = doexit - startdate if died==0
+(55,023 missing values generated)
+
+. gen timeyrs0_0MS = time0_0MS/365.25
+(55,023 missing values generated)
+
+. label var time0_0MS "follow up time in days if no incident outcome and survive
+> d, days"
+
+. label var timeyrs0_0MS "follow up time in years if no incident outcome and sur
+> vived, years"
+
+. capture drop time1_0MS timeyrs1_0MS
+
+. gen time1_0MS = doexit - startdate if died==1
+(446,913 missing values generated)
+
+. gen timeyrs1_0MS = time1_0MS /365.25
+(446,913 missing values generated)
+
+. label var time1_0MS "follow up time in days if no incident outcome and died, d
+> ays"
+
+. label var timeyrs1_0MS "follow up time in years if no incident outcome and die
+> d, years"
+
+. capture drop time01_1AMS
+
+. capture drop time01_1AyearsMS
+
+. gen time01_1AMS = MS_EARLIESTDATE - startdate
+(499,340 missing values generated)
+
+. gen time01_1AyearsMS = time01_1AMS/365.25
+(499,340 missing values generated)
+
+. replace time01_1AyearsMS=time01_1AyearsMS if time01_1AyearsMS>-10
+(0 real changes made)
+
+. label var time01_1AMS "follow up time in days if Dementia incident outcome and
+>  died/survived, days"
+
+. label var time01_1AyearsMS "follow up time in days if Dementia incident outcom
+> e and died/survived, years"
+
+. capture drop time_MS
+
+. gen time_MS=.
+(501,936 missing values generated)
+
+. replace time_MS=timeyrs1_0MS  if MS_diag==0 & died==1
+(54,528 real changes made)
+
+. replace time_MS=time01_1AyearsMS   if MS_diag==1
+(2,596 real changes made)
+
+. replace time_MS=timeyrs0_0MS   if time_MS==.
+(444,812 real changes made)
+
+. capture drop Age_MS
+
+. gen Age_MS=.
+(501,936 missing values generated)
+
+. replace Age_MS=baselineage+time_MS
+(501,936 real changes made)
+
+. capture stset,clear
+
+. stset Age_MS, failure(MS_diag==1) enter(baselineage) id(n_eid) scale(1)
+
+                id:  n_eid
+     failure event:  MS_diag == 1
+obs. time interval:  (Age_MS[_n-1], Age_MS]
+ enter on or after:  time baselineage
+ exit on or before:  failure
+
+------------------------------------------------------------------------------
+    501,936  total observations
+      2,005  observations end on or before enter()
+------------------------------------------------------------------------------
+    499,931  observations remaining, representing
+    499,931  subjects
+        591  failures in single-failure-per-subject data
+  7,180,172  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  37.41821
+                                          last observed exit t =  89.80151
+
+. capture drop _d_MS
+
+. gen _d_MS=_d
+(2,005 missing values generated)
+
+. capture drop _t_MS
+
+. gen _t_MS=_t
+(2,005 missing values generated)
+
+. su time* Age* _t* _d*, det
+
+      follow up time in days if no incident outcome and
+                       survived, days
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%         4930           4840
+ 5%         4965           4840
+10%         5012           4840       Obs             446,913
+25%         5196           4840       Sum of Wgt.     446,913
+
+50%         5448                      Mean           5451.312
+                        Largest       Std. Dev.      313.2057
+75%         5696           6503
+90%         5858           6503       Variance       98097.81
+95%         5950           6503       Skewness       .1879071
+99%         6081           6503       Kurtosis       2.448868
+
+     follow up time in years if no incident outcome and
+                       survived, years
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%      13.4976        13.2512
+ 5%     13.59343        13.2512
+10%     13.72211        13.2512       Obs             446,913
+25%     14.22587        13.2512       Sum of Wgt.     446,913
+
+50%     14.91581                      Mean           14.92488
+                        Largest       Std. Dev.      .8575105
+75%      15.5948       17.80424
+90%     16.03833       17.80424       Variance       .7353242
+95%     16.29021       17.80424       Skewness       .1879071
+99%     16.64887       17.80424       Kurtosis       2.448868
+
+      follow up time in days if no incident outcome and
+                         died, days
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%          239              4
+ 5%          779              5
+10%         1286              7       Obs              55,023
+25%         2490              8       Sum of Wgt.      55,023
+
+50%         3891                      Mean           3600.688
+                        Largest       Std. Dev.       1510.34
+75%         4854           6601
+90%         5376           6606       Variance        2281125
+95%         5604           6608       Skewness      -.4979649
+99%         5921           6618       Kurtosis       2.238239
+
+     follow up time in years if no incident outcome and
+                         died, years
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     .6543463       .0109514
+ 5%     2.132786       .0136893
+10%     3.520876        .019165       Obs              55,023
+25%     6.817248       .0219028       Sum of Wgt.      55,023
+
+50%     10.65298                      Mean           9.858148
+                        Largest       Std. Dev.      4.135084
+75%     13.28953       18.07255
+90%     14.71869       18.08624       Variance       17.09892
+95%     15.34292       18.09172       Skewness      -.4979649
+99%     16.21082        18.1191       Kurtosis       2.238239
+
+         follow up time in days if Dementia incident
+               outcome and died/survived, days
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%       -15593         -24719
+ 5%       -12211         -18193
+10%       -10300         -17743       Obs               2,596
+25%        -6796         -17655       Sum of Wgt.       2,596
+
+50%      -3554.5                      Mean          -3728.087
+                        Largest       Std. Dev.      4801.729
+75%       -353.5           5316
+90%         2731           5390       Variance       2.31e+07
+95%         3792           5553       Skewness      -.3227536
+99%         4919           5556       Kurtosis       2.730097
+
+         follow up time in days if Dementia incident
+              outcome and died/survived, years
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%    -42.69131      -67.67693
+ 5%     -33.4319      -49.80972
+10%    -28.19986      -48.57769       Obs               2,596
+25%    -18.60643      -48.33675       Sum of Wgt.       2,596
+
+50%    -9.731691                      Mean          -10.20695
+                        Largest       Std. Dev.      13.14642
+75%    -.9678302       14.55441
+90%      7.47707       14.75702       Variance       172.8283
+95%     10.38193       15.20329       Skewness      -.3227536
+99%     13.46749        15.2115       Kurtosis       2.730097
+
+                           time_MS
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     2.231348      -67.67693
+ 5%     9.511293      -49.80972
+10%     13.50308      -48.57769       Obs             501,936
+25%     13.97125      -48.33675       Sum of Wgt.     501,936
+
+50%     14.78713                      Mean            14.2441
+                        Largest       Std. Dev.      2.999667
+75%     15.51814       18.07255
+90%     15.95893       18.08624       Variance       8.998003
+95%     16.24914       18.09172       Skewness      -6.694797
+99%     16.64066        18.1191       Kurtosis       77.10617
+
+                           Age_MS
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     54.63381       .4654312
+ 5%     57.38261       15.38398
+10%     59.38125       15.46612       Obs             501,936
+25%     64.96372       15.96441       Sum of Wgt.     501,936
+
+50%      72.3833                      Mean           71.28092
+                        Largest       Std. Dev.      8.272939
+75%     77.80151       87.63313
+90%     81.46748       87.65229       Variance       68.44152
+95%     83.12936       87.80014       Skewness      -.5006474
+99%     84.87885       89.80151       Kurtosis       3.109105
+
+               Analysis time when record ends
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     55.12936       40.37783
+ 5%      57.4976         40.846
+10%     59.54826        41.1718       Obs             499,931
+25%      65.0486       41.36618       Sum of Wgt.     499,931
+
+50%     72.46817                      Mean           71.40339
+                        Largest       Std. Dev.      8.034366
+75%     77.80151       87.63313
+90%     81.46749       87.65229       Variance       64.55104
+95%     83.12936       87.80014       Skewness      -.3015145
+99%     84.87885       89.80151       Kurtosis       2.107607
+
+              Analysis time when record begins
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     40.95551       37.41821
+ 5%     42.77892       38.87201
+10%     44.87885       39.19507       Obs             499,931
+25%     50.56263       39.66051       Sum of Wgt.     499,931
+
+50%     58.29158                      Mean           57.04106
+                        Largest       Std. Dev.      8.092516
+75%     63.70157       72.11225
+90%     67.18686       72.43806       Variance       65.48882
+95%     68.60506       72.91171       Skewness      -.3204663
+99%     69.83436       73.69199       Kurtosis       1.994292
+
+                            _t_MS
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     55.12936       40.37783
+ 5%      57.4976         40.846
+10%     59.54826        41.1718       Obs             499,931
+25%      65.0486       41.36618       Sum of Wgt.     499,931
+
+50%     72.46817                      Mean           71.40339
+                        Largest       Std. Dev.      8.034366
+75%     77.80151       87.63313
+90%     81.46749       87.65229       Variance       64.55104
+95%     83.12936       87.80014       Skewness      -.3015145
+99%     84.87885       89.80151       Kurtosis       2.107607
+
+                 1 if failure; 0 if censored
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs             499,931
+25%            0              0       Sum of Wgt.     499,931
+
+50%            0                      Mean           .0011822
+                        Largest       Std. Dev.      .0343623
+75%            0              1
+90%            0              1       Variance       .0011808
+95%            0              1       Skewness       29.03288
+99%            0              1       Kurtosis       843.9081
+
+                            _d_MS
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs             499,931
+25%            0              0       Sum of Wgt.     499,931
+
+50%            0                      Mean           .0011822
+                        Largest       Std. Dev.      .0343623
+75%            0              1
+90%            0              1       Variance       .0011808
+95%            0              1       Skewness       29.03288
+99%            0              1       Kurtosis       843.9081
+
+. tab1 MS_diag
+
+-> tabulation of MS_diag  
+
+    MS_diag |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    499,340       99.48       99.48
+          1 |      2,596        0.52      100.00
+------------+-----------------------------------
+      Total |    501,936      100.00
+
+. save "/opt/notebooks/MS_UKBfin", replace
+file /opt/notebooks/MS_UKBfin.dta saved
+
+. use n_eid n_21022_0_0 n_20009_0_* n_20002_0_* s_41202_0_* n_34_0_0 s_52_0_0 s_
+> 53_0_0 s_40000_*_0  n_40007_*_0  using "/opt/notebooks/SMALLERDATASETUKBfin", 
+> clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save "/opt/notebooks/SLE_UKB",replace
+file /opt/notebooks/SLE_UKB.dta saved
+
+. use n_eid tsa* using "/opt/notebooks/DATES_SMALL",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save "/opt/notebooks/SLE_UKB2",replace
+file /opt/notebooks/SLE_UKB2.dta saved
+
+. use "/opt/notebooks/SLE_UKB",clear
+
+. merge n_eid using "/opt/notebooks/SLE_UKB2"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. tab _merge
+
+     _merge |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          3 |    501,936      100.00      100.00
+------------+-----------------------------------
+      Total |    501,936      100.00
+
+. sort n_eid
+
+. save "/opt/notebooks/SLE_UKBfin",replace
+file /opt/notebooks/SLE_UKBfin.dta saved
+
+. capture drop birthyear
+
+. gen birthyear=n_34_0_0
+
+. capture drop n_52_0_0
+
+. gen n_52_0_0=.
+(501,936 missing values generated)
+
+. replace n_52_0_0=1 if s_52_0_0=="January"
+(42,398 real changes made)
+
+. replace n_52_0_0=2 if s_52_0_0=="February"
+(39,909 real changes made)
+
+. replace n_52_0_0=3 if s_52_0_0=="March"
+(45,048 real changes made)
+
+. replace n_52_0_0=4 if s_52_0_0=="April"
+(43,014 real changes made)
+
+. replace n_52_0_0=5 if s_52_0_0=="May"
+(45,077 real changes made)
+
+. replace n_52_0_0=6 if s_52_0_0=="June"
+(42,386 real changes made)
+
+. replace n_52_0_0=7 if s_52_0_0=="July"
+(42,558 real changes made)
+
+. replace n_52_0_0=8 if s_52_0_0=="August"
+(41,419 real changes made)
+
+. replace n_52_0_0=9 if s_52_0_0=="September"
+(40,875 real changes made)
+
+. replace n_52_0_0=10 if s_52_0_0=="October"
+(40,567 real changes made)
+
+. replace n_52_0_0=11 if s_52_0_0=="November"
+(38,327 real changes made)
+
+. replace n_52_0_0=12 if s_52_0_0=="December"
+(40,358 real changes made)
+
+. capture drop birthmonth
+
+. gen birthmonth=n_52_0_0
+
+. capture drop birthdate
+
+. gen birthdate=mdy(birthmonth,14,birthyear)
+
+. capture gen double ts_53_0_0 = date(s_53_0_0,"YMD")
+
+. capture format ts_53_0_0 %td
+
+. capture label variable ts_53_0_0 "Date of attending assessment centre"
+
+. capture gen double ts_53_1_0 = date(s_53_1_0,"YMD")
+
+. capture format ts_53_1_0 %td
+
+. capture label variable ts_53_1_0 "Date of attending assessment centre"
+
+. capture gen double ts_53_2_0 = date(s_53_2_0,"YMD")
+
+. capture format ts_53_2_0 %td
+
+. capture label variable ts_53_2_0 "Date of attending assessment centre"
+
+. capture gen double ts_53_3_0 = date(s_53_3_0,"YMD")
+
+. capture format ts_53_3_0 %td
+
+. capture label variable ts_53_3_0 "Date of attending assessment centre"
+
+. capture gen double ts_40000_0_0 = date(s_40000_0_0,"YMD")
+
+. capture format ts_40000_0_0 %td
+
+. capture label variable ts_40000_0_0 "Date of death"
+
+. capture gen double ts_40000_1_0 = date(s_40000_1_0,"YMD")
+
+. capture format ts_40000_1_0 %td
+
+. capture label variable ts_40000_1_0 "Date of death"
+
+. format %18.14f n_40007_0_0
+
+. format %18.14f n_40007_1_0
+
+. capture drop startdate
+
+. gen startdate=ts_53_0_0
+
+. format startdate %d
+
+. capture drop baselineage
+
+. gen baselineage=(startdate-birthdate)/365.25
+
+. capture drop SLE_EARLIESTDATE
+
+. egen SLE_EARLIESTDATE= rmin(tsa_131894_0_0)
+(500,831 missing values generated)
+
+. capture drop SLE_diag
+
+. gen SLE_diag=.
+(501,936 missing values generated)
+
+. replace SLE_diag=1 if SLE_EARLIESTDATE~=.
+(1,105 real changes made)
+
+. replace SLE_diag=0 if SLE_diag~=1
+(500,831 real changes made)
+
+. su SLE_EARLIESTDATE
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+SLE_EARLIE~E |      1,105    15523.84    4759.877      -4109      23374
+
+. tab SLE_diag
+
+   SLE_diag |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    500,831       99.78       99.78
+          1 |      1,105        0.22      100.00
+------------+-----------------------------------
+      Total |    501,936      100.00
+
+. capture drop startdate
+
+. gen startdate=ts_53_0_0
+
+. format startdate %d
+
+. capture drop baselineage
+
+. gen baselineage=(startdate-birthdate)/365.25
+
+. capture drop deathdate
+
+. gen deathdate = ts_40000_0_0
+(446,913 missing values generated)
+
+. replace deathdate =  ts_40000_1_0 if deathdate ==.
+(0 real changes made)
+
+. format deathdate %d
+
+. label var deathdate "date of death"
+
+. capture drop died
+
+. gen died=.
+(501,936 missing values generated)
+
+. replace died=1 if deathdate~=.
+(55,023 real changes made)
+
+. replace died=0 if deathdate==.
+(446,913 real changes made)
+
+. capture drop deathage
+
+. gen deathage=.
+(501,936 missing values generated)
+
+. replace deathage=n_40007_0_0 if n_40007_0_0~=.
+(55,023 real changes made)
+
+. replace deathage=n_40007_1_0 if n_40007_1_0~=.
+(0 real changes made)
+
+. capture drop doexit
+
+. gen doexit = deathdate if died==1
+(446,913 missing values generated)
+
+. replace doexit = d(1jan2024) if doexit==. & died==0
+(446,913 real changes made)
+
+. format doexit %d
+
+. capture drop time0_0 timeyrs0_0SLE
+
+. gen time0_0SLE = doexit - startdate if died==0
+(55,023 missing values generated)
+
+. gen timeyrs0_0SLE = time0_0SLE/365.25
+(55,023 missing values generated)
+
+. label var time0_0SLE "follow up time in days if no incident outcome and surviv
+> ed, days"
+
+. label var timeyrs0_0SLE "follow up time in years if no incident outcome and su
+> rvived, years"
+
+. capture drop time1_0SLE timeyrs1_0SLE
+
+. gen time1_0SLE = doexit - startdate if died==1
+(446,913 missing values generated)
+
+. gen timeyrs1_0SLE = time1_0SLE /365.25
+(446,913 missing values generated)
+
+. label var time1_0SLE "follow up time in days if no incident outcome and died, 
+> days"
+
+. label var timeyrs1_0SLE "follow up time in years if no incident outcome and di
+> ed, years"
+
+. capture drop time01_1ASLE
+
+. capture drop time01_1AyearsSLE
+
+. gen time01_1ASLE = SLE_EARLIESTDATE - startdate
+(500,831 missing values generated)
+
+. gen time01_1AyearsSLE = time01_1ASLE/365.25
+(500,831 missing values generated)
+
+. replace time01_1AyearsSLE=time01_1AyearsSLE if time01_1AyearsSLE>-10
+(0 real changes made)
+
+. label var time01_1ASLE "follow up time in days if Dementia incident outcome an
+> d died/survived, days"
+
+. label var time01_1AyearsSLE "follow up time in days if Dementia incident outco
+> me and died/survived, years"
+
+. capture drop time_SLE
+
+. gen time_SLE=.
+(501,936 missing values generated)
+
+. replace time_SLE=timeyrs1_0SLE  if SLE_diag==0 & died==1
+(54,799 real changes made)
+
+. replace time_SLE=time01_1AyearsSLE   if SLE_diag==1
+(1,105 real changes made)
+
+. replace time_SLE=timeyrs0_0SLE   if time_SLE==.
+(446,032 real changes made)
+
+. capture drop Age_SLE
+
+. gen Age_SLE=.
+(501,936 missing values generated)
+
+. replace Age_SLE=baselineage+time_SLE
+(501,936 real changes made)
+
+. capture stset,clear
+
+. stset Age_SLE, failure(SLE_diag==1) enter(baselineage) id(n_eid) scale(1)
+
+                id:  n_eid
+     failure event:  SLE_diag == 1
+obs. time interval:  (Age_SLE[_n-1], Age_SLE]
+ enter on or after:  time baselineage
+ exit on or before:  failure
+
+------------------------------------------------------------------------------
+    501,936  total observations
+        761  observations end on or before enter()
+------------------------------------------------------------------------------
+    501,175  observations remaining, representing
+    501,175  subjects
+        344  failures in single-failure-per-subject data
+  7,199,748  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  37.41821
+                                          last observed exit t =  89.80151
+
+. capture drop _d_SLE
+
+. gen _d_SLE=_d
+(761 missing values generated)
+
+. capture drop _t_SLE
+
+. gen _t_SLE=_t
+(761 missing values generated)
+
+. su time* Age* _t* _d*, det
+
+      follow up time in days if no incident outcome and
+                       survived, days
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%         4930           4840
+ 5%         4965           4840
+10%         5012           4840       Obs             446,913
+25%         5196           4840       Sum of Wgt.     446,913
+
+50%         5448                      Mean           5451.312
+                        Largest       Std. Dev.      313.2057
+75%         5696           6503
+90%         5858           6503       Variance       98097.81
+95%         5950           6503       Skewness       .1879071
+99%         6081           6503       Kurtosis       2.448868
+
+     follow up time in years if no incident outcome and
+                       survived, years
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%      13.4976        13.2512
+ 5%     13.59343        13.2512
+10%     13.72211        13.2512       Obs             446,913
+25%     14.22587        13.2512       Sum of Wgt.     446,913
+
+50%     14.91581                      Mean           14.92488
+                        Largest       Std. Dev.      .8575105
+75%      15.5948       17.80424
+90%     16.03833       17.80424       Variance       .7353242
+95%     16.29021       17.80424       Skewness       .1879071
+99%     16.64887       17.80424       Kurtosis       2.448868
+
+      follow up time in days if no incident outcome and
+                         died, days
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%          239              4
+ 5%          779              5
+10%         1286              7       Obs              55,023
+25%         2490              8       Sum of Wgt.      55,023
+
+50%         3891                      Mean           3600.688
+                        Largest       Std. Dev.       1510.34
+75%         4854           6601
+90%         5376           6606       Variance        2281125
+95%         5604           6608       Skewness      -.4979649
+99%         5921           6618       Kurtosis       2.238239
+
+     follow up time in years if no incident outcome and
+                         died, years
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     .6543463       .0109514
+ 5%     2.132786       .0136893
+10%     3.520876        .019165       Obs              55,023
+25%     6.817248       .0219028       Sum of Wgt.      55,023
+
+50%     10.65298                      Mean           9.858148
+                        Largest       Std. Dev.      4.135084
+75%     13.28953       18.07255
+90%     14.71869       18.08624       Variance       17.09892
+95%     15.34292       18.09172       Skewness      -.4979649
+99%     16.21082        18.1191       Kurtosis       2.238239
+
+         follow up time in days if Dementia incident
+               outcome and died/survived, days
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%       -15462         -21655
+ 5%       -11115         -20987
+10%        -8815         -20596       Obs               1,105
+25%        -5411         -18603       Sum of Wgt.       1,105
+
+50%        -2024                      Mean          -2397.979
+                        Largest       Std. Dev.      4747.732
+75%         1519           5207
+90%         3562           5293       Variance       2.25e+07
+95%         4171           5508       Skewness       -.629028
+99%         4999           5678       Kurtosis       3.290124
+
+         follow up time in days if Dementia incident
+              outcome and died/survived, years
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%    -42.33265      -59.28816
+ 5%    -30.43121      -57.45927
+10%    -24.13416      -56.38877       Obs               1,105
+25%    -14.81451      -50.93224       Sum of Wgt.       1,105
+
+50%     -5.54141                      Mean          -6.565309
+                        Largest       Std. Dev.      12.99858
+75%     4.158795       14.25599
+90%     9.752225       14.49144       Variance       168.9631
+95%     11.41958       15.08008       Skewness       -.629028
+99%     13.68652       15.54552       Kurtosis       3.290124
+
+                          time_SLE
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     2.902122      -59.28816
+ 5%     9.861738      -57.45927
+10%     13.51129      -56.38877       Obs             501,936
+25%     13.98084      -50.93224       Sum of Wgt.     501,936
+
+50%     14.79261                      Mean           14.32423
+                        Largest       Std. Dev.      2.520665
+75%     15.52088       18.07255
+90%     15.96167       18.08624       Variance        6.35375
+95%     16.24914       18.09172       Skewness      -5.216122
+99%     16.64066        18.1191       Kurtosis        56.0522
+
+                           Age_SLE
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     54.96236       3.460644
+ 5%     57.46749       9.467487
+10%     59.54825       10.21492       Obs             501,936
+25%      65.0486       11.46064       Sum of Wgt.     501,936
+
+50%     72.46817                      Mean           71.36106
+                        Largest       Std. Dev.      8.108746
+75%     77.80151       87.63313
+90%     81.46748       87.65229       Variance       65.75177
+95%     83.12936       87.80014       Skewness      -.3737975
+99%     84.87885       89.80151       Kurtosis       2.508805
+
+               Analysis time when record ends
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     55.12936       40.37783
+ 5%     57.54962         40.846
+10%     59.54826        41.1718       Obs             501,175
+25%      65.0486       41.36618       Sum of Wgt.     501,175
+
+50%     72.46817                      Mean           71.40387
+                        Largest       Std. Dev.      8.026166
+75%     77.80151       87.63313
+90%     81.46749       87.65229       Variance       64.41933
+95%     83.12936       87.80014       Skewness      -.2986636
+99%     84.87885       89.80151       Kurtosis       2.101582
+
+              Analysis time when record begins
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     40.95551       37.41821
+ 5%     42.78166       38.87201
+10%     44.88159       39.19507       Obs             501,175
+25%     50.55989       39.66051       Sum of Wgt.     501,175
+
+50%     58.28611                      Mean           57.03813
+                        Largest       Std. Dev.      8.090517
+75%     63.69336       72.11225
+90%     67.18138       72.43806       Variance       65.45647
+95%     68.60233       72.91171       Skewness        -.31994
+99%     69.83436       73.69199       Kurtosis       1.994389
+
+                           _t_SLE
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     55.12936       40.37783
+ 5%     57.54962         40.846
+10%     59.54826        41.1718       Obs             501,175
+25%      65.0486       41.36618       Sum of Wgt.     501,175
+
+50%     72.46817                      Mean           71.40387
+                        Largest       Std. Dev.      8.026166
+75%     77.80151       87.63313
+90%     81.46749       87.65229       Variance       64.41933
+95%     83.12936       87.80014       Skewness      -.2986636
+99%     84.87885       89.80151       Kurtosis       2.101582
+
+                 1 if failure; 0 if censored
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs             501,175
+25%            0              0       Sum of Wgt.     501,175
+
+50%            0                      Mean           .0006864
+                        Largest       Std. Dev.        .02619
+75%            0              1
+90%            0              1       Variance       .0006859
+95%            0              1       Skewness        38.1301
+99%            0              1       Kurtosis       1454.905
+
+                           _d_SLE
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs             501,175
+25%            0              0       Sum of Wgt.     501,175
+
+50%            0                      Mean           .0006864
+                        Largest       Std. Dev.        .02619
+75%            0              1
+90%            0              1       Variance       .0006859
+95%            0              1       Skewness        38.1301
+99%            0              1       Kurtosis       1454.905
+
+. tab1 SLE_diag
+
+-> tabulation of SLE_diag  
+
+   SLE_diag |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    500,831       99.78       99.78
+          1 |      1,105        0.22      100.00
+------------+-----------------------------------
+      Total |    501,936      100.00
+
+. save "/opt/notebooks/SLE_UKBfin", replace
+file /opt/notebooks/SLE_UKBfin.dta saved
+
+. use n_eid n_21022_0_0 n_20009_0_* n_20002_0_* s_41202_0_* n_34_0_0 s_52_0_0 s_
+> 53_0_0 s_40000_*_0  n_40007_*_0  using "/opt/notebooks/SMALLERDATASETUKBfin", 
+> clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save "/opt/notebooks/RA_UKB",replace
+file /opt/notebooks/RA_UKB.dta saved
+
+. use n_eid tsa* using "/opt/notebooks/DATES_SMALL",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save "/opt/notebooks/RA_UKB2",replace
+file /opt/notebooks/RA_UKB2.dta saved
+
+. use "/opt/notebooks/RA_UKB",clear
+
+. merge n_eid using "/opt/notebooks/RA_UKB2"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. tab _merge
+
+     _merge |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          3 |    501,936      100.00      100.00
+------------+-----------------------------------
+      Total |    501,936      100.00
+
+. sort n_eid
+
+. save "/opt/notebooks/RA_UKBfin",replace
+file /opt/notebooks/RA_UKBfin.dta saved
+
+. capture drop birthyear
+
+. gen birthyear=n_34_0_0
+
+. capture drop n_52_0_0
+
+. gen n_52_0_0=.
+(501,936 missing values generated)
+
+. replace n_52_0_0=1 if s_52_0_0=="January"
+(42,398 real changes made)
+
+. replace n_52_0_0=2 if s_52_0_0=="February"
+(39,909 real changes made)
+
+. replace n_52_0_0=3 if s_52_0_0=="March"
+(45,048 real changes made)
+
+. replace n_52_0_0=4 if s_52_0_0=="April"
+(43,014 real changes made)
+
+. replace n_52_0_0=5 if s_52_0_0=="May"
+(45,077 real changes made)
+
+. replace n_52_0_0=6 if s_52_0_0=="June"
+(42,386 real changes made)
+
+. replace n_52_0_0=7 if s_52_0_0=="July"
+(42,558 real changes made)
+
+. replace n_52_0_0=8 if s_52_0_0=="August"
+(41,419 real changes made)
+
+. replace n_52_0_0=9 if s_52_0_0=="September"
+(40,875 real changes made)
+
+. replace n_52_0_0=10 if s_52_0_0=="October"
+(40,567 real changes made)
+
+. replace n_52_0_0=11 if s_52_0_0=="November"
+(38,327 real changes made)
+
+. replace n_52_0_0=12 if s_52_0_0=="December"
+(40,358 real changes made)
+
+. capture drop birthmonth
+
+. gen birthmonth=n_52_0_0
+
+. capture drop birthdate
+
+. gen birthdate=mdy(birthmonth,14,birthyear)
+
+. capture gen double ts_53_0_0 = date(s_53_0_0,"YMD")
+
+. capture format ts_53_0_0 %td
+
+. capture label variable ts_53_0_0 "Date of attending assessment centre"
+
+. capture gen double ts_53_1_0 = date(s_53_1_0,"YMD")
+
+. capture format ts_53_1_0 %td
+
+. capture label variable ts_53_1_0 "Date of attending assessment centre"
+
+. capture gen double ts_53_2_0 = date(s_53_2_0,"YMD")
+
+. capture format ts_53_2_0 %td
+
+. capture label variable ts_53_2_0 "Date of attending assessment centre"
+
+. capture gen double ts_53_3_0 = date(s_53_3_0,"YMD")
+
+. capture format ts_53_3_0 %td
+
+. capture label variable ts_53_3_0 "Date of attending assessment centre"
+
+. capture gen double ts_40000_0_0 = date(s_40000_0_0,"YMD")
+
+. capture format ts_40000_0_0 %td
+
+. capture label variable ts_40000_0_0 "Date of death"
+
+. capture gen double ts_40000_1_0 = date(s_40000_1_0,"YMD")
+
+. capture format ts_40000_1_0 %td
+
+. capture label variable ts_40000_1_0 "Date of death"
+
+. format %18.14f n_40007_0_0
+
+. format %18.14f n_40007_1_0
+
+. capture drop startdate
+
+. gen startdate=ts_53_0_0
+
+. format startdate %d
+
+. capture drop baselineage
+
+. gen baselineage=(startdate-birthdate)/365.25
+
+. capture drop RA_EARLIESTDATE
+
+. egen RA_EARLIESTDATE= rmin(tsa_131848_0_0 tsa_131850_0_0)
+(488,337 missing values generated)
+
+. capture drop RA_diag
+
+. gen RA_diag=.
+(501,936 missing values generated)
+
+. replace RA_diag=1 if RA_EARLIESTDATE~=.
+(13,599 real changes made)
+
+. replace RA_diag=0 if RA_diag~=1
+(488,337 real changes made)
+
+. su RA_EARLIESTDATE
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+RA_EARLIES~E |     13,599    16954.69    5035.657      -5419      23558
+
+. tab RA_diag
+
+    RA_diag |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    488,337       97.29       97.29
+          1 |     13,599        2.71      100.00
+------------+-----------------------------------
+      Total |    501,936      100.00
+
+. capture drop startdate
+
+. gen startdate=ts_53_0_0
+
+. format startdate %d
+
+. capture drop baselineage
+
+. gen baselineage=(startdate-birthdate)/365.25
+
+. capture drop deathdate
+
+. gen deathdate = ts_40000_0_0
+(446,913 missing values generated)
+
+. replace deathdate =  ts_40000_1_0 if deathdate ==.
+(0 real changes made)
+
+. format deathdate %d
+
+. label var deathdate "date of death"
+
+. capture drop died
+
+. gen died=.
+(501,936 missing values generated)
+
+. replace died=1 if deathdate~=.
+(55,023 real changes made)
+
+. replace died=0 if deathdate==.
+(446,913 real changes made)
+
+. capture drop deathage
+
+. gen deathage=.
+(501,936 missing values generated)
+
+. replace deathage=n_40007_0_0 if n_40007_0_0~=.
+(55,023 real changes made)
+
+. replace deathage=n_40007_1_0 if n_40007_1_0~=.
+(0 real changes made)
+
+. capture drop doexit
+
+. gen doexit = deathdate if died==1
+(446,913 missing values generated)
+
+. replace doexit = d(1jan2024) if doexit==. & died==0
+(446,913 real changes made)
+
+. format doexit %d
+
+. capture drop time0_0 timeyrs0_0RA
+
+. gen time0_0RA = doexit - startdate if died==0
+(55,023 missing values generated)
+
+. gen timeyrs0_0RA = time0_0RA/365.25
+(55,023 missing values generated)
+
+. label var time0_0RA "follow up time in days if no incident outcome and survive
+> d, days"
+
+. label var timeyrs0_0RA "follow up time in years if no incident outcome and sur
+> vived, years"
+
+. capture drop time1_0RA timeyrs1_0RA
+
+. gen time1_0RA = doexit - startdate if died==1
+(446,913 missing values generated)
+
+. gen timeyrs1_0RA = time1_0RA /365.25
+(446,913 missing values generated)
+
+. label var time1_0RA "follow up time in days if no incident outcome and died, d
+> ays"
+
+. label var timeyrs1_0RA "follow up time in years if no incident outcome and die
+> d, years"
+
+. capture drop time01_1ARA
+
+. capture drop time01_1AyearsRA
+
+. gen time01_1ARA = RA_EARLIESTDATE - startdate
+(488,337 missing values generated)
+
+. gen time01_1AyearsRA = time01_1ARA/365.25
+(488,337 missing values generated)
+
+. replace time01_1AyearsRA=time01_1AyearsRA if time01_1AyearsRA>-10
+(0 real changes made)
+
+. label var time01_1ARA "follow up time in days if Dementia incident outcome and
+>  died/survived, days"
+
+. label var time01_1AyearsRA "follow up time in days if Dementia incident outcom
+> e and died/survived, years"
+
+. capture drop time_RA
+
+. gen time_RA=.
+(501,936 missing values generated)
+
+. replace time_RA=timeyrs1_0RA  if RA_diag==0 & died==1
+(52,323 real changes made)
+
+. replace time_RA=time01_1AyearsRA   if RA_diag==1
+(13,599 real changes made)
+
+. replace time_RA=timeyrs0_0RA   if time_RA==.
+(436,014 real changes made)
+
+. capture drop Age_RA
+
+. gen Age_RA=.
+(501,936 missing values generated)
+
+. replace Age_RA=baselineage+time_RA
+(501,936 real changes made)
+
+. capture stset,clear
+
+. stset Age_RA, failure(RA_diag==1) enter(baselineage) id(n_eid) scale(1)
+
+                id:  n_eid
+     failure event:  RA_diag == 1
+obs. time interval:  (Age_RA[_n-1], Age_RA]
+ enter on or after:  time baselineage
+ exit on or before:  failure
+
+------------------------------------------------------------------------------
+    501,936  total observations
+      6,784  observations end on or before enter()
+------------------------------------------------------------------------------
+    495,152  observations remaining, representing
+    495,152  subjects
+      6,815  failures in single-failure-per-subject data
+  7,074,326  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  37.41821
+                                          last observed exit t =  89.80151
+
+. capture drop _d_RA
+
+. gen _d_RA=_d
+(6,784 missing values generated)
+
+. capture drop _t_RA
+
+. gen _t_RA=_t
+(6,784 missing values generated)
+
+. su time* Age* _t* _d*, det
+
+      follow up time in days if no incident outcome and
+                       survived, days
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%         4930           4840
+ 5%         4965           4840
+10%         5012           4840       Obs             446,913
+25%         5196           4840       Sum of Wgt.     446,913
+
+50%         5448                      Mean           5451.312
+                        Largest       Std. Dev.      313.2057
+75%         5696           6503
+90%         5858           6503       Variance       98097.81
+95%         5950           6503       Skewness       .1879071
+99%         6081           6503       Kurtosis       2.448868
+
+     follow up time in years if no incident outcome and
+                       survived, years
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%      13.4976        13.2512
+ 5%     13.59343        13.2512
+10%     13.72211        13.2512       Obs             446,913
+25%     14.22587        13.2512       Sum of Wgt.     446,913
+
+50%     14.91581                      Mean           14.92488
+                        Largest       Std. Dev.      .8575105
+75%      15.5948       17.80424
+90%     16.03833       17.80424       Variance       .7353242
+95%     16.29021       17.80424       Skewness       .1879071
+99%     16.64887       17.80424       Kurtosis       2.448868
+
+      follow up time in days if no incident outcome and
+                         died, days
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%          239              4
+ 5%          779              5
+10%         1286              7       Obs              55,023
+25%         2490              8       Sum of Wgt.      55,023
+
+50%         3891                      Mean           3600.688
+                        Largest       Std. Dev.       1510.34
+75%         4854           6601
+90%         5376           6606       Variance        2281125
+95%         5604           6608       Skewness      -.4979649
+99%         5921           6618       Kurtosis       2.238239
+
+     follow up time in years if no incident outcome and
+                         died, years
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     .6543463       .0109514
+ 5%     2.132786       .0136893
+10%     3.520876        .019165       Obs              55,023
+25%     6.817248       .0219028       Sum of Wgt.      55,023
+
+50%     10.65298                      Mean           9.858148
+                        Largest       Std. Dev.      4.135084
+75%     13.28953       18.07255
+90%     14.71869       18.08624       Variance       17.09892
+95%     15.34292       18.09172       Skewness      -.4979649
+99%     16.21082        18.1191       Kurtosis       2.238239
+
+         follow up time in days if Dementia incident
+               outcome and died/survived, days
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%       -17242         -23701
+ 5%       -11318         -22808
+10%        -7842         -22747       Obs              13,599
+25%        -3470         -22631       Sum of Wgt.      13,599
+
+50%            8                      Mean          -948.3916
+                        Largest       Std. Dev.      5021.268
+75%         2980           5717
+90%         4151           5729       Variance       2.52e+07
+95%         4603           5767       Skewness      -1.275301
+99%         5124           5860       Kurtosis       4.605323
+
+         follow up time in days if Dementia incident
+              outcome and died/survived, years
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%    -47.20602       -64.8898
+ 5%      -30.987       -62.4449
+10%    -21.47023      -62.27789       Obs              13,599
+25%    -9.500342       -61.9603       Sum of Wgt.      13,599
+
+50%     .0219028                      Mean          -2.596555
+                        Largest       Std. Dev.      13.74748
+75%     8.158795       15.65229
+90%     11.36482       15.68515       Variance       188.9933
+95%     12.60233       15.78919       Skewness      -1.275301
+99%     14.02875       16.04381       Kurtosis       4.605323
+
+                           time_RA
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%    -4.120465       -64.8898
+ 5%     7.518138       -62.4449
+10%     12.87885      -62.27789       Obs             501,936
+25%     13.91376       -61.9603       Sum of Wgt.     501,936
+
+50%     14.76249                      Mean           13.91762
+                        Largest       Std. Dev.      4.191518
+75%     15.49897       18.07255
+90%     15.95619       18.08624       Variance       17.56883
+95%     16.24367       18.09172       Skewness      -6.726279
+99%     16.63518        18.1191       Kurtosis       68.43104
+
+                           Age_RA
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     51.65229       .2984238
+ 5%      57.0486       .2984276
+10%     59.04723       .3778229       Obs             501,936
+25%     64.63518       .6269684       Sum of Wgt.     501,936
+
+50%     72.13142                      Mean           70.95445
+                        Largest       Std. Dev.      8.630548
+75%      77.6345       87.63313
+90%     81.38261       87.65229       Variance       74.48636
+95%     83.04723       87.80014       Skewness      -.7619395
+99%     84.87885       89.80151       Kurtosis       4.755825
+
+               Analysis time when record ends
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     54.96236       40.37783
+ 5%     57.46749         40.846
+10%     59.46612        41.1718       Obs             495,152
+25%     64.96372       41.36618       Sum of Wgt.     495,152
+
+50%     72.29842                      Mean           71.28818
+                        Largest       Std. Dev.      8.048817
+75%     77.71663       87.63313
+90%     81.38261       87.65229       Variance       64.78346
+95%     83.04723       87.80014       Skewness      -.2930759
+99%     84.87885       89.80151       Kurtosis       2.113313
+
+              Analysis time when record begins
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     40.95004       37.41821
+ 5%     42.76249       38.87201
+10%     44.85147       39.19507       Obs             495,152
+25%      50.5024       39.66051       Sum of Wgt.     495,152
+
+50%     58.23682                      Mean             57.001
+                        Largest       Std. Dev.      8.096628
+75%     63.66598       71.15674
+90%     67.16769       72.11225       Variance       65.55539
+95%     68.59412       72.91171       Skewness      -.3143693
+99%     69.83436       73.69199       Kurtosis       1.988773
+
+                            _t_RA
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%     54.96236       40.37783
+ 5%     57.46749         40.846
+10%     59.46612        41.1718       Obs             495,152
+25%     64.96372       41.36618       Sum of Wgt.     495,152
+
+50%     72.29842                      Mean           71.28818
+                        Largest       Std. Dev.      8.048817
+75%     77.71663       87.63313
+90%     81.38261       87.65229       Variance       64.78346
+95%     83.04723       87.80014       Skewness      -.2930759
+99%     84.87885       89.80151       Kurtosis       2.113313
+
+                 1 if failure; 0 if censored
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs             495,152
+25%            0              0       Sum of Wgt.     495,152
+
+50%            0                      Mean           .0137635
+                        Largest       Std. Dev.      .1165077
+75%            0              1
+90%            0              1       Variance        .013574
+95%            0              1       Skewness       8.346865
+99%            1              1       Kurtosis       70.67016
+
+                            _d_RA
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%            0              0
+ 5%            0              0
+10%            0              0       Obs             495,152
+25%            0              0       Sum of Wgt.     495,152
+
+50%            0                      Mean           .0137635
+                        Largest       Std. Dev.      .1165077
+75%            0              1
+90%            0              1       Variance        .013574
+95%            0              1       Skewness       8.346865
+99%            1              1       Kurtosis       70.67016
+
+. tab1 RA_diag
+
+-> tabulation of RA_diag  
+
+    RA_diag |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    488,337       97.29       97.29
+          1 |     13,599        2.71      100.00
+------------+-----------------------------------
+      Total |    501,936      100.00
+
+. save "/opt/notebooks/RA_UKBfin", replace
+file /opt/notebooks/RA_UKBfin.dta saved
+
+. capture log close

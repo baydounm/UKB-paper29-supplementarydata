@@ -1,0 +1,445 @@
+
+. use "/opt/notebooks/LE8_UKB", clear
+
+. su HDI_TOTALSCORE
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+HDI_TOTALS~E |    500,510     4.42437     1.61888          0         12
+
+. cap noi histogram HDI_TOTALSCORE
+(bin=56, start=0, width=.21428571)
+
+. if _rc == 0 {
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.svg"', width(600) replace
+(note: file /home/dnanexus/.stata_kernel_cache/graph21.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph21.svg written in SVG format)
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.pdf"', replace
+(file /home/dnanexus/.stata_kernel_cache/graph21.pdf written in PDF format)
+.     global stata_kernel_graph_counter = $stata_kernel_graph_counter + 1
+. }            
+
+. capture drop HDI_TOTALSCOREpct
+
+. xtile HDI_TOTALSCOREpct=HDI_TOTALSCORE,nq(100)
+
+. capture drop LE8_COMP1DIET
+
+. gen LE8_COMP1DIET=.
+(502,163 missing values generated)
+
+. replace LE8_COMP1DIET=100 if HDI_TOTALSCOREpct>=95 & HDI_TOTALSCORE~=.
+(15,018 real changes made)
+
+. replace LE8_COMP1DIET=80 if HDI_TOTALSCOREpct>=75 & HDI_TOTALSCOREpct<95 & HDI
+> _TOTALSCORE~=.
+(104,427 real changes made)
+
+. replace LE8_COMP1DIET=50 if HDI_TOTALSCOREpct>=50 & HDI_TOTALSCOREpct<75 & HDI
+> _TOTALSCORE~=.
+(117,184 real changes made)
+
+. replace LE8_COMP1DIET=25 if HDI_TOTALSCOREpct>=25 & HDI_TOTALSCOREpct<50 & HDI
+> _TOTALSCORE~=.
+(139,363 real changes made)
+
+. replace LE8_COMP1DIET=0 if HDI_TOTALSCOREpct>=1 & HDI_TOTALSCOREpct<25 & HDI_T
+> OTALSCORE~=.
+(124,518 real changes made)
+
+. capture drop modvigperday
+
+. egen modvigperday=rowtotal(modperday vigperday)
+
+. capture drop LE8_COMP2PA
+
+. gen LE8_COMP2PA=.
+(502,163 missing values generated)
+
+. replace LE8_COMP2PA=100 if modvigperday>=150 & modvigperday~=.
+(67,403 real changes made)
+
+. replace LE8_COMP2PA=90 if modvigperday>=120 & modvigperday<150 & modvigperday~
+> =.
+(39,996 real changes made)
+
+. replace LE8_COMP2PA=80 if modvigperday>=90 & modvigperday<120 & modvigperday~=
+> .
+(40,251 real changes made)
+
+. replace LE8_COMP2PA=60 if modvigperday>=60 & modvigperday<90 & modvigperday~=.
+(83,692 real changes made)
+
+. replace LE8_COMP2PA=40 if modvigperday>=30 & modvigperday<60 & modvigperday~=.
+(89,875 real changes made)
+
+. replace LE8_COMP2PA=20 if modvigperday>=1 & modvigperday<30 & modvigperday~=.
+(69,392 real changes made)
+
+. replace LE8_COMP2PA=0 if modvigperday==0
+(111,554 real changes made)
+
+. save "/opt/notebooks/LE8_UKB", replace
+file /opt/notebooks/LE8_UKB.dta saved
+
+. save, replace
+file /opt/notebooks/LE8_UKB.dta saved
+
+. capture drop LE8_COMP3NICOTINE
+
+. gen LE8_COMP3NICOTINE=.
+(502,163 missing values generated)
+
+. replace LE8_COMP3NICOTINE=100 if smokingstatus==4
+(408,793 real changes made)
+
+. replace LE8_COMP3NICOTINE=75 if smokingstatus==2 | smokingstatus==3
+(36,889 real changes made)
+
+. replace LE8_COMP3NICOTINE=37.5 if smokingstatus==1
+(3,325 real changes made)
+
+. replace LE8_COMP3NICOTINE=0 if smokingstatus==0
+(52,929 real changes made)
+
+. replace LE8_COMP3NICOTINE=LE8_COMP3NICOTINE-20 if LE8_COMP3NICOTINE~=0 & etsmo
+> ke~=0
+(439,726 real changes made)
+
+. save "/opt/notebooks/LE8_UKB", replace
+file /opt/notebooks/LE8_UKB.dta saved
+
+. capture drop LE8_COMP4SLEEP
+
+. gen LE8_COMP4SLEEP=.
+(502,163 missing values generated)
+
+. replace LE8_COMP4SLEEP=100 if sleep_duration>=7 & sleep_duration<9
+(336,303 real changes made)
+
+. replace LE8_COMP4SLEEP=90 if sleep_duration>=9 & sleep_duration<10
+(29,075 real changes made)
+
+. replace LE8_COMP4SLEEP=70 if sleep_duration>=6 & sleep_duration<7
+(95,545 real changes made)
+
+. replace LE8_COMP4SLEEP=40 if (sleep_duration>=5 & sleep_duration<6) | (sleep_d
+> uration>=10 & sleep_duration~=.)
+(31,141 real changes made)
+
+. replace LE8_COMP4SLEEP=20 if sleep_duration>=4 & sleep_duration<5
+(4,606 real changes made)
+
+. replace LE8_COMP4SLEEP=0 if sleep_duration<4
+(1,056 real changes made)
+
+. save "/opt/notebooks/LE8_UKB", replace
+file /opt/notebooks/LE8_UKB.dta saved
+
+. capture drop LE8_COMP5BMI
+
+. gen LE8_COMP5BMI=.
+(502,163 missing values generated)
+
+. replace LE8_COMP5BMI=100 if bmi<25 & bmi~=.
+(164,808 real changes made)
+
+. replace LE8_COMP5BMI=70 if bmi>=25 & bmi<30
+(211,888 real changes made)
+
+. replace LE8_COMP5BMI=30 if bmi>=30 & bmi<35
+(87,475 real changes made)
+
+. replace LE8_COMP5BMI=15 if bmi>=35 & bmi<40
+(24,966 real changes made)
+
+. replace LE8_COMP5BMI=0 if bmi>=40 & bmi~=.
+(9,696 real changes made)
+
+. save "/opt/notebooks/LE8_UKB", replace
+file /opt/notebooks/LE8_UKB.dta saved
+
+. su n_30690_0_0, det
+
+                          30690-0.0
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%        3.223           .601
+ 5%        3.888          1.432
+10%        4.262          1.498       Obs             469,062
+25%        4.906          1.551       Sum of Wgt.     469,062
+
+50%         5.65                      Mean           5.692391
+                        Largest       Std. Dev.      1.145052
+75%        6.424          13.53
+90%        7.165         13.615       Variance       1.311143
+95%         7.64         13.719       Skewness       .2857448
+99%        8.606          15.46       Kurtosis       3.338256
+
+. su n_30760_0_0, det
+
+                          30760-0.0
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%         .775           .219
+ 5%         .917           .226
+10%        1.003           .228       Obs             429,393
+25%         1.17           .252       Sum of Wgt.     429,393
+
+50%        1.398                      Mean           1.447981
+                        Largest       Std. Dev.      .3823173
+75%        1.674          4.107
+90%         1.96          4.129       Variance       .1461665
+95%        2.147          4.186       Skewness       .7755426
+99%        2.539          4.401       Kurtosis       3.958505
+
+. capture drop nonhdlchol
+
+. gen nonhdlchol=(n_30690_0_0-n_30760_0_0)
+(72,849 missing values generated)
+
+. capture drop LE8_COMP6LIPIDS
+
+. gen LE8_COMP6LIPIDS=.
+(502,163 missing values generated)
+
+. replace LE8_COMP6LIPIDS=100 if nonhdlchol<3.36
+(91,556 real changes made)
+
+. replace LE8_COMP6LIPIDS=60 if nonhdlchol>=3.36 & nonhdlchol<4.13
+(114,975 real changes made)
+
+. replace LE8_COMP6LIPIDS=40 if nonhdlchol>=4.13 & nonhdlchol<4.91
+(112,727 real changes made)
+
+. replace LE8_COMP6LIPIDS=20 if nonhdlchol>=4.91 & nonhdlchol<5.69
+(69,295 real changes made)
+
+. replace LE8_COMP6LIPIDS=0 if nonhdlchol>=5.69 & nonhdlchol~=.
+(40,761 real changes made)
+
+. replace LE8_COMP6LIPIDS=LE8_COMP6LIPIDS-20 if LE8_COMP6LIPIDS~=0 & statins==1
+(73,251 real changes made)
+
+. save "/opt/notebooks/LE8_UKB", replace
+file /opt/notebooks/LE8_UKB.dta saved
+
+. su n_30750_0_0,det
+
+                          30750-0.0
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%           26             15
+ 5%         29.1           15.3
+10%         30.5           15.3       Obs             465,985
+25%         32.8           15.3       Sum of Wgt.     465,985
+
+50%         35.2                      Mean           36.13249
+                        Largest       Std. Dev.      6.777488
+75%         37.9          265.6
+90%         41.1          266.3       Variance       45.93435
+95%         45.1          296.1       Skewness       4.895934
+99%         64.7          515.2       Kurtosis       95.75652
+
+. capture drop LE8_COMP7GLUC
+
+. gen LE8_COMP7GLUC=.
+(502,163 missing values generated)
+
+. replace LE8_COMP7GLUC=100 if diabetes==0 & n_30750_0_0<39
+(376,800 real changes made)
+
+. replace LE8_COMP7GLUC=60 if  diabetes==0 & (n_30750_0_0>=39 &  n_30750_0_0<46)
+(58,958 real changes made)
+
+. replace LE8_COMP7GLUC=40 if  (diabetes==1 & (n_30750_0_0<53)) | (diabetes==0 &
+>  (n_30750_0_0>=46 & n_30750_0_0<53))
+(18,183 real changes made)
+
+. replace LE8_COMP7GLUC=30 if  (n_30750_0_0>=53 & n_30750_0_0<64)
+(6,626 real changes made)
+
+. replace LE8_COMP7GLUC=20 if  (n_30750_0_0>=64 & n_30750_0_0<75)
+(2,776 real changes made)
+
+. replace LE8_COMP7GLUC=10 if  (n_30750_0_0>=75 & n_30750_0_0<86)
+(1,138 real changes made)
+
+. replace LE8_COMP7GLUC=0 if  (n_30750_0_0>=86) & n_30750_0_0~=.
+(1,051 real changes made)
+
+. save "/opt/notebooks/LE8_UKB", replace
+file /opt/notebooks/LE8_UKB.dta saved
+
+. su n_4080_0_0,det
+
+                          4080-0.0
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%          101             62
+ 5%          110             68
+10%          116             69       Obs             467,528
+25%          126             69       Sum of Wgt.     467,528
+
+50%          138                      Mean            139.745
+                        Largest       Std. Dev.      19.69766
+75%          152            254
+90%          166            260       Variance       387.9977
+95%          175            264       Skewness       .4963569
+99%          192            268       Kurtosis       3.395823
+
+. su n_4079_0_0,det
+
+                          4079-0.0
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%           59             32
+ 5%           65             35
+10%           69             35       Obs             467,541
+25%           75             38       Sum of Wgt.     467,541
+
+50%           82                      Mean           82.20741
+                        Largest       Std. Dev.      10.70166
+75%           89            142
+90%           96            143       Variance       114.5256
+95%          100            148       Skewness       .2598506
+99%          109            148       Kurtosis       3.243022
+
+. capture drop LE8_COMP8BP
+
+. gen LE8_COMP8BP=.
+(502,163 missing values generated)
+
+. replace LE8_COMP8BP=100 if n_4080_0_0<120 & n_4079_0_0<80
+(63,084 real changes made)
+
+. replace LE8_COMP8BP=75 if (n_4080_0_0>=120 & n_4080_0_0<130) & n_4079_0_0<80
+(53,730 real changes made)
+
+. replace LE8_COMP8BP=50 if (n_4080_0_0>=130 & n_4080_0_0<140) | (n_4079_0_0>=80
+>  & n_4079_0_0<90)
+(212,095 real changes made)
+
+. replace LE8_COMP8BP=25 if (n_4080_0_0>=140 & n_4080_0_0<160) | (n_4079_0_0>=90
+>  & n_4079_0_0<100)
+(189,235 real changes made)
+
+. replace LE8_COMP8BP=0 if (n_4080_0_0>=160 & n_4080_0_0~=.) | (n_4079_0_0>=100 
+> & n_4079_0_0~=.)
+(81,884 real changes made)
+
+. replace LE8_COMP8BP=LE8_COMP8BP-20 if LE8_COMP8BP~=0 & bptreat==1
+(56,305 real changes made)
+
+. capture drop rowmissLE8TOTAL
+
+. egen rowmissLE8TOTAL=rowmiss(LE8_COMP1DIET LE8_COMP2PA LE8_COMP3NICOTINE LE8_C
+> OMP4SLEEP LE8_COMP5BMI LE8_COMP6LIPIDS LE8_COMP7GLUC LE8_COMP8BP)
+
+. tab rowmissLE8TOTAL
+
+rowmissLE8T |
+       OTAL |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    376,176       74.91       74.91
+          1 |    105,672       21.04       95.95
+          2 |     15,488        3.08       99.04
+          3 |      3,604        0.72       99.76
+          4 |        607        0.12       99.88
+          5 |         49        0.01       99.89
+          6 |        340        0.07       99.95
+          7 |        227        0.05      100.00
+------------+-----------------------------------
+      Total |    502,163      100.00
+
+. capture drop LE8_TOTALSCORE
+
+. egen LE8_TOTALSCORE=rmean(LE8_COMP1DIET LE8_COMP2PA LE8_COMP3NICOTINE LE8_COMP
+> 4SLEEP LE8_COMP5BMI LE8_COMP6LIPIDS LE8_COMP7GLUC LE8_COMP8BP) if rowmissLE8TO
+> TAL<=4
+(616 missing values generated)
+
+. replace LE8_TOTALSCORE=LE8_TOTALSCORE*8
+(501,547 real changes made)
+
+. capture drop rowmissLE8LIFESTYLE
+
+. egen rowmissLE8LIFESTYLE=rowmiss(LE8_COMP1DIET LE8_COMP2PA LE8_COMP3NICOTINE L
+> E8_COMP4SLEEP)
+
+. tab rowmissLE8LIFESTYLE
+
+rowmissLE8L |
+   IFESTYLE |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    497,441       99.06       99.06
+          1 |      3,354        0.67       99.73
+          2 |      1,141        0.23       99.95
+          3 |        227        0.05      100.00
+------------+-----------------------------------
+      Total |    502,163      100.00
+
+. capture drop LE8_LIFESTYLE
+
+. egen LE8_LIFESTYLE=rmean(LE8_COMP1DIET LE8_COMP2PA LE8_COMP3NICOTINE LE8_COMP4
+> SLEEP) if rowmissLE8LIFESTYLE<=2
+(227 missing values generated)
+
+. replace LE8_LIFESTYLE=LE8_LIFESTYLE*4
+(501,698 real changes made)
+
+. capture drop rowmissLE8BIOLOGICAL
+
+. egen rowmissLE8BIOLOGICAL=rowmiss(LE8_COMP5BMI LE8_COMP6LIPIDS LE8_COMP7GLUC L
+> E8_COMP8BP)
+
+. tab rowmissLE8BIOLOGICAL
+
+rowmissLE8B |
+  IOLOGICAL |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    378,736       75.42       75.42
+          1 |    104,504       20.81       96.23
+          2 |     14,830        2.95       99.18
+          3 |      3,091        0.62       99.80
+          4 |      1,002        0.20      100.00
+------------+-----------------------------------
+      Total |    502,163      100.00
+
+. capture drop LE8_BIOLOGICAL
+
+. egen LE8_BIOLOGICAL=rmean(LE8_COMP5BMI LE8_COMP6LIPIDS LE8_COMP7GLUC LE8_COMP8
+> BP) if rowmissLE8BIOLOGICAL<=2
+(4,093 missing values generated)
+
+. replace LE8_BIOLOGICAL=LE8_BIOLOGICAL*4
+(497,952 real changes made)
+
+. save "/opt/notebooks/LE8_UKB", replace
+file /opt/notebooks/LE8_UKB.dta saved
+
+. . `77b3f30700e04962527f71dc0fc66cb4'
+. include "/home/dnanexus/.stata_kernel_cache/include.do"
+
+. tempname __user_rc
+
+. local `__user_rc' = _rc
+
+. . `cc64df03024327541235dabb93f09e00'
+. _StataKernelLog off
+
+. include "/home/dnanexus/.stata_kernel_cache/include.do"
+
+. _StataKernelResetRC, num(``__user_rc'')
+
+. macro drop _`__user_rc'
+
+. macro drop ___user_rc
+
+. . include "/home/dnanexus/.stata_kernel_cache/include.do"
+
+. set more off
+
+. capture log close

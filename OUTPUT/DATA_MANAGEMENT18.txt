@@ -1,0 +1,135 @@
+
+. clear
+
+. import delimited "/opt/notebooks/HHV6.csv"
+(7 vars, 501,978 obs)
+
+. save "/opt/notebooks/HHV6_POS.dta",replace
+file /opt/notebooks/HHV6_POS.dta saved
+
+. sort eid
+
+. save "/opt/notebooks/HHV6_POS.dta",replace
+file /opt/notebooks/HHV6_POS.dta saved
+
+. describe
+
+Contains data from /opt/notebooks/HHV6_POS.dta
+  obs:       501,978                          
+ vars:             7                          25 Nov 2025 20:08
+--------------------------------------------------------------------------------
+              storage   display    value
+variable name   type    format     label      variable label
+--------------------------------------------------------------------------------
+eid             long    %12.0g                
+v2              float   %9.0g                 30586-0.0
+v3              str68   %68s                  30589-0.0
+v4              float   %9.0g                 30587-0.0
+v5              float   %9.0g                 30588-0.0
+v6              str12   %12s                  30045-0.0
+v7              str3    %9s                   30046-0.0
+--------------------------------------------------------------------------------
+Sorted by: eid
+
+. capture rename eid n_eid
+
+. capture rename v3 hhv6_pos
+
+. save "/opt/notebooks/HHV6_POS.dta",replace
+file /opt/notebooks/HHV6_POS.dta saved
+
+. capture drop HHV6_POSbr
+
+. encode hhv6_pos,gen(HHV6_POSbr)
+
+. tab HHV6_POSbr
+
+                              30589-0.0 |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+                  Likely DR-only genome |        252        0.06        0.06
+                        Likely positive |      5,632        1.35        1.41
+                               Negative |    410,340       98.55       99.96
+                          U only genome |          1        0.00       99.96
+Unlikely to be positive (low virus leve |        154        0.04      100.00
+----------------------------------------+-----------------------------------
+                                  Total |    416,379      100.00
+
+. su HHV6_POSbr
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+  HHV6_POSbr |    416,379    2.986006    .1312746          1          5
+
+. labelbook HHV6_POSbr
+
+--------------------------------------------------------------------------------
+value label HHV6_POSbr 
+--------------------------------------------------------------------------------
+
+      values                                    labels
+       range:  [1,5]                     string length:  [8,68]
+           N:  5                 unique at full length:  yes
+        gaps:  no                  unique at length 12:  yes
+  missing .*:  0                           null string:  no
+                               leading/trailing blanks:  no
+                                    numeric -> numeric:  no
+  definition
+           1   Likely DR-only genome
+           2   Likely positive
+           3   Negative
+           4   U only genome
+           5   Unlikely to be positive (low virus level inconsistent with
+               iciHHV-6)
+
+   variables:  HHV6_POSbr
+
+
+. save "/opt/notebooks/HHV6_POS.dta",replace
+file /opt/notebooks/HHV6_POS.dta saved
+
+. capture drop HHV6_POSbr2
+
+. gen HHV6_POSbr2=.
+(501,978 missing values generated)
+
+. replace HHV6_POSbr2=0 if HHV6_POSbr==0
+(0 real changes made)
+
+. replace HHV6_POSbr2=1 if HHV6_POSbr==2
+(5,632 real changes made)
+
+. replace HHV6_POSbr2=0 if HHV6_POSbr==1 | HHV6_POSbr==3 | HHV6_POSbr==4
+(410,593 real changes made)
+
+. tab HHV6_POSbr2
+
+HHV6_POSbr2 |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    410,593       98.65       98.65
+          1 |      5,632        1.35      100.00
+------------+-----------------------------------
+      Total |    416,225      100.00
+
+. capture drop withdrawals
+
+. gen withdrawals=0 if n_eid~=.
+
+. save "/opt/notebooks/HHV6_POS.dta",replace
+file /opt/notebooks/HHV6_POS.dta saved
+
+. use n_eid n_22190_0_0 n_22191_0_0 n_22192_0_0 n_22194_0_0 using  "/opt/noteboo
+> ks/SMALLERDATASETUKBfin"
+
+. su n_22190_0_0 n_22191_0_0 n_22192_0_0 n_22194_0_0
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+ n_22190_0_0 |    472,087    .7399405    .1220436   .0701565    5.02449
+ n_22191_0_0 |    472,087    .8321829    .1312115   .0775509    5.36448
+ n_22192_0_0 |    472,087    .0002198     .999821   -15.2824    12.1395
+ n_22194_0_0 |      1,349     .718467     .127208    .376703    1.81183
+
+. save "/opt/notebooks/TELOMERE_LENGTH.dta",replace
+file /opt/notebooks/TELOMERE_LENGTH.dta saved
+
+. capture log close

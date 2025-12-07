@@ -1,0 +1,185 @@
+
+. clear
+
+. use n_eid n_25010_2_0 n_25008_2_0 n_25006_2_0 n_25006_2_0 n_2501*_2_0 n_2502*_
+> 2_0 n_257*_2_0 n_258*_2_0 n_259*_2_0  n_26521_2_0 using "/opt/notebooks/SMALLE
+> RDATASETUKBfin.dta"
+
+. save "/opt/notebooks/UKB_BRAINSMRI_INSTANCE2", replace
+file /opt/notebooks/UKB_BRAINSMRI_INSTANCE2.dta saved
+
+. sort n_eid
+
+. capture drop _merge
+
+. save "/opt/notebooks/UKB_BRAINSMRI_INSTANCE2", replace
+file /opt/notebooks/UKB_BRAINSMRI_INSTANCE2.dta saved
+
+. use "/opt/notebooks/DATES_SMALL_FINAL.dta",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save "/opt/notebooks/DATES_SMALL_FINAL.dta", replace
+file /opt/notebooks/DATES_SMALL_FINAL.dta saved
+
+. use "/opt/notebooks/UKB_BRAINSMRI_INSTANCE2",clear
+
+. merge n_eid using "/opt/notebooks/DATES_SMALL_FINAL"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. save "/opt/notebooks/UKB_BRAINSMRI_INSTANCE2fin", replace
+file /opt/notebooks/UKB_BRAINSMRI_INSTANCE2fin.dta saved
+
+. keep n_eid n_25010_2_0 n_25008_2_0 n_25006_2_0 n_25006_2_0 n_2501*_2_0 n_2502*
+> _2_0 n_257*_2_0 n_258*_2_0 n_259*_2_0  n_26521_2_0 ts_*
+
+. save "/opt/notebooks/UKB_BRAINSMRI_INSTANCE2fin", replace
+file /opt/notebooks/UKB_BRAINSMRI_INSTANCE2fin.dta saved
+
+. capture drop TIME_V0V2
+
+. gen TIME_V0V2=ts_53_2_0-ts_53_0_0
+(409,967 missing values generated)
+
+. capture drop TIME_V2V3
+
+. gen TIME_V2V3=ts_53_3_0-ts_53_2_0
+(488,170 missing values generated)
+
+. capture drop TIME_V0V3
+
+. gen TIME_V0V3=ts_53_3_0-ts_53_0_0
+(488,170 missing values generated)
+
+. capture drop INSTANCE
+
+. gen INSTANCE=2
+
+. save "/opt/notebooks/UKB_BRAINSMRI_INSTANCE2fin", replace
+file /opt/notebooks/UKB_BRAINSMRI_INSTANCE2fin.dta saved
+
+. capture drop TOTALBRAIN
+
+. gen TOTALBRAIN=n_25010_2_0
+(439,324 missing values generated)
+
+. capture drop ICV
+
+. gen ICV=n_26521_2_0
+(438,368 missing values generated)
+
+. capture drop WM
+
+. gen WM=n_25008_2_0
+(439,324 missing values generated)
+
+. capture drop GM
+
+. gen GM=n_25006_2_0
+(439,324 missing values generated)
+
+. capture drop WMH
+
+. gen WMH=n_25781_2_0
+(440,815 missing values generated)
+
+. capture drop WMHpctICV
+
+. gen WMHpctICV=(WMH*100/ICV)
+(441,975 missing values generated)
+
+. capture drop LnWMHpctICV
+
+. gen LnWMHpctICV=ln(WMHpctICV)
+(441,975 missing values generated)
+
+. capture drop FRONTAL_GM_LEFT
+
+. gen FRONTAL_GM_LEFT=(n_25830_2_0+n_25862_2_0+n_25846_2_0+n_25782_2_0+n_25792_2
+> _0+n_25790_2_0+n_25832_2_0+n_25788_2_0+n_25794_2_0+n_25786_2_0)
+(439,329 missing values generated)
+
+. capture drop FRONTAL_GM_RIGHT
+
+. gen FRONTAL_GM_RIGHT=(n_25831_2_0+n_25863_2_0+n_25847_2_0+n_25783_2_0+n_25793_
+> 2_0+n_25791_2_0+n_25833_2_0+n_25789_2_0+n_25795_2_0+n_25787_2_0)
+(439,329 missing values generated)
+
+. capture drop Accumbens_Left
+
+. gen Accumbens_Left=n_25023_2_0
+(439,341 missing values generated)
+
+. capture drop Accumbens_Right
+
+. gen Accumbens_Right=n_25024_2_0
+(439,341 missing values generated)
+
+. capture drop Amygdala_Left
+
+. gen Amygdala_Left=n_25021_2_0
+(439,341 missing values generated)
+
+. capture drop Amygdala_Right
+
+. gen Amygdala_Right=n_25022_2_0
+(439,341 missing values generated)
+
+. capture drop Caudate_Left
+
+. gen Caudate_Left=n_25013_2_0
+(439,341 missing values generated)
+
+. capture drop Caudate_Right
+
+. gen Caudate_Right=n_25014_2_0
+(439,341 missing values generated)
+
+. capture drop Hippocampus_Left
+
+. gen Hippocampus_Left=n_25019_2_0
+(439,341 missing values generated)
+
+. capture drop Hippocampus_Right
+
+. gen Hippocampus_Right=n_25020_2_0
+(439,341 missing values generated)
+
+. capture drop Pallidum_Left
+
+. gen Pallidum_Left=n_25017_2_0
+(439,341 missing values generated)
+
+. capture drop Pallidum_Right
+
+. gen Pallidum_Right=n_25018_2_0
+(439,341 missing values generated)
+
+. capture drop Putamen_Left
+
+. gen Putamen_Left=n_25015_2_0
+(439,341 missing values generated)
+
+. capture drop Putamen_Right
+
+. gen Putamen_Right=n_25016_2_0
+(439,341 missing values generated)
+
+. capture drop Thalamus_Left
+
+. gen Thalamus_Left=n_25011_2_0
+(439,341 missing values generated)
+
+. capture drop Thalamus_Right
+
+. gen Thalamus_Right=n_25012_2_0
+(439,341 missing values generated)
+
+. capture drop s_*
+
+. save "/opt/notebooks/UKB_BRAINSMRI_INSTANCE2fin", replace
+file /opt/notebooks/UKB_BRAINSMRI_INSTANCE2fin.dta saved
+
+. capture log close

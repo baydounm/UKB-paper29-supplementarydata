@@ -1,0 +1,151 @@
+
+. clear
+
+. use n_eid n_20023_0_0 n_399_0_1 n_399_0_2 s_400_0_1 s_400_0_2 using "/opt/note
+> books/SMALLERDATASETUKBfin"
+
+. save "/opt/notebooks/COGN_UKB",replace
+file /opt/notebooks/COGN_UKB.dta saved
+
+. use "/opt/notebooks/COGN_UKB",clear
+
+. capture drop n_400_0_1r
+
+. capture drop n_400_0_2r
+
+. gen n_400_0_1r=s_400_0_1 if s_400_0_1~="Test not completed"
+(18,782 missing values generated)
+
+. gen n_400_0_2r=s_400_0_2 if s_400_0_2~="Test not completed"
+(19,847 missing values generated)
+
+. destring n_399_0_1 n_399_0_2 n_400_0_1r n_400_0_2r,replace
+n_399_0_1 already numeric; no replace
+n_399_0_2 already numeric; no replace
+n_400_0_1r: all characters numeric; replaced as int
+(18782 missing values generated)
+n_400_0_2r: all characters numeric; replaced as int
+(19847 missing values generated)
+
+. su n_399_0_1 n_399_0_2 n_400_0_1r n_400_0_2r
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+   n_399_0_1 |    497,319    .5396838    1.187726          0         84
+   n_399_0_2 |    497,319    4.150185     3.39876          0        146
+  n_400_0_1r |    483,154    124.1217    136.0941         40      11831
+  n_400_0_2r |    482,089    311.4021    151.2737         91      13751
+
+. capture drop REACTION_TIME
+
+. gen REACTION_TIME=.
+(501,936 missing values generated)
+
+. replace REACTION_TIME=ln(n_20023_0_0)
+(496,115 real changes made)
+
+. capture drop n_399_0_mean
+
+. gen n_399_0_mean=(n_399_0_1+n_399_0_2)/2
+(4,617 missing values generated)
+
+. su n_399_0_mean
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+n_399_0_mean |    497,319    2.344935    1.890025          0         97
+
+. capture drop PAIRSMATCHING_INC
+
+. gen PAIRSMATCHING_INC=.
+(501,936 missing values generated)
+
+. replace PAIRSMATCHING_INC=ln(n_399_0_mean)
+(464,241 real changes made)
+
+. save, replace
+file /opt/notebooks/COGN_UKB.dta saved
+
+. capture drop n_400_0_mean
+
+. gen n_400_0_mean=(n_400_0_1r+n_400_0_2r)/2
+(21,962 missing values generated)
+
+. capture drop PAIRSMATCHING_TTC
+
+. gen PAIRSMATCHING_TTC=.
+(501,936 missing values generated)
+
+. replace PAIRSMATCHING_TTC=ln(n_400_0_mean)
+(479,974 real changes made)
+
+. capture drop rowmissCOGN
+
+. egen rowmissCOGN=rowmiss(REACTION_TIME PAIRSMATCHING_INC PAIRSMATCHING_TTC)
+
+. tab rowmissCOGN
+
+rowmissCOGN |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    456,146       90.88       90.88
+          1 |     29,449        5.87       96.74
+          2 |     12,994        2.59       99.33
+          3 |      3,347        0.67      100.00
+------------+-----------------------------------
+      Total |    501,936      100.00
+
+. pca REACTION_TIME PAIRSMATCHING_INC PAIRSMATCHING_TTC if rowmissCOGN<=1, facto
+> rs(1)
+
+Principal components/correlation                 Number of obs    =    456,146
+                                                 Number of comp.  =          1
+                                                 Trace            =          3
+    Rotation: (unrotated = principal)            Rho              =     0.6103
+
+    --------------------------------------------------------------------------
+       Component |   Eigenvalue   Difference         Proportion   Cumulative
+    -------------+------------------------------------------------------------
+           Comp1 |      1.83094      .942341             0.6103       0.6103
+           Comp2 |      .888596       .60813             0.2962       0.9065
+           Comp3 |      .280467            .             0.0935       1.0000
+    --------------------------------------------------------------------------
+
+Principal components (eigenvectors) 
+
+    --------------------------------------
+        Variable |    Comp1 | Unexplained 
+    -------------+----------+-------------
+    REACTION_T~E |   0.3605 |        .762 
+    PAIRSMATC~NC |   0.6448 |       .2388 
+    PAIRSMATC~TC |   0.6740 |       .1682 
+    --------------------------------------
+
+. predict POORCOGN
+(score assumed)
+
+Scoring coefficients 
+    sum of squares(column-loading) = 1
+
+    ------------------------
+        Variable |    Comp1 
+    -------------+----------
+    REACTION_T~E |   0.3605 
+    PAIRSMATC~NC |   0.6448 
+    PAIRSMATC~TC |   0.6740 
+    ------------------------
+
+. su REACTION_TIME PAIRSMATCHING_INC PAIRSMATCHING_TTC POORCOGN
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+REACTION_T~E |    496,115    6.308031     .191487   4.143135   7.600903
+PAIRSMATC~NC |    464,241    .6835166    .7088311  -.6931472   4.574711
+PAIRSMATC~TC |    479,974    5.292662    .3924926   4.283587   8.840219
+    POORCOGN |    456,146    4.53e-12    1.353121  -5.000457   9.009002
+
+. save , replace
+file /opt/notebooks/COGN_UKB.dta saved
+
+. set more off
+
+. capture log close

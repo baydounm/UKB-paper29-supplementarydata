@@ -1,0 +1,97 @@
+
+. use "/opt/notebooks/DEMOG_SES_UKB",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save, replace
+file /opt/notebooks/DEMOG_SES_UKB.dta saved
+
+. use "/opt/notebooks/LIFESTYLENODIET_UKB",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save, replace
+file /opt/notebooks/LIFESTYLENODIET_UKB.dta saved
+
+. use "/opt/notebooks/LIFESTYLEDIET_UKB",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save, replace
+file /opt/notebooks/LIFESTYLEDIET_UKB.dta saved
+
+. use "/opt/notebooks/SS_UKB",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save, replace
+file /opt/notebooks/SS_UKB.dta saved
+
+. use "/opt/notebooks/HEALTH_UKB",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save, replace
+file /opt/notebooks/HEALTH_UKB.dta saved
+
+. use "/opt/notebooks/NUTR_UKB",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save, replace
+file /opt/notebooks/NUTR_UKB.dta saved
+
+. use "/opt/notebooks/DEMOG_SES_UKB",clear
+
+. merge n_eid using "/opt/notebooks/LIFESTYLENODIET_UKB"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. sort n_eid
+
+. capture drop _merge
+
+. merge n_eid using "/opt/notebooks/LIFESTYLEDIET_UKB"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. sort n_eid
+
+. capture drop _merge
+
+. merge n_eid using "/opt/notebooks/SS_UKB"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. sort n_eid
+
+. capture drop _merge
+
+. merge n_eid using "/opt/notebooks/HEALTH_UKB"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. sort n_eid
+
+. capture drop _merge
+
+. merge n_eid using "/opt/notebooks/NUTR_UKB"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. sort n_eid
+
+. capture drop _merge
+
+. save "/opt/notebooks/LE8_UKB", replace
+(note: file /opt/notebooks/LE8_UKB.dta not found)
+file /opt/notebooks/LE8_UKB.dta saved
+
+. capture log close

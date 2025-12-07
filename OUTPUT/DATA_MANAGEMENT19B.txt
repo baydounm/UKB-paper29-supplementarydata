@@ -1,0 +1,56 @@
+
+
+
+
+
+
+
+file /opt/notebooks/HESIN_UKB_TreatedSubset_SingleRecord_FIXED.dta saved
+
+
+
+
+file /opt/notebooks/DEMOG_SES_UKB.dta saved
+
+
+
+
+file /opt/notebooks/LE8_UKB.dta saved
+
+
+
+
+file /opt/notebooks/MORT_UKB.dta saved
+
+
+
+
+(note: you are using old merge syntax; see [D] merge for new syntax)
+(label n_6138_0_0 already defined)
+(label ethnicityL3 already defined)
+(label ethnicityL2 already defined)
+(label ethnicityL already defined)
+(label n_21000_0_0 already defined)
+(label educationL already defined)
+(label n_738_0_0 already defined)
+
+
+
+(note: you are using old merge syntax; see [D] merge for new syntax)
+(label n_6138_0_0 already defined)
+(label ethnicityL3 already defined)
+(label ethnicityL2 already defined)
+(label ethnicityL already defined)
+(label n_21000_0_0 already defined)
+(label educationL already defined)
+(label n_738_0_0 already defined)
+
+
+
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+
+
+(note: file /opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITY.dta not found)
+file /opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITY.dta saved
+

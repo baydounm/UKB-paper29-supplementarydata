@@ -1,0 +1,747 @@
+
+
+
+
+
+
+
+                id:  n_eid
+     failure event:  died == 1
+obs. time interval:  (Age_death[_n-1], Age_death]
+ enter on or after:  time age_2020
+ exit on or before:  failure
+            weight:  [pweight=_weight]
+
+------------------------------------------------------------------------------
+    271,974  total observations
+          3  observations end on or before enter()
+    258,368  weights invalid                                    PROBABLE ERROR
+------------------------------------------------------------------------------
+     13,603  observations remaining, representing
+     13,603  subjects
+      1,869  failures in single-failure-per-subject data
+ 51,163.387  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  49.96304
+                                          last observed exit t =  86.71595
+
+(271,974 missing values generated)
+(286 real changes made)
+(271,688 real changes made)
+(271,974 missing values generated)
+(5,358 real changes made)
+(266,616 real changes made)
+(271,974 missing values generated)
+(259 real changes made)
+(271,715 real changes made)
+
+
+(271,974 missing values generated)
+
+(1,066 real changes made)
+
+(270,908 real changes made)
+
+
+
+
+
+
+--- Cox Model 1: Z55-Z65 Overall ---
+
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=_weight]
+(sum of wgt is 13,603)
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =       13,603             Number of obs    =      13,603
+No. of failures      =        1,869
+Time at risk         =  51163.38659
+                                                Wald chi2(13)    =      907.09
+Log pseudolikelihood =   -13816.432             Prob > chi2      =      0.0000
+
+                              (Std. Err. adjusted for 13,603 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+Treated_ID_~l |   2.018744    .102747    13.80   0.000     1.827082    2.230511
+  baselineage |   .8691108    .017125    -7.12   0.000     .8361863    .9033317
+ age_admitted |   1.000673   .0090748     0.07   0.941     .9830435    1.018618
+        2.SEX |   .5412134   .0264249   -12.57   0.000     .4918224    .5955645
+     NonWhite |   .8119109    .113846    -1.49   0.137     .6168124    1.068719
+     townsend |   1.039932   .0073248     5.56   0.000     1.025674    1.054388
+  educationbr |   .9825271   .0309281    -0.56   0.575     .9237412    1.045054
+householdin~e |   .9114533   .0290108    -2.91   0.004     .8563304    .9701246
+householdsize |   1.011373   .0181098     0.63   0.528     .9764939    1.047498
+LE8_TOTALSC~E |   .9988658   .0002599    -4.36   0.000     .9983567    .9993753
+        srhbr |   1.219605    .044299     5.47   0.000     1.135799    1.309594
+medicationnum |   1.043174   .0090261     4.88   0.000     1.025632    1.061015
+     comorbid |   1.011871   .0121308     0.98   0.325     .9883724    1.035929
+-------------------------------------------------------------------------------
+
+
+--- Cox Model 2: Z59 Subgroup ---
+
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=_weight]
+(sum of wgt is 13,603)
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =       13,603             Number of obs    =      13,603
+No. of failures      =        1,869
+Time at risk         =  51163.38659
+                                                Wald chi2(13)    =      710.34
+Log pseudolikelihood =   -13909.614             Prob > chi2      =      0.0000
+
+                              (Std. Err. adjusted for 13,603 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+diag_Z59_ho~s |   1.760833   .2276328     4.38   0.000     1.366717    2.268599
+  baselineage |   .8613651   .0170144    -7.56   0.000     .8286548    .8953666
+ age_admitted |    1.00489   .0092257     0.53   0.595     .9869695    1.023135
+        2.SEX |   .5446468   .0265892   -12.45   0.000     .4949485    .5993354
+     NonWhite |   .8169904   .1139634    -1.45   0.147     .6215575    1.073872
+     townsend |   1.032736   .0072791     4.57   0.000     1.018567    1.047102
+  educationbr |    .979533   .0308969    -0.66   0.512     .9208101    1.042001
+householdin~e |   .9382637   .0301011    -1.99   0.047     .8810833    .9991551
+householdsize |   .9546096   .0254738    -1.74   0.082     .9059649    1.005866
+LE8_TOTALSC~E |   .9987985   .0002605    -4.61   0.000     .9982882    .9993092
+        srhbr |   1.274499   .0463672     6.67   0.000     1.186786    1.368696
+medicationnum |   1.046681   .0090286     5.29   0.000     1.029134    1.064527
+     comorbid |   1.019348   .0120788     1.62   0.106     .9959465    1.043299
+-------------------------------------------------------------------------------
+
+
+--- Cox Model 3: Psychosocial Subgroup ---
+
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=_weight]
+(sum of wgt is 13,603)
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =       13,603             Number of obs    =      13,603
+No. of failures      =        1,869
+Time at risk         =  51163.38659
+                                                Wald chi2(13)    =      773.90
+Log pseudolikelihood =   -13875.796             Prob > chi2      =      0.0000
+
+                              (Std. Err. adjusted for 13,603 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+diag_Z60_Z6~s |   1.564299   .0756054     9.26   0.000     1.422917    1.719728
+  baselineage |   .8610219   .0169964    -7.58   0.000     .8283457     .894987
+ age_admitted |   1.007934   .0091486     0.87   0.384     .9901618    1.026026
+        2.SEX |    .510851   .0250319   -13.71   0.000     .4640717    .5623459
+     NonWhite |   .7948432   .1114139    -1.64   0.101     .6039037    1.046153
+     townsend |   1.035831   .0072876     5.00   0.000     1.021645    1.050213
+  educationbr |   .9653883   .0305233    -1.11   0.265     .9073797    1.027105
+householdin~e |   .9285549   .0295966    -2.33   0.020     .8723214    .9884134
+householdsize |   1.008507   .0194406     0.44   0.660     .9711151    1.047339
+LE8_TOTALSC~E |   .9988598   .0002597    -4.39   0.000     .9983509    .9993689
+        srhbr |   1.255281   .0455947     6.26   0.000     1.169024    1.347903
+medicationnum |   1.044599   .0090061     5.06   0.000     1.027095      1.0624
+     comorbid |   1.017131   .0121231     1.43   0.154     .9936452    1.041171
+-------------------------------------------------------------------------------
+
+
+--- Cox Model 4: Others Subgroup ---
+
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=_weight]
+(sum of wgt is 13,603)
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =       13,603             Number of obs    =      13,603
+No. of failures      =        1,869
+Time at risk         =  51163.38659
+                                                Wald chi2(13)    =      677.90
+Log pseudolikelihood =   -13917.661             Prob > chi2      =      0.0000
+
+                              (Std. Err. adjusted for 13,603 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+diag_Z55_Z5~s |    1.03367    .236696     0.14   0.885     .6598853     1.61918
+  baselineage |   .8606409    .016991    -7.60   0.000     .8279753    .8945952
+ age_admitted |   1.006021   .0092026     0.66   0.512     .9881453    1.024221
+        2.SEX |    .540146    .026334   -12.63   0.000     .4909216    .5943061
+     NonWhite |    .825566   .1153647    -1.37   0.170     .6277762    1.085672
+     townsend |   1.033721   .0072811     4.71   0.000     1.019548     1.04809
+  educationbr |   .9821023   .0310194    -0.57   0.567     .9231491     1.04482
+householdin~e |   .9355204    .030232    -2.06   0.039     .8781042    .9966908
+householdsize |   .9519579   .0264838    -1.77   0.077     .9014404    1.005307
+LE8_TOTALSC~E |   .9987961   .0002602    -4.62   0.000     .9982863    .9993063
+        srhbr |   1.278755   .0465595     6.75   0.000     1.190681    1.373345
+medicationnum |   1.045705   .0090116     5.19   0.000     1.028191    1.063517
+     comorbid |   1.020435    .012081     1.71   0.088      .997029     1.04439
+-------------------------------------------------------------------------------
+
+
+--- Cox Model 5: All Others Subgroup ---
+
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+             weight:  [pweight=_weight]
+(sum of wgt is 13,603)
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =       13,603             Number of obs    =      13,603
+No. of failures      =        1,869
+Time at risk         =  51163.38659
+                                                Wald chi2(13)    =      748.18
+Log pseudolikelihood =   -13898.286             Prob > chi2      =      0.0000
+
+                              (Std. Err. adjusted for 13,603 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+diag_alloth~s |   1.561089   .1103424     6.30   0.000     1.359134    1.793053
+  baselineage |   .8659781   .0171134    -7.28   0.000     .8330777    .9001778
+ age_admitted |   1.000537   .0092277     0.06   0.954     .9826131    1.018787
+        2.SEX |   .5733989   .0288613   -11.05   0.000     .5195325    .6328504
+     NonWhite |   .8484635   .1186468    -1.18   0.240     .6450651    1.115996
+     townsend |   1.036354   .0073358     5.04   0.000     1.022076    1.050833
+  educationbr |   1.002596   .0317908     0.08   0.935      .942184    1.066882
+householdin~e |   .9271688   .0299625    -2.34   0.019     .8702645    .9877939
+householdsize |   .9353467   .0275364    -2.27   0.023     .8829039    .9909046
+LE8_TOTALSC~E |   .9987751   .0002606    -4.70   0.000     .9982644     .999286
+        srhbr |   1.258228   .0461177     6.27   0.000     1.171009    1.351943
+medicationnum |   1.044576   .0090549     5.03   0.000     1.026979    1.062475
+     comorbid |   1.018183   .0121074     1.52   0.130     .9947274    1.042192
+-------------------------------------------------------------------------------
+
+
+
+-> tabulation of diag_Z59_housing_counts  
+
+diag_Z59_ho |
+using_count |
+          s |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    271,688       99.89       99.89
+          1 |        286        0.11      100.00
+------------+-----------------------------------
+      Total |    271,974      100.00
+
+-> tabulation of diag_Z60_Z65_psychosocial_counts  
+
+diag_Z60_Z6 |
+5_psychosoc |
+ ial_counts |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    266,616       98.03       98.03
+          1 |      5,358        1.97      100.00
+------------+-----------------------------------
+      Total |    271,974      100.00
+
+-> tabulation of diag_Z55_Z56_work_counts  
+
+diag_Z55_Z5 |
+6_work_coun |
+         ts |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    271,715       99.90       99.90
+          1 |        259        0.10      100.00
+------------+-----------------------------------
+      Total |    271,974      100.00
+
+-> tabulation of diag_allothers  
+
+diag_alloth |
+        ers |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    270,908       99.61       99.61
+          1 |      1,066        0.39      100.00
+------------+-----------------------------------
+      Total |    271,974      100.00
+
+
+diag_Z59_h |  1 if failure; 0 if
+ousing_cou |       censored
+       nts |         0          1 |     Total
+-----------+----------------------+----------
+         0 |    11,511      1,806 |    13,317 
+         1 |       223         63 |       286 
+-----------+----------------------+----------
+     Total |    11,734      1,869 |    13,603 
+
+
+diag_Z60_Z |
+65_psychos |  1 if failure; 0 if
+ocial_coun |       censored
+        ts |         0          1 |     Total
+-----------+----------------------+----------
+         0 |     7,303        943 |     8,246 
+         1 |     4,431        926 |     5,357 
+-----------+----------------------+----------
+     Total |    11,734      1,869 |    13,603 
+
+
+diag_Z55_Z |  1 if failure; 0 if
+56_work_co |       censored
+      unts |         0          1 |     Total
+-----------+----------------------+----------
+         0 |    11,493      1,851 |    13,344 
+         1 |       241         18 |       259 
+-----------+----------------------+----------
+     Total |    11,734      1,869 |    13,603 
+
+
+           |  1 if failure; 0 if
+diag_allot |       censored
+      hers |         0          1 |     Total
+-----------+----------------------+----------
+         0 |    10,951      1,586 |    12,537 
+         1 |       783        283 |     1,066 
+-----------+----------------------+----------
+     Total |    11,734      1,869 |    13,603 
+
+file /opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin.dta saved
+
+
+                id:  n_eid
+     failure event:  died == 1
+obs. time interval:  (Age_death[_n-1], Age_death]
+ enter on or after:  time age_2020
+ exit on or before:  failure
+
+------------------------------------------------------------------------------
+    271,974  total observations
+          3  observations end on or before enter()
+------------------------------------------------------------------------------
+    271,971  observations remaining, representing
+    271,971  subjects
+     17,530  failures in single-failure-per-subject data
+  1,058,365  total analysis time at risk and under observation
+                                                at risk from t =         0
+                                     earliest observed entry t =  49.54963
+                                          last observed exit t =  89.80151
+
+--- Cox Model 1: Z55-Z65 Overall ---
+
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =      271,971             Number of obs    =     271,971
+No. of failures      =       17,530
+Time at risk         =  1058365.101
+                                                Wald chi2(13)    =     6296.09
+Log pseudolikelihood =   -179945.15             Prob > chi2      =      0.0000
+
+                             (Std. Err. adjusted for 271,971 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+Treated_ID_~l |   1.861693   .0577151    20.05   0.000     1.751942     1.97832
+  baselineage |   .8886779   .0057133   -18.36   0.000     .8775502    .8999467
+ age_admitted |   .9997871   .0026955    -0.08   0.937      .994518    1.005084
+        2.SEX |   .6188062   .0097676   -30.41   0.000     .5999551    .6382496
+     NonWhite |   .8117185   .0347173    -4.88   0.000     .7464478    .8826966
+     townsend |   1.031687   .0026298    12.24   0.000     1.026546    1.036854
+  educationbr |   .9830197   .0099929    -1.68   0.092     .9636277    1.002802
+householdin~e |   .8944555   .0079134   -12.61   0.000     .8790793    .9101006
+householdsize |   .9657927    .010019    -3.36   0.001      .946354    .9856306
+LE8_TOTALSC~E |   .9981224   .0000882   -21.26   0.000     .9979495    .9982953
+        srhbr |    1.23188   .0150811    17.03   0.000     1.202674    1.261796
+medicationnum |   1.052822   .0032413    16.72   0.000     1.046488    1.059194
+     comorbid |     1.0265   .0043971     6.11   0.000     1.017918    1.035154
+-------------------------------------------------------------------------------
+
+
+--- Cox Model 2: Z59 Subgroup ---
+
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =      271,971             Number of obs    =     271,971
+No. of failures      =       17,530
+Time at risk         =  1058365.101
+                                                Wald chi2(13)    =     5787.50
+Log pseudolikelihood =   -180106.91             Prob > chi2      =      0.0000
+
+                             (Std. Err. adjusted for 271,971 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+diag_Z59_ho~s |   2.627532   .3364301     7.54   0.000     2.044371    3.377039
+  baselineage |   .8909689   .0057266   -17.96   0.000     .8798153    .9022639
+ age_admitted |   .9971456   .0026868    -1.06   0.289     .9918935    1.002425
+        2.SEX |   .6185823   .0097609   -30.44   0.000     .5997442    .6380122
+     NonWhite |   .8013823   .0343209    -5.17   0.000     .7368604     .871554
+     townsend |   1.033863   .0026305    13.09   0.000      1.02872    1.039031
+  educationbr |   .9827344   .0099938    -1.71   0.087     .9633408    1.002518
+householdin~e |   .8883097   .0078845   -13.34   0.000       .87299    .9038983
+householdsize |   .9528491   .0105452    -4.36   0.000     .9324034    .9737431
+LE8_TOTALSC~E |   .9981013   .0000882   -21.51   0.000     .9979285    .9982742
+        srhbr |   1.239778   .0151786    17.56   0.000     1.210382    1.269887
+medicationnum |   1.054124   .0032332    17.19   0.000     1.047806     1.06048
+     comorbid |   1.028731   .0044054     6.61   0.000     1.020133    1.037402
+-------------------------------------------------------------------------------
+
+
+--- Cox Model 3: Psychosocial Subgroup ---
+
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =      271,971             Number of obs    =     271,971
+No. of failures      =       17,530
+Time at risk         =  1058365.101
+                                                Wald chi2(13)    =     6059.87
+Log pseudolikelihood =   -180018.33             Prob > chi2      =      0.0000
+
+                             (Std. Err. adjusted for 271,971 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+diag_Z60_Z6~s |   1.740759   .0618901    15.59   0.000     1.623587    1.866388
+  baselineage |   .8890688   .0057163   -18.29   0.000     .8779352    .9003435
+ age_admitted |   .9993641   .0026942    -0.24   0.813     .9940975    1.004658
+        2.SEX |   .6139683   .0096946   -30.89   0.000     .5952583    .6332663
+     NonWhite |   .8055892   .0344682    -5.05   0.000     .7407879     .876059
+     townsend |    1.03242   .0026286    12.53   0.000     1.027281    1.037585
+  educationbr |   .9809143   .0099706    -1.90   0.058     .9615656    1.000652
+householdin~e |   .8922912   .0078968   -12.88   0.000     .8769473    .9079037
+householdsize |   .9645751   .0101542    -3.43   0.001     .9448773    .9846836
+LE8_TOTALSC~E |   .9981176   .0000882   -21.33   0.000     .9979449    .9982904
+        srhbr |   1.235912   .0151238    17.31   0.000     1.206623    1.265913
+medicationnum |   1.053209   .0032325    16.89   0.000     1.046892    1.059563
+     comorbid |   1.027421    .004396     6.32   0.000     1.018841    1.036073
+-------------------------------------------------------------------------------
+
+
+--- Cox Model 4: Others Subgroup ---
+
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =      271,971             Number of obs    =     271,971
+No. of failures      =       17,530
+Time at risk         =  1058365.101
+                                                Wald chi2(13)    =     5685.82
+Log pseudolikelihood =   -180125.88             Prob > chi2      =      0.0000
+
+                             (Std. Err. adjusted for 271,971 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+diag_Z55_Z5~s |   1.840768   .4093741     2.74   0.006     1.190413    2.846429
+  baselineage |   .8910765   .0057266   -17.94   0.000      .879923    .9023714
+ age_admitted |   .9971199   .0026857    -1.07   0.284     .9918699    1.002398
+        2.SEX |   .6177404   .0097471   -30.53   0.000     .5989287    .6371428
+     NonWhite |   .8017887   .0343492    -5.16   0.000     .7372145    .8720191
+     townsend |   1.034297   .0026301    13.26   0.000     1.029155    1.039465
+  educationbr |   .9831542   .0100005    -1.67   0.095     .9637476    1.002951
+householdin~e |   .8875209   .0078837   -13.43   0.000     .8722029     .903108
+householdsize |   .9518145   .0106371    -4.42   0.000     .9311928    .9728929
+LE8_TOTALSC~E |   .9980999   .0000882   -21.53   0.000     .9979272    .9982728
+        srhbr |   1.240753   .0151923    17.62   0.000     1.211331    1.270889
+medicationnum |   1.053998   .0032325    17.15   0.000     1.047682    1.060353
+     comorbid |      1.029   .0044068     6.68   0.000     1.020399    1.037674
+-------------------------------------------------------------------------------
+
+
+--- Cox Model 5: All Others Subgroup ---
+
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =      271,971             Number of obs    =     271,971
+No. of failures      =       17,530
+Time at risk         =  1058365.101
+                                                Wald chi2(13)    =     5828.40
+Log pseudolikelihood =   -180077.12             Prob > chi2      =      0.0000
+
+                             (Std. Err. adjusted for 271,971 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+diag_alloth~s |   1.972275    .128832    10.40   0.000     1.735265    2.241658
+  baselineage |   .8910066   .0057255   -17.96   0.000     .8798553    .9022993
+ age_admitted |   .9971307   .0026876    -1.07   0.286      .991877    1.002412
+        2.SEX |   .6234465   .0098694   -29.85   0.000     .6043999    .6430933
+     NonWhite |   .8075134     .03459    -4.99   0.000     .7424861    .8782358
+     townsend |     1.0339   .0026336    13.09   0.000     1.028751    1.039075
+  educationbr |   .9862801   .0100412    -1.36   0.175     .9667947    1.006158
+householdin~e |   .8888223   .0079007   -13.26   0.000     .8734714     .904443
+householdsize |   .9506907   .0106334    -4.52   0.000     .9300765    .9717618
+LE8_TOTALSC~E |   .9981001   .0000883   -21.51   0.000     .9979271    .9982731
+        srhbr |   1.236979   .0151622    17.35   0.000     1.207616    1.267056
+medicationnum |   1.053568   .0032447    16.94   0.000     1.047228    1.059947
+     comorbid |   1.028419   .0044122     6.53   0.000     1.019807    1.037103
+-------------------------------------------------------------------------------
+
+
+
+-> tabulation of diag_Z59_housing_counts  
+
+diag_Z59_ho |
+using_count |
+          s |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    271,688       99.89       99.89
+          1 |        286        0.11      100.00
+------------+-----------------------------------
+      Total |    271,974      100.00
+
+-> tabulation of diag_Z60_Z65_psychosocial_counts  
+
+diag_Z60_Z6 |
+5_psychosoc |
+ ial_counts |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    266,616       98.03       98.03
+          1 |      5,358        1.97      100.00
+------------+-----------------------------------
+      Total |    271,974      100.00
+
+-> tabulation of diag_Z55_Z56_work_counts  
+
+diag_Z55_Z5 |
+6_work_coun |
+         ts |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    271,715       99.90       99.90
+          1 |        259        0.10      100.00
+------------+-----------------------------------
+      Total |    271,974      100.00
+
+-> tabulation of diag_allothers  
+
+diag_alloth |
+        ers |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    270,908       99.61       99.61
+          1 |      1,066        0.39      100.00
+------------+-----------------------------------
+      Total |    271,974      100.00
+
+
+diag_Z59_h |  1 if failure; 0 if
+ousing_cou |       censored
+       nts |         0          1 |     Total
+-----------+----------------------+----------
+         0 |   254,218     17,467 |   271,685 
+         1 |       223         63 |       286 
+-----------+----------------------+----------
+     Total |   254,441     17,530 |   271,971 
+
+
+diag_Z60_Z |
+65_psychos |  1 if failure; 0 if
+ocial_coun |       censored
+        ts |         0          1 |     Total
+-----------+----------------------+----------
+         0 |   250,010     16,604 |   266,614 
+         1 |     4,431        926 |     5,357 
+-----------+----------------------+----------
+     Total |   254,441     17,530 |   271,971 
+
+
+diag_Z55_Z |  1 if failure; 0 if
+56_work_co |       censored
+      unts |         0          1 |     Total
+-----------+----------------------+----------
+         0 |   254,200     17,512 |   271,712 
+         1 |       241         18 |       259 
+-----------+----------------------+----------
+     Total |   254,441     17,530 |   271,971 
+
+
+           |  1 if failure; 0 if
+diag_allot |       censored
+      hers |         0          1 |     Total
+-----------+----------------------+----------
+         0 |   253,658     17,247 |   270,905 
+         1 |       783        283 |     1,066 
+-----------+----------------------+----------
+     Total |   254,441     17,530 |   271,971 
+
+file /opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin.dta saved
+
+
+
+--- Cox Model 5: All Others Subgroup ---
+
+
+         failure _d:  died == 1
+   analysis time _t:  Age_death
+  enter on or after:  time age_2020
+                 id:  n_eid
+
+Cox regression -- Breslow method for ties
+
+No. of subjects      =      271,971             Number of obs    =     271,971
+No. of failures      =       17,530
+Time at risk         =  1058365.101
+                                                Wald chi2(13)    =     5828.40
+Log pseudolikelihood =   -180077.12             Prob > chi2      =      0.0000
+
+                             (Std. Err. adjusted for 271,971 clusters in n_eid)
+-------------------------------------------------------------------------------
+              |               Robust
+           _t | Haz. Ratio   Std. Err.      z    P>|z|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+diag_alloth~s |   1.972275    .128832    10.40   0.000     1.735265    2.241658
+  baselineage |   .8910066   .0057255   -17.96   0.000     .8798553    .9022993
+ age_admitted |   .9971307   .0026876    -1.07   0.286      .991877    1.002412
+        2.SEX |   .6234465   .0098694   -29.85   0.000     .6043999    .6430933
+     NonWhite |   .8075134     .03459    -4.99   0.000     .7424861    .8782358
+     townsend |     1.0339   .0026336    13.09   0.000     1.028751    1.039075
+  educationbr |   .9862801   .0100412    -1.36   0.175     .9667947    1.006158
+householdin~e |   .8888223   .0079007   -13.26   0.000     .8734714     .904443
+householdsize |   .9506907   .0106334    -4.52   0.000     .9300765    .9717618
+LE8_TOTALSC~E |   .9981001   .0000883   -21.51   0.000     .9979271    .9982731
+        srhbr |   1.236979   .0151622    17.35   0.000     1.207616    1.267056
+medicationnum |   1.053568   .0032447    16.94   0.000     1.047228    1.059947
+     comorbid |   1.028419   .0044122     6.53   0.000     1.019807    1.037103
+-------------------------------------------------------------------------------
+
+
+
+-> tabulation of diag_Z59_housing_counts  
+
+diag_Z59_ho |
+using_count |
+          s |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    271,688       99.89       99.89
+          1 |        286        0.11      100.00
+------------+-----------------------------------
+      Total |    271,974      100.00
+
+-> tabulation of diag_Z60_Z65_psychosocial_counts  
+
+diag_Z60_Z6 |
+5_psychosoc |
+ ial_counts |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    266,616       98.03       98.03
+          1 |      5,358        1.97      100.00
+------------+-----------------------------------
+      Total |    271,974      100.00
+
+-> tabulation of diag_Z55_Z56_work_counts  
+
+diag_Z55_Z5 |
+6_work_coun |
+         ts |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    271,715       99.90       99.90
+          1 |        259        0.10      100.00
+------------+-----------------------------------
+      Total |    271,974      100.00
+
+-> tabulation of diag_allothers  
+
+diag_alloth |
+        ers |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    270,908       99.61       99.61
+          1 |      1,066        0.39      100.00
+------------+-----------------------------------
+      Total |    271,974      100.00
+
+
+diag_Z59_h |  1 if failure; 0 if
+ousing_cou |       censored
+       nts |         0          1 |     Total
+-----------+----------------------+----------
+         0 |   254,218     17,467 |   271,685 
+         1 |       223         63 |       286 
+-----------+----------------------+----------
+     Total |   254,441     17,530 |   271,971 
+
+
+diag_Z60_Z |
+65_psychos |  1 if failure; 0 if
+ocial_coun |       censored
+        ts |         0          1 |     Total
+-----------+----------------------+----------
+         0 |   250,010     16,604 |   266,614 
+         1 |     4,431        926 |     5,357 
+-----------+----------------------+----------
+     Total |   254,441     17,530 |   271,971 
+
+
+diag_Z55_Z |  1 if failure; 0 if
+56_work_co |       censored
+      unts |         0          1 |     Total
+-----------+----------------------+----------
+         0 |   254,200     17,512 |   271,712 
+         1 |       241         18 |       259 
+-----------+----------------------+----------
+     Total |   254,441     17,530 |   271,971 
+
+
+           |  1 if failure; 0 if
+diag_allot |       censored
+      hers |         0          1 |     Total
+-----------+----------------------+----------
+         0 |   253,658     17,247 |   270,905 
+         1 |       783        283 |     1,066 
+-----------+----------------------+----------
+     Total |   254,441     17,530 |   271,971 
+
+file /opt/notebooks/UKB_PAPER29_HESIN_Z_MORTALITYfin.dta saved

@@ -1,0 +1,230 @@
+
+. clear all
+
+. import delimited using /opt/notebooks/hesin.csv
+(43 vars, 4,238,594 obs)
+
+. save /opt/notebooks/hesin_master.dta,replace
+file /opt/notebooks/hesin_master.dta saved
+
+. sort eid ins_index
+
+. save /opt/notebooks/hesin_master.dta,replace
+file /opt/notebooks/hesin_master.dta saved
+
+. clear
+
+. import delimited using /opt/notebooks/hesin_diag.csv
+(10 vars, 17,496,412 obs)
+
+. save /opt/notebooks/hesin_diag.dta,replace
+file /opt/notebooks/hesin_diag.dta saved
+
+. sort eid ins_index
+
+. save /opt/notebooks/hesin_diag.dta,replace
+file /opt/notebooks/hesin_diag.dta saved
+
+. . `e2f1dbbb63dca4fdbc1f732b425fedea'
+. include "/home/dnanexus/.stata_kernel_cache/include.do"
+
+. clear
+
+. use /opt/notebooks/hesin_diag.dta, clear
+
+. merge eid ins_index using /opt/notebooks/hesin_master.dta
+(note: you are using old merge syntax; see [D] merge for new syntax)
+variables eid ins_index do not uniquely identify observations in the master
+    data
+
+. capture drop if _merge == 1
+
+. capture drop _merge
+
+. destring eid, replace
+eid already numeric; no replace
+
+. capture rename eid n_eid
+
+. sort n_eid ins_index
+
+. save /opt/notebooks/HESIN_UKB.dta, replace
+file /opt/notebooks/HESIN_UKB.dta saved
+
+. . `b71eaf03fcab793fada5780057dd6e3e'
+. include "/home/dnanexus/.stata_kernel_cache/include.do"
+
+. use /opt/notebooks/HESIN_UKB.dta, clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. capture drop record
+
+. bysort n_eid: gen record=_n
+
+. save /opt/notebooks/HESIN_UKB.dta, replace
+file /opt/notebooks/HESIN_UKB.dta saved
+
+. use /opt/notebooks/DEMOG_SES_UKB.dta,clear
+
+. capture drop _merge
+
+. sort n_eid
+
+. save /opt/notebooks/DEMOG_SES_UKB.dta,replace
+file /opt/notebooks/DEMOG_SES_UKB.dta saved
+
+. merge n_eid using /opt/notebooks/HESIN_UKB.dta
+(note: you are using old merge syntax; see [D] merge for new syntax)
+variable n_eid does not uniquely identify observations in
+    /opt/notebooks/HESIN_UKB.dta
+
+. save /opt/notebooks/HESIN_UKB.dta, replace
+file /opt/notebooks/HESIN_UKB.dta saved
+
+. capture drop date_admitted
+
+. gen date_admitted = date(admidate, "YMD")
+(769,480 missing values generated)
+
+. format date_admitted %tdDD/NN/CCYY
+
+. label variable date_admitted "Admission Date (Stata Date format)"
+
+. capture drop date_admitted_mean
+
+. bysort n_eid: egen  date_admitted_mean=mean(date_admitted)
+(273,376 missing values generated)
+
+. capture drop date_admitted_min
+
+. bysort n_eid: egen  date_admitted_min=min(date_admitted)
+(273,376 missing values generated)
+
+. capture drop date_2020
+
+. gen date_2020=mdy(1,1,2020)
+
+. format date_2020 %td
+
+. capture drop age_2020
+
+. gen age_2020=(date_2020-birthdate)/365.25
+(1,011 missing values generated)
+
+. capture drop age_2020_mean
+
+. bysort n_eid: egen  age_2020_mean=mean(age_2020)
+(1,011 missing values generated)
+
+. capture drop age_admitted
+
+. gen age_admitted=(date_admitted-birthdate)/365.25
+(770,266 missing values generated)
+
+. capture drop age_admitted_mean
+
+. bysort n_eid: egen  age_admitted_mean=mean(age_admitted)
+(274,177 missing values generated)
+
+. capture drop age_admitted_min
+
+. bysort n_eid: egen  age_admitted_min=min(age_admitted)
+(274,177 missing values generated)
+
+. . `6a076f190ca877325de19396b82601e7'
+. include "/home/dnanexus/.stata_kernel_cache/include.do"
+
+. capture drop diag_Z55_Z65_any
+
+. gen diag_Z55_Z65_any = 0
+
+. replace diag_Z55_Z65_any = 1 if substr(diag_icd10, 1, 1) == "Z" & inrange(real
+> (substr(diag_icd10, 2, 2)), 55, 65)
+(22,723 real changes made)
+
+. label variable diag_Z55_Z65_any "Flag for any ICD-10 Z55-Z65 Social/Psychosoci
+> al Dx"
+
+. capture drop diag_Z55_Z65_any_count
+
+. bysort n_eid: egen diag_Z55_Z65_any_count=sum(diag_Z55_Z65_any)
+
+. capture drop diag_Z59_housing
+
+. gen diag_Z59_housing = 0
+
+. replace diag_Z59_housing = 1 if substr(diag_icd10, 1, 3) == "Z59"
+(997 real changes made)
+
+. label variable diag_Z59_housing "Homelessness/Housing Issues (Z59)"
+
+. capture drop diag_Z59_housing_count
+
+. bysort n_eid: egen diag_Z59_housing_count=sum(diag_Z59_housing)
+
+. capture drop diag_Z60_Z65_psychosocial
+
+. gen diag_Z60_Z65_psychosocial = 0
+
+. replace diag_Z60_Z65_psychosocial = 1 if substr(diag_icd10, 1, 1) == "Z" & inr
+> ange(real(substr(diag_icd10, 2, 2)), 60, 65)
+(15,912 real changes made)
+
+. label variable diag_Z60_Z65_psychosocial "Psychosocial Circumstances (Z60-Z65)
+> "
+
+. capture drop diag_Z60_Z65_psychosocial_count
+
+. bysort n_eid: egen diag_Z60_Z65_psychosocial_count=sum(diag_Z60_Z65_psychosoci
+> al)
+
+. capture drop diag_Z55_Z56_work
+
+. gen diag_Z55_Z56_work = 0
+
+. replace diag_Z55_Z56_work = 1 if substr(diag_icd10, 1, 1) == "Z" & inrange(rea
+> l(substr(diag_icd10, 2, 2)), 55, 56)
+(457 real changes made)
+
+. label variable diag_Z55_Z56_work "Education/Occupation/Employment Issues (Z55-
+> Z56)"
+
+. capture drop diag_Z55_Z56_work_count
+
+. bysort n_eid: egen diag_Z55_Z56_work_count=sum(diag_Z55_Z56_work)
+
+. save /opt/notebooks/HESIN_UKB.dta, replace
+file /opt/notebooks/HESIN_UKB.dta saved
+
+. . `246d382b88450a4281a73c07aced3817'
+. include "/home/dnanexus/.stata_kernel_cache/include.do"
+
+. use /opt/notebooks/HESIN_UKB.dta, clear
+
+. capture drop Treated_ID_level
+
+. bysort n_eid: egen Treated_ID_level = max(diag_Z55_Z65_any)
+
+. label variable Treated_ID_level "Flag: ID has at least one Z55-Z65 diagnosis"
+
+. sort n_eid date_admitted
+
+. capture drop Keep_Record_Flag
+
+. gen Keep_Record_Flag = 0
+
+. replace Keep_Record_Flag = 1 if date_admitted == date_admitted_min
+(1,300,458 real changes made)
+
+. keep if Keep_Record_Flag == 1
+(16,255,749 observations deleted)
+
+. capture drop date_admitted_mean date_admitted_min Keep_Record_Flag
+
+. save /opt/notebooks/HESIN_UKB_TreatedSubset.dta, replace
+file /opt/notebooks/HESIN_UKB_TreatedSubset.dta saved
+
+. capture log close

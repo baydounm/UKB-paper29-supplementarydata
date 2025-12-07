@@ -1,0 +1,659 @@
+
+. clear
+
+. use n_eid n_24016_0_0 n_24017_0_0 n_24018_0_0 n_24003_0_0 n_24004_0_0 n_24019_
+> 0_0 n_24005_0_0 n_24007_0_0 n_24006_0_0 n_24008_0_0 n_24024_0_0 n_24503_0_0  u
+> sing "/opt/notebooks/SMALLERDATASETUKBfin"
+
+. save "/opt/notebooks/AIRPOLLUTION_GREENSPACE.dta",replace
+file /opt/notebooks/AIRPOLLUTION_GREENSPACE.dta saved
+
+. use "/opt/notebooks/AIRPOLLUTION_GREENSPACE.dta",clear
+
+. capture drop PM2point5_2010
+
+. gen PM2point5_2010=n_24006_0_0
+(41,271 missing values generated)
+
+. label var PM2point5_2010 "Particulate matter air pollution (pm2.5); 2010 Resid
+> ential air pollution"
+
+. describe PM2point5_2010
+
+              storage   display    value
+variable name   type    format     label      variable label
+--------------------------------------------------------------------------------
+PM2point5_2010  float   %9.0g                 Particulate matter air pollution
+                                                (pm2.5); 2010 Residential air
+                                                pollution
+
+. su PM2point5_2010
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+PM2poin~2010 |    460,665    9.991951    1.056985       8.17      21.31
+
+. cap noi histogram PM2point5_2010
+(bin=56, start=8.1700001, width=.23464285)
+
+. if _rc == 0 {
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.svg"', width(600) replace
+(note: file /home/dnanexus/.stata_kernel_cache/graph303.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph303.svg written in SVG format)
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.pdf"', replace
+(file /home/dnanexus/.stata_kernel_cache/graph303.pdf written in PDF format)
+.     global stata_kernel_graph_counter = $stata_kernel_graph_counter + 1
+. }            
+
+. capture drop PM10_2010
+
+. gen PM10_2010=n_24005_0_0
+(41,271 missing values generated)
+
+. label var PM10_2010 "Particulate matter air pollution (pm10); 2010 Residential
+>  air pollution"
+
+. describe PM10_2010
+
+              storage   display    value
+variable name   type    format     label      variable label
+--------------------------------------------------------------------------------
+PM10_2010       float   %9.0g                 Particulate matter air pollution
+                                                (pm10); 2010 Residential air
+                                                pollution
+
+. su PM10_2010
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+   PM10_2010 |    460,665    16.23769    1.899168      11.78      31.39
+
+. cap noi histogram PM10_2010
+(bin=56, start=11.78, width=.35017857)
+
+. if _rc == 0 {
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.svg"', width(600) replace
+(note: file /home/dnanexus/.stata_kernel_cache/graph304.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph304.svg written in SVG format)
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.pdf"', replace
+(file /home/dnanexus/.stata_kernel_cache/graph304.pdf written in PDF format)
+.     global stata_kernel_graph_counter = $stata_kernel_graph_counter + 1
+. }            
+
+. capture drop PM2point5_10_2010
+
+. gen PM2point5_10_2010=n_24008_0_0
+(41,271 missing values generated)
+
+. label var PM2point5_10_2010 "Particulate matter air pollution 2.5-10um; 2010 R
+> esidential air pollution"
+
+. describe PM2point5_10_2010
+
+              storage   display    value
+variable name   type    format     label      variable label
+--------------------------------------------------------------------------------
+PM2point5_10_~0 float   %9.0g                 Particulate matter air pollution
+                                                2.5-10um; 2010 Residential air
+                                                pollution
+
+. su PM2point5_10_2010
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+PM2po~0_2010 |    460,665    6.428255    .9006046       5.57      12.82
+
+. cap noi histogram PM2point5_10_2010
+(bin=56, start=5.5700002, width=.12946428)
+
+. if _rc == 0 {
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.svg"', width(600) replace
+(note: file /home/dnanexus/.stata_kernel_cache/graph305.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph305.svg written in SVG format)
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.pdf"', replace
+(file /home/dnanexus/.stata_kernel_cache/graph305.pdf written in PDF format)
+.     global stata_kernel_graph_counter = $stata_kernel_graph_counter + 1
+. }            
+
+. capture drop PM2point5_abs_2010
+
+. gen PM2point5_abs_2010=n_24007_0_0
+(41,271 missing values generated)
+
+. label var PM2point5_abs_2010 "Particulate matter air pollution (pm2.5) absorba
+> nce; 2010 Residential air pollution"
+note: label truncated to 80 characters
+
+. describe PM2point5_abs_2010
+
+              storage   display    value
+variable name   type    format     label      variable label
+--------------------------------------------------------------------------------
+PM2point5_abs~0 float   %9.0g                 Particulate matter air pollution
+                                                (pm2.5) absorbance; 2010
+                                                Residential air pollut
+
+. su PM2point5_abs_2010
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+PM2po~s_2010 |    460,665    1.186489    .2708792        .83        4.6
+
+. cap noi histogram PM2point5_abs_2010
+(bin=56, start=.82999998, width=.06732143)
+
+. if _rc == 0 {
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.svg"', width(600) replace
+(note: file /home/dnanexus/.stata_kernel_cache/graph306.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph306.svg written in SVG format)
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.pdf"', replace
+(file /home/dnanexus/.stata_kernel_cache/graph306.pdf written in PDF format)
+.     global stata_kernel_graph_counter = $stata_kernel_graph_counter + 1
+. }            
+
+. capture drop NO2_2010
+
+. gen NO2_2010=n_24003_0_0
+(7,370 missing values generated)
+
+. label var NO2_2010 "Nitrogen dioxide air pollution; 2010 Residential air pollu
+> tion"
+
+. describe NO2_2010
+
+              storage   display    value
+variable name   type    format     label      variable label
+--------------------------------------------------------------------------------
+NO2_2010        float   %9.0g                 Nitrogen dioxide air pollution;
+                                                2010 Residential air pollution
+
+. su NO2_2010
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+    NO2_2010 |    494,566    26.71355    7.575839      12.93     108.49
+
+. cap noi histogram NO2_2010
+(bin=56, start=12.93, width=1.7064285)
+
+. if _rc == 0 {
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.svg"', width(600) replace
+(note: file /home/dnanexus/.stata_kernel_cache/graph307.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph307.svg written in SVG format)
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.pdf"', replace
+(file /home/dnanexus/.stata_kernel_cache/graph307.pdf written in PDF format)
+.     global stata_kernel_graph_counter = $stata_kernel_graph_counter + 1
+. }            
+
+. capture drop NOX_2010
+
+. gen NOX_2010=n_24004_0_0
+(7,370 missing values generated)
+
+. label var NOX_2010 "Nitrogen oxides air pollution; 2010 Residential air pollut
+> ion"
+
+. describe NOX_2010
+
+              storage   display    value
+variable name   type    format     label      variable label
+--------------------------------------------------------------------------------
+NOX_2010        float   %9.0g                 Nitrogen oxides air pollution;
+                                                2010 Residential air pollution
+
+. su NOX_2010
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+    NOX_2010 |    494,566    44.11254    15.53304      19.74     265.94
+
+. cap noi histogram NOX_2010
+(bin=56, start=19.74, width=4.3964286)
+
+. if _rc == 0 {
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.svg"', width(600) replace
+(note: file /home/dnanexus/.stata_kernel_cache/graph308.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph308.svg written in SVG format)
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.pdf"', replace
+(file /home/dnanexus/.stata_kernel_cache/graph308.pdf written in PDF format)
+.     global stata_kernel_graph_counter = $stata_kernel_graph_counter + 1
+. }            
+
+. save "/opt/notebooks/AIRPOLLUTION_GREENSPACE",replace
+file /opt/notebooks/AIRPOLLUTION_GREENSPACE.dta saved
+
+. corr NO* PM*
+(obs=460,665)
+
+             | NO2_2010 NOX_2010 P~5_2010 PM1~2010 PM2poi.. P~s_2010
+-------------+------------------------------------------------------
+    NO2_2010 |   1.0000
+    NOX_2010 |   0.9221   1.0000
+PM2po~5_2010 |   0.8644   0.8472   1.0000
+   PM10_2010 |   0.5055   0.5124   0.5326   1.0000
+PM2po~0_2010 |   0.2021   0.2399   0.2226   0.8180   1.0000
+PM2po~s_2010 |   0.7408   0.6476   0.6027   0.5653   0.4258   1.0000
+
+
+. capture drop ln*
+
+. foreach x of varlist NO* PM* {
+  2. gen ln`x'=ln(`x')
+  3. }
+(7,370 missing values generated)
+(7,370 missing values generated)
+(41,271 missing values generated)
+(41,271 missing values generated)
+(41,271 missing values generated)
+(41,271 missing values generated)
+
+. capture drop sqrt*
+
+. foreach x of varlist NO* PM* {
+  2. gen sqrt`x'=sqrt(`x')
+  3. }
+(7,370 missing values generated)
+(7,370 missing values generated)
+(41,271 missing values generated)
+(41,271 missing values generated)
+(41,271 missing values generated)
+(41,271 missing values generated)
+
+. save "/opt/notebooks/AIRPOLLUTION_GREENSPACE.dta",replace
+file /opt/notebooks/AIRPOLLUTION_GREENSPACE.dta saved
+
+. corr ln*
+(obs=460,665)
+
+             | lnNO2_~0 lnNOX_~0 l~5_2010 lnPM10~0 lnPM2p.. l~s_2010
+-------------+------------------------------------------------------
+  lnNO2_2010 |   1.0000
+  lnNOX_2010 |   0.9297   1.0000
+lnPM2~5_2010 |   0.8703   0.8817   1.0000
+ lnPM10_2010 |   0.5409   0.5601   0.5633   1.0000
+lnPM2~0_2010 |   0.1903   0.2181   0.2266   0.7903   1.0000
+lnPM2~s_2010 |   0.7745   0.6891   0.6237   0.5647   0.4149   1.0000
+
+
+. corr sqrt*
+(obs=460,665)
+
+             | s~2_2010 s~X_2010 s~5_2010 sqrtPM1~ sqrtPM.. s~s_2010
+-------------+------------------------------------------------------
+sqrtNO2_2010 |   1.0000
+sqrtNOX_2010 |   0.9269   1.0000
+sqrtP~5_2010 |   0.8698   0.8724   1.0000
+sqrtPM1~2010 |   0.5237   0.5390   0.5481   1.0000
+sqr~_10_2010 |   0.1963   0.2301   0.2245   0.8051   1.0000
+sqrtP~s_2010 |   0.7607   0.6739   0.6143   0.5656   0.4212   1.0000
+
+
+. foreach x of varlist ln*{
+  2. cap noi histogram `x'
+  3. if _rc == 0 {
+  4.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_g
+> raph_counter.svg"', width(600) replace
+  5.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_g
+> raph_counter.pdf"', replace
+  6.     global stata_kernel_graph_counter = $stata_kernel_graph_counter + 1
+  7. }            
+  8. }
+(bin=56, start=2.5595503, width=.03798406)
+(note: file /home/dnanexus/.stata_kernel_cache/graph309.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph309.svg written in SVG format)
+(file /home/dnanexus/.stata_kernel_cache/graph309.pdf written in PDF format)
+(bin=56, start=2.9826469, width=.04643971)
+(note: file /home/dnanexus/.stata_kernel_cache/graph310.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph310.svg written in SVG format)
+(file /home/dnanexus/.stata_kernel_cache/graph310.pdf written in PDF format)
+(bin=56, start=2.1004689, width=.01711978)
+(note: file /home/dnanexus/.stata_kernel_cache/graph311.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph311.svg written in SVG format)
+(file /home/dnanexus/.stata_kernel_cache/graph311.pdf written in PDF format)
+(bin=56, start=2.4664032, width=.01750154)
+(note: file /home/dnanexus/.stata_kernel_cache/graph312.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph312.svg written in SVG format)
+(file /home/dnanexus/.stata_kernel_cache/graph312.pdf written in PDF format)
+(bin=56, start=1.7173951, width=.01488592)
+(note: file /home/dnanexus/.stata_kernel_cache/graph313.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph313.svg written in SVG format)
+(file /home/dnanexus/.stata_kernel_cache/graph313.pdf written in PDF format)
+(bin=56, start=-.1863296, width=.03057832)
+(note: file /home/dnanexus/.stata_kernel_cache/graph314.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph314.svg written in SVG format)
+(file /home/dnanexus/.stata_kernel_cache/graph314.pdf written in PDF format)
+
+. foreach x of varlist sqrt*{
+  2. cap noi histogram `x'
+  3. if _rc == 0 {
+  4.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_g
+> raph_counter.svg"', width(600) replace
+  5.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_g
+> raph_counter.pdf"', replace
+  6.     global stata_kernel_graph_counter = $stata_kernel_graph_counter + 1
+  7. }            
+  8. }
+(bin=56, start=3.5958309, width=.12178612)
+(note: file /home/dnanexus/.stata_kernel_cache/graph315.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph315.svg written in SVG format)
+(file /home/dnanexus/.stata_kernel_cache/graph315.pdf written in PDF format)
+(bin=56, start=4.4429722, width=.21186955)
+(note: file /home/dnanexus/.stata_kernel_cache/graph316.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph316.svg written in SVG format)
+(file /home/dnanexus/.stata_kernel_cache/graph316.pdf written in PDF format)
+(bin=56, start=2.8583212, width=.03139204)
+(note: file /home/dnanexus/.stata_kernel_cache/graph317.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph317.svg written in SVG format)
+(file /home/dnanexus/.stata_kernel_cache/graph317.pdf written in PDF format)
+(bin=56, start=3.4322004, width=.03875852)
+(note: file /home/dnanexus/.stata_kernel_cache/graph318.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph318.svg written in SVG format)
+(file /home/dnanexus/.stata_kernel_cache/graph318.pdf written in PDF format)
+(bin=56, start=2.3600848, width=.02179318)
+(note: file /home/dnanexus/.stata_kernel_cache/graph319.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph319.svg written in SVG format)
+(file /home/dnanexus/.stata_kernel_cache/graph319.pdf written in PDF format)
+(bin=56, start=.91104335, width=.02203067)
+(note: file /home/dnanexus/.stata_kernel_cache/graph320.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph320.svg written in SVG format)
+(file /home/dnanexus/.stata_kernel_cache/graph320.pdf written in PDF format)
+
+. pca ln*
+
+Principal components/correlation                 Number of obs    =    460,665
+                                                 Number of comp.  =          6
+                                                 Trace            =          6
+    Rotation: (unrotated = principal)            Rho              =     1.0000
+
+    --------------------------------------------------------------------------
+       Component |   Eigenvalue   Difference         Proportion   Cumulative
+    -------------+------------------------------------------------------------
+           Comp1 |      4.03358      2.76449             0.6723       0.6723
+           Comp2 |      1.26908      .867034             0.2115       0.8838
+           Comp3 |       .40205      .271403             0.0670       0.9508
+           Comp4 |      .130646     .0197083             0.0218       0.9726
+           Comp5 |      .110938     .0572318             0.0185       0.9910
+           Comp6 |     .0537064            .             0.0090       1.0000
+    --------------------------------------------------------------------------
+
+Principal components (eigenvectors) 
+
+    --------------------------------------------------------------------------
+        Variable |    Comp1     Comp2     Comp3     Comp4     Comp5     Comp6 
+    -------------+------------------------------------------------------------
+      lnNO2_2010 |   0.4575   -0.2968    0.0542   -0.2229    0.1610    0.7900 
+      lnNOX_2010 |   0.4534   -0.2742   -0.1935   -0.1951    0.6023   -0.5301 
+    lnPM2~5_2010 |   0.4404   -0.2519   -0.4027    0.6318   -0.4217   -0.0578 
+     lnPM10_2010 |   0.3907    0.4736   -0.2897   -0.5749   -0.4457   -0.0998 
+    lnPM2~0_2010 |   0.2531    0.7409    0.0027    0.4211    0.4277    0.1632 
+    lnPM2~s_2010 |   0.4177   -0.0038    0.8447    0.0723   -0.2277   -0.2345 
+    --------------------------------------------------------------------------
+
+    ---------------------------
+        Variable | Unexplained 
+    -------------+-------------
+      lnNO2_2010 |           0 
+      lnNOX_2010 |           0 
+    lnPM2~5_2010 |           0 
+     lnPM10_2010 |           0 
+    lnPM2~0_2010 |           0 
+    lnPM2~s_2010 |           0 
+    ---------------------------
+
+. rotate
+
+Principal components/correlation                 Number of obs    =    460,665
+                                                 Number of comp.  =          6
+                                                 Trace            =          6
+    Rotation: orthogonal varimax (Kaiser off)    Rho              =     1.0000
+
+    --------------------------------------------------------------------------
+       Component |     Variance   Difference         Proportion   Cumulative
+    -------------+------------------------------------------------------------
+           Comp1 |            1  2.26360e-06             0.1667       0.1667
+           Comp2 |            1  1.13367e-06             0.1667       0.3333
+           Comp3 |            1  8.54851e-07             0.1667       0.5000
+           Comp4 |      .999999  3.55700e-07             0.1667       0.6667
+           Comp5 |      .999999  1.77309e-06             0.1667       0.8333
+           Comp6 |      .999997            .             0.1667       1.0000
+    --------------------------------------------------------------------------
+
+Rotated components 
+
+    --------------------------------------------------------------------------
+        Variable |    Comp1     Comp2     Comp3     Comp4     Comp5     Comp6 
+    -------------+------------------------------------------------------------
+      lnNO2_2010 |   0.0000    0.0000   -0.0000    1.0000    0.0000    0.0000 
+      lnNOX_2010 |   0.0000    0.0000   -0.0000   -0.0000    1.0000    0.0000 
+    lnPM2~5_2010 |   1.0000    0.0000    0.0000   -0.0000   -0.0000   -0.0000 
+     lnPM10_2010 |   0.0000    0.0000    0.0000   -0.0000   -0.0000    1.0000 
+    lnPM2~0_2010 |  -0.0000    1.0000    0.0000   -0.0000   -0.0000   -0.0000 
+    lnPM2~s_2010 |  -0.0000   -0.0000    1.0000    0.0000    0.0000   -0.0000 
+    --------------------------------------------------------------------------
+
+    ---------------------------
+        Variable | Unexplained 
+    -------------+-------------
+      lnNO2_2010 |           0 
+      lnNOX_2010 |           0 
+    lnPM2~5_2010 |           0 
+     lnPM10_2010 |           0 
+    lnPM2~0_2010 |           0 
+    lnPM2~s_2010 |           0 
+    ---------------------------
+
+Component rotation matrix
+
+    --------------------------------------------------------------------------
+                 |    Comp1     Comp2     Comp3     Comp4     Comp5     Comp6 
+    -------------+------------------------------------------------------------
+           Comp1 |   0.4404    0.2531    0.4177    0.4575    0.4534    0.3907 
+           Comp2 |  -0.2519    0.7409   -0.0038   -0.2968   -0.2742    0.4736 
+           Comp3 |  -0.4027    0.0027    0.8447    0.0542   -0.1935   -0.2897 
+           Comp4 |   0.6318    0.4211    0.0723   -0.2229   -0.1951   -0.5749 
+           Comp5 |  -0.4217    0.4277   -0.2277    0.1610    0.6023   -0.4457 
+           Comp6 |  -0.0578    0.1632   -0.2345    0.7900   -0.5301   -0.0998 
+    --------------------------------------------------------------------------
+
+. pca ln* , factor(2)
+
+Principal components/correlation                 Number of obs    =    460,665
+                                                 Number of comp.  =          2
+                                                 Trace            =          6
+    Rotation: (unrotated = principal)            Rho              =     0.8838
+
+    --------------------------------------------------------------------------
+       Component |   Eigenvalue   Difference         Proportion   Cumulative
+    -------------+------------------------------------------------------------
+           Comp1 |      4.03358      2.76449             0.6723       0.6723
+           Comp2 |      1.26908      .867034             0.2115       0.8838
+           Comp3 |       .40205      .271403             0.0670       0.9508
+           Comp4 |      .130646     .0197083             0.0218       0.9726
+           Comp5 |      .110938     .0572318             0.0185       0.9910
+           Comp6 |     .0537064            .             0.0090       1.0000
+    --------------------------------------------------------------------------
+
+Principal components (eigenvectors) 
+
+    ------------------------------------------------
+        Variable |    Comp1     Comp2 | Unexplained 
+    -------------+--------------------+-------------
+      lnNO2_2010 |   0.4575   -0.2968 |      .04406 
+      lnNOX_2010 |   0.4534   -0.2742 |      .07536 
+    lnPM2~5_2010 |   0.4404   -0.2519 |       .1373 
+     lnPM10_2010 |   0.3907    0.4736 |      .09949 
+    lnPM2~0_2010 |   0.2531    0.7409 |       .0449 
+    lnPM2~s_2010 |   0.4177   -0.0038 |       .2962 
+    ------------------------------------------------
+
+. scree
+
+. graph save "/opt/notebooks/PCA_AIRPOLLUTION_SCREE.gph",replace
+(file /opt/notebooks/PCA_AIRPOLLUTION_SCREE.gph saved)
+
+. rotate
+
+Principal components/correlation                 Number of obs    =    460,665
+                                                 Number of comp.  =          2
+                                                 Trace            =          6
+    Rotation: orthogonal varimax (Kaiser off)    Rho              =     0.8838
+
+    --------------------------------------------------------------------------
+       Component |     Variance   Difference         Proportion   Cumulative
+    -------------+------------------------------------------------------------
+           Comp1 |      3.50927      1.71587             0.5849       0.5849
+           Comp2 |      1.79339            .             0.2989       0.8838
+    --------------------------------------------------------------------------
+
+Rotated components 
+
+    ------------------------------------------------
+        Variable |    Comp1     Comp2 | Unexplained 
+    -------------+--------------------+-------------
+      lnNO2_2010 |   0.5411   -0.0679 |      .04406 
+      lnNOX_2010 |   0.5276   -0.0494 |      .07536 
+    lnPM2~5_2010 |   0.5061   -0.0349 |       .1373 
+     lnPM10_2010 |   0.1455    0.5965 |      .09949 
+    lnPM2~0_2010 |  -0.0948    0.7772 |       .0449 
+    lnPM2~s_2010 |   0.3777    0.1785 |       .2962 
+    ------------------------------------------------
+
+Component rotation matrix
+
+    ----------------------------------
+                 |    Comp1     Comp2 
+    -------------+--------------------
+           Comp1 |   0.9002    0.4355 
+           Comp2 |  -0.4355    0.9002 
+    ----------------------------------
+
+. cap noi loadingplot
+
+. if _rc == 0 {
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.svg"', width(600) replace
+(note: file /home/dnanexus/.stata_kernel_cache/graph321.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph321.svg written in SVG format)
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.pdf"', replace
+(file /home/dnanexus/.stata_kernel_cache/graph321.pdf written in PDF format)
+.     global stata_kernel_graph_counter = $stata_kernel_graph_counter + 1
+. }            
+
+. graph save "/opt/notebooks/PCA_AIRPOLLUTION_LOADING.gph",replace
+(file /opt/notebooks/PCA_AIRPOLLUTION_LOADING.gph saved)
+
+. capture drop AIRPOLLUTION*
+
+. predict AIRPOLLUTION*
+(score assumed)
+
+Scoring coefficients for orthogonal varimax rotation
+    sum of squares(column-loading) = 1
+
+    ----------------------------------
+        Variable |    Comp1     Comp2 
+    -------------+--------------------
+      lnNO2_2010 |   0.5411   -0.0679 
+      lnNOX_2010 |   0.5276   -0.0494 
+    lnPM2~5_2010 |   0.5061   -0.0349 
+     lnPM10_2010 |   0.1455    0.5965 
+    lnPM2~0_2010 |  -0.0948    0.7772 
+    lnPM2~s_2010 |   0.3777    0.1785 
+    ----------------------------------
+
+. su AIRPOLLUTION*
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+AIRPOLLUTI~1 |    460,665   -5.88e-11    1.873303  -4.360039   11.54459
+AIRPOLLUTI~2 |    460,665   -1.99e-11    1.339177  -2.554903   8.121592
+
+. cap noi histogram AIRPOLLUTION1
+(bin=56, start=-4.3600388, width=.28401116)
+
+. if _rc == 0 {
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.svg"', width(600) replace
+(note: file /home/dnanexus/.stata_kernel_cache/graph322.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph322.svg written in SVG format)
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.pdf"', replace
+(file /home/dnanexus/.stata_kernel_cache/graph322.pdf written in PDF format)
+.     global stata_kernel_graph_counter = $stata_kernel_graph_counter + 1
+. }            
+
+. graph save "/opt/notebooks/PCA_AIRPOLLUTION1_HIST.gph",replace
+(file /opt/notebooks/PCA_AIRPOLLUTION1_HIST.gph saved)
+
+. cap noi histogram AIRPOLLUTION2
+(bin=56, start=-2.5549028, width=.19065168)
+
+. if _rc == 0 {
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.svg"', width(600) replace
+(note: file /home/dnanexus/.stata_kernel_cache/graph323.svg not found)
+(file /home/dnanexus/.stata_kernel_cache/graph323.svg written in SVG format)
+.     noi gr export `"/home/dnanexus/.stata_kernel_cache/graph$stata_kernel_grap
+> h_counter.pdf"', replace
+(file /home/dnanexus/.stata_kernel_cache/graph323.pdf written in PDF format)
+.     global stata_kernel_graph_counter = $stata_kernel_graph_counter + 1
+. }            
+
+. graph save "/opt/notebooks/PCA_AIRPOLLUTION2_HIST.gph",replace
+(file /opt/notebooks/PCA_AIRPOLLUTION2_HIST.gph saved)
+
+. corr AIRPOLLUTION1 AIRPOLLUTION2
+(obs=460,665)
+
+             | AIRPOL~1 AIRPOL~2
+-------------+------------------
+AIRPOLLUTI~1 |   1.0000
+AIRPOLLUTI~2 |   0.4320   1.0000
+
+
+. capture drop greenspace
+
+. gen greenspace=n_24503_0_0
+(61,596 missing values generated)
+
+. capture drop sqrtgreenspace
+
+. gen sqrtgreenspace=sqrt(greenspace)
+(61,596 missing values generated)
+
+. capture drop noisepollution
+
+. gen noisepollution=n_24024_0_0
+(7,370 missing values generated)
+
+. capture drop sqrtnoisepollution
+
+. gen sqrtnoisepollution=sqrt(noisepollution)
+(7,370 missing values generated)
+
+. save "/opt/notebooks/AIRPOLLUTION_GREENSPACE_NOISE",replace
+file /opt/notebooks/AIRPOLLUTION_GREENSPACE_NOISE.dta saved
+
+. capture drop close
+
+. . `82b3bf4011acdd20f865a4985782cfed'
+. 
+. `d41d8cd98f00b204e9800998ecf8427e'
+. include "/home/dnanexus/.stata_kernel_cache/include.do"
+
+. set more off
+
+. capture log close

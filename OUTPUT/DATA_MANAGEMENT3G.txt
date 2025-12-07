@@ -1,0 +1,247 @@
+
+. use n_eid s_20003_0_* n_137_0_0 s_20004_0_* s_6153_0_0  s_6177_0_0 s_6179_0_* 
+>  using "/opt/notebooks/SMALLERDATASETUKBfin", clear
+
+. save "/opt/notebooks/MEDICATIONS_UKB", replace
+file /opt/notebooks/MEDICATIONS_UKB.dta saved
+
+. use "/opt/notebooks/MEDICATIONS_UKB",clear
+
+. tab1 s_6153_0_0
+
+-> tabulation of s_6153_0_0  
+
+                               6153-0.0 |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+              Blood pressure medication |     25,190        9.31        9.31
+Blood pressure medication|Hormone rep.. |      2,207        0.82       10.13
+Blood pressure medication|Hormone rep.. |         22        0.01       10.14
+      Blood pressure medication|Insulin |        193        0.07       10.21
+Blood pressure medication|Insulin|Hor.. |         13        0.00       10.21
+Blood pressure medication|Insulin|Ora.. |          6        0.00       10.21
+Blood pressure medication|Oral contra.. |        265        0.10       10.31
+        Cholesterol lowering medication |     13,008        4.81       15.12
+Cholesterol lowering medication|Blood.. |     17,699        6.54       21.66
+Cholesterol lowering medication|Blood.. |      1,061        0.39       22.06
+Cholesterol lowering medication|Blood.. |         13        0.00       22.06
+Cholesterol lowering medication|Blood.. |      1,077        0.40       22.46
+Cholesterol lowering medication|Blood.. |         62        0.02       22.48
+Cholesterol lowering medication|Blood.. |         18        0.01       22.49
+Cholesterol lowering medication|Blood.. |         59        0.02       22.51
+Cholesterol lowering medication|Hormo.. |        963        0.36       22.87
+Cholesterol lowering medication|Hormo.. |         22        0.01       22.87
+Cholesterol lowering medication|Insulin |        486        0.18       23.05
+Cholesterol lowering medication|Insul.. |         45        0.02       23.07
+Cholesterol lowering medication|Insul.. |         16        0.01       23.08
+Cholesterol lowering medication|Oral .. |         68        0.03       23.10
+                            Do not know |      1,162        0.43       23.53
+            Hormone replacement therapy |     15,083        5.58       29.11
+Hormone replacement therapy|Oral cont.. |        252        0.09       29.20
+                                Insulin |        308        0.11       29.31
+    Insulin|Hormone replacement therapy |         19        0.01       29.32
+Insulin|Oral contraceptive pill or mi.. |         21        0.01       29.33
+                      None of the above |    184,626       68.25       97.58
+    Oral contraceptive pill or minipill |      6,227        2.30       99.88
+                   Prefer not to answer |        318        0.12      100.00
+----------------------------------------+-----------------------------------
+                                  Total |    270,509      100.00
+
+. tab1 s_6177_0_0
+
+-> tabulation of s_6177_0_0  
+
+                               6177-0.0 |      Freq.     Percent        Cum.
+----------------------------------------+-----------------------------------
+              Blood pressure medication |     22,305        9.84        9.84
+      Blood pressure medication|Insulin |        312        0.14        9.98
+        Cholesterol lowering medication |     18,148        8.00       17.98
+Cholesterol lowering medication|Blood.. |     31,511       13.90       31.88
+Cholesterol lowering medication|Blood.. |      1,921        0.85       32.73
+Cholesterol lowering medication|Insulin |        660        0.29       33.02
+                            Do not know |      2,085        0.92       33.94
+                                Insulin |        452        0.20       34.14
+                      None of the above |    149,003       65.72       99.86
+                   Prefer not to answer |        320        0.14      100.00
+----------------------------------------+-----------------------------------
+                                  Total |    226,717      100.00
+
+. capture drop n_6153_0_0
+
+. encode s_6153_0_0,gen(n_6153_0_0)
+
+. labelbook n_6153_0_0
+
+--------------------------------------------------------------------------------
+value label n_6153_0_0 
+--------------------------------------------------------------------------------
+
+      values                                    labels
+       range:  [1,30]                    string length:  [7,121]
+           N:  30                unique at full length:  yes
+        gaps:  no                  unique at length 12:  no
+  missing .*:  0                           null string:  no
+                               leading/trailing blanks:  no
+                                    numeric -> numeric:  no
+  definition
+           1   Blood pressure medication
+           2   Blood pressure medication|Hormone replacement therapy
+           3   Blood pressure medication|Hormone replacement therapy|Oral
+               contraceptive pill or minipill
+           4   Blood pressure medication|Insulin
+           5   Blood pressure medication|Insulin|Hormone replacement therapy
+           6   Blood pressure medication|Insulin|Oral contraceptive pill or
+               minipill
+           7   Blood pressure medication|Oral contraceptive pill or minipill
+           8   Cholesterol lowering medication
+           9   Cholesterol lowering medication|Blood pressure medication
+          10   Cholesterol lowering medication|Blood pressure
+               medication|Hormone replacement therapy
+          11   Cholesterol lowering medication|Blood pressure
+               medication|Hormone replacement therapy|Oral contraceptive pill
+               or minipill
+          12   Cholesterol lowering medication|Blood pressure
+               medication|Insulin
+          13   Cholesterol lowering medication|Blood pressure
+               medication|Insulin|Hormone replacement therapy
+          14   Cholesterol lowering medication|Blood pressure
+               medication|Insulin|Oral contraceptive pill or minipill
+          15   Cholesterol lowering medication|Blood pressure medication|Oral
+               contraceptive pill or minipill
+          16   Cholesterol lowering medication|Hormone replacement therapy
+          17   Cholesterol lowering medication|Hormone replacement
+               therapy|Oral contraceptive pill or minipill
+          18   Cholesterol lowering medication|Insulin
+          19   Cholesterol lowering medication|Insulin|Hormone replacement
+               therapy
+          20   Cholesterol lowering medication|Insulin|Oral contraceptive pill
+               or minipill
+          21   Cholesterol lowering medication|Oral contraceptive pill or
+               minipill
+          22   Do not know
+          23   Hormone replacement therapy
+          24   Hormone replacement therapy|Oral contraceptive pill or minipill
+          25   Insulin
+          26   Insulin|Hormone replacement therapy
+          27   Insulin|Oral contraceptive pill or minipill
+          28   None of the above
+          29   Oral contraceptive pill or minipill
+          30   Prefer not to answer
+
+   variables:  n_6153_0_0
+
+
+. capture drop n_6177_0_0
+
+. encode s_6177_0_0,gen(n_6177_0_0)
+
+. labelbook n_6177_0_0
+
+--------------------------------------------------------------------------------
+value label n_6177_0_0 
+--------------------------------------------------------------------------------
+
+      values                                    labels
+       range:  [1,10]                    string length:  [7,65]
+           N:  10                unique at full length:  yes
+        gaps:  no                  unique at length 12:  no
+  missing .*:  0                           null string:  no
+                               leading/trailing blanks:  no
+                                    numeric -> numeric:  no
+  definition
+           1   Blood pressure medication
+           2   Blood pressure medication|Insulin
+           3   Cholesterol lowering medication
+           4   Cholesterol lowering medication|Blood pressure medication
+           5   Cholesterol lowering medication|Blood pressure
+               medication|Insulin
+           6   Cholesterol lowering medication|Insulin
+           7   Do not know
+           8   Insulin
+           9   None of the above
+          10   Prefer not to answer
+
+   variables:  n_6177_0_0
+
+
+. capture drop statins
+
+. gen statins = .
+(501,936 missing values generated)
+
+. replace statins=1 if inlist(n_6153_0_0,8,9,10,11,12,13,14,15,16,17,18,19,20,21
+>  )
+(34,597 real changes made)
+
+. replace statins=1 if inlist(n_6177_0_0,3,4,5,6)
+(52,240 real changes made)
+
+. replace statins=0 if statins==.
+(415,099 real changes made)
+
+. gen bptreat = .
+(501,936 missing values generated)
+
+. replace bptreat=1 if inlist(n_6153_0_0,1,2,3,4,5,6,7 )
+(27,896 real changes made)
+
+. replace bptreat=1 if inlist(n_6177_0_0,1,2,4,5)
+(56,049 real changes made)
+
+. replace bptreat=0 if bptreat==.
+(417,991 real changes made)
+
+. capture drop medicationnum
+
+. gen medicationnum=n_137_0_0
+(862 missing values generated)
+
+. capture drop POLYPH
+
+. gen POLYPH=.
+(501,936 missing values generated)
+
+. replace POLYPH=1 if medicationnum>=2 & medicationnum~=.
+(268,996 real changes made)
+
+. replace POLYPH=0 if POLYPH~=1 & medicationnum~=.
+(232,078 real changes made)
+
+. gen POLYPH2=.
+(501,936 missing values generated)
+
+. replace POLYPH2=1 if medicationnum>=5 & medicationnum~=.
+(91,499 real changes made)
+
+. replace POLYPH2=0 if POLYPH2~=1 & medicationnum~=.
+(409,575 real changes made)
+
+. save "/opt/notebooks/MEDICATIONS_UKB", replace
+file /opt/notebooks/MEDICATIONS_UKB.dta saved
+
+. use "/opt/notebooks/LE8_UKB",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save, replace
+file /opt/notebooks/LE8_UKB.dta saved
+
+. use "/opt/notebooks/MEDICATIONS_UKB",clear
+
+. sort n_eid
+
+. capture drop _merge
+
+. save, replace
+file /opt/notebooks/MEDICATIONS_UKB.dta saved
+
+. use "/opt/notebooks/LE8_UKB",clear
+
+. merge n_eid using "/opt/notebooks/MEDICATIONS_UKB"
+(note: you are using old merge syntax; see [D] merge for new syntax)
+
+. save "/opt/notebooks/LE8_UKB", replace
+file /opt/notebooks/LE8_UKB.dta saved
+
+. capture log close

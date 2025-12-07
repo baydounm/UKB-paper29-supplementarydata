@@ -1,0 +1,728 @@
+
+. use  n_eid n_135_0_0 n_134_0_0 s_2178_0_0 n_21001_0_0 n_21001_0_0 n_48_0_0 n_4
+> 9_0_0 n_30600_0_0 n_30710_0_0 n_30690_0_0 n_30760_0_0 n_30750_0_0 n_102_0_0 n_
+> 4080_0_0 n_4079_0_0 s_31_0_0 **s_2443_0_0 s_1160_0_0 using "/opt/notebooks/SMA
+> LLERDATASETUKBfin", clear
+
+. save "/opt/notebooks/HEALTH_UKB",replace
+(note: file /opt/notebooks/HEALTH_UKB.dta not found)
+file /opt/notebooks/HEALTH_UKB.dta saved
+
+. clear
+
+. use "/opt/notebooks/HEALTH_UKB",clear
+
+. capture drop sex
+
+. capture drop n_31_0_0
+
+. gen n_31_0_0=s_31_0_0
+
+. encode n_31_0_0, gen(sex)
+
+. tab sex
+
+        sex |      Freq.     Percent        Cum.
+------------+-----------------------------------
+     Female |    273,036       54.40       54.40
+       Male |    228,900       45.60      100.00
+------------+-----------------------------------
+      Total |    501,936      100.00
+
+. su sex
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         sex |    501,936    1.456034    .4980638          1          2
+
+. capture drop sexnum
+
+. gen sexnum=1 if sex==2
+(273,036 missing values generated)
+
+. replace sexnum=2 if sex==1
+(273,036 real changes made)
+
+. capture drop sex
+
+. capture rename sexnum sex
+
+. save, replace
+file /opt/notebooks/HEALTH_UKB.dta saved
+
+. describe sex
+
+              storage   display    value
+variable name   type    format     label      variable label
+--------------------------------------------------------------------------------
+sex             float   %9.0g                 
+
+. capture drop comorbid_noncancer
+
+. gen comorbid_noncancer=.
+(501,936 missing values generated)
+
+. replace comorbid_noncancer=n_135_0_0
+(501,074 real changes made)
+
+. capture drop comorbid_cancer
+
+. gen comorbid_cancer=.
+(501,936 missing values generated)
+
+. replace comorbid_cancer=n_134_0_0
+(501,074 real changes made)
+
+. capture drop comorbid
+
+. gen comorbid=comorbid_noncancer+comorbid_cancer
+(862 missing values generated)
+
+. tab s_2178_0_0
+
+            2178-0.0 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+         Do not know |      2,201        0.44        0.44
+           Excellent |     81,751       16.32       16.76
+                Fair |    105,259       21.01       37.77
+                Good |    288,684       57.62       95.38
+                Poor |     22,758        4.54       99.93
+Prefer not to answer |        365        0.07      100.00
+---------------------+-----------------------------------
+               Total |    501,018      100.00
+
+. capture drop n_2178_0_0
+
+. gen n_2178_0_0=.
+(501,936 missing values generated)
+
+. replace n_2178_0_0=1 if s_2178_0_0=="Excellent"
+(81,751 real changes made)
+
+. replace n_2178_0_0=2 if s_2178_0_0=="Good"
+(288,684 real changes made)
+
+. replace n_2178_0_0=3 if s_2178_0_0=="Fair"
+(105,259 real changes made)
+
+. replace n_2178_0_0=4 if s_2178_0_0=="Poor"
+(22,758 real changes made)
+
+. replace n_2178_0_0=-1 if s_2178_0_0=="Do not know"
+(2,201 real changes made)
+
+. replace n_2178_0_0=-3 if s_2178_0_0=="Prefer not to answer"
+(365 real changes made)
+
+. capture drop srh
+
+. gen srh=n_2178_0_0
+(918 missing values generated)
+
+. capture drop srhbr
+
+. gen srhbr=.
+(501,936 missing values generated)
+
+. replace srhbr=srh if srh~=-1 & srh~=-3
+(498,452 real changes made)
+
+. tab srhbr
+
+      srhbr |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          1 |     81,751       16.40       16.40
+          2 |    288,684       57.92       74.32
+          3 |    105,259       21.12       95.43
+          4 |     22,758        4.57      100.00
+------------+-----------------------------------
+      Total |    498,452      100.00
+
+. capture drop bmi
+
+. gen bmi=n_21001_0_0
+(3,103 missing values generated)
+
+. label var bmi "body mass index kg/m^2" 
+
+. su bmi
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         bmi |    498,833    27.43346    4.803204    12.1212    74.6837
+
+. su n_48_0_0 n_49_0_0, det
+
+                           48-0.0
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%           64             20
+ 5%           70             20
+10%           73             20       Obs             499,777
+25%           80             32       Sum of Wgt.     499,777
+
+50%           90                      Mean           90.31394
+                        Largest       Std. Dev.      13.48604
+75%           99            175
+90%          108            176       Variance       181.8732
+95%          113            182       Skewness       .4306255
+99%          126            197       Kurtosis       3.333979
+
+                           49-0.0
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%           86             30
+ 5%           91             30
+10%           93             30       Obs             499,718
+25%           97             30       Sum of Wgt.     499,718
+
+50%          102                      Mean           103.4024
+                        Largest       Std. Dev.       9.24941
+75%          108            179
+90%          115            183       Variance       85.55158
+95%          120            186       Skewness       1.106887
+99%          133            195       Kurtosis       6.115943
+
+. capture drop waist
+
+. gen waist=n_48_0_0
+(2,159 missing values generated)
+
+. label var waist "waist circumference cm" 
+
+. capture drop hip
+
+. gen hip=n_49_0_0
+(2,218 missing values generated)
+
+. label var hip "hip circumference cm" 
+
+. capture drop waisthipratio
+
+. gen waisthipratio=waist/hip
+(2,264 missing values generated)
+
+. label var waisthipratio "waist-hip ratio" 
+
+. capture drop whr_high
+
+. gen whr_high=.
+(501,936 missing values generated)
+
+. replace whr_high=1 if waisthipratio>0.90 & waisthipratio~=. & sex==1 | waisthi
+> pratio>0.85 & waisthipratio~=. & sex==2
+(246,319 real changes made)
+
+. replace whr_high=0 if whr_high~=1 & waisthipratio~=.
+(253,353 real changes made)
+
+. label var whr_high "elevated, sex-specific waist-hip ratio: 0.90 for men, 0.85
+>  for women"
+
+. tab whr_high
+
+  elevated, |
+sex-specifi |
+c waist-hip |
+ratio: 0.90 |
+   for men, |
+   0.85 for |
+      women |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    253,353       50.70       50.70
+          1 |    246,319       49.30      100.00
+------------+-----------------------------------
+      Total |    499,672      100.00
+
+. su n_30600_0_0, det
+
+                          30600-0.0
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%        39.01          17.38
+ 5%        40.98          18.87
+10%        41.93          20.65       Obs             429,597
+25%        43.49          20.67       Sum of Wgt.     429,597
+
+50%         45.2                      Mean           45.20979
+                        Largest       Std. Dev.      2.629012
+75%        46.92          59.07
+90%        48.53           59.2       Variance       6.911705
+95%        49.52          59.46       Skewness      -.0357172
+99%        51.51           59.8       Kurtosis       3.711526
+
+. capture drop albumin_low
+
+. gen albumin_low=.
+(501,936 missing values generated)
+
+. replace albumin_low=1 if n_30600_0_0<38 & n_30600_0_0~=.
+(1,966 real changes made)
+
+. replace albumin_low=0 if albumin_low~=1 & n_30600_0_0~=.
+(427,631 real changes made)
+
+. label var albumin_low "low serum albumin, <38 g/l"
+
+. tab albumin_low
+
+  low serum |
+   albumin, |
+    <38 g/l |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    427,631       99.54       99.54
+          1 |      1,966        0.46      100.00
+------------+-----------------------------------
+      Total |    429,597      100.00
+
+. su n_30710_0_0,det
+
+                          30710-0.0
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%          .16            .08
+ 5%          .26            .08
+10%          .36            .08       Obs             468,042
+25%          .66            .08       Sum of Wgt.     468,042
+
+50%         1.33                      Mean           2.599404
+                        Largest       Std. Dev.      4.361971
+75%         2.76          79.44
+90%         5.55          79.49       Variance        19.0268
+95%         8.86          79.95       Skewness       6.288882
+99%        21.23          79.96       Kurtosis       64.37985
+
+. capture drop crp_high
+
+. gen crp_high=.
+(501,936 missing values generated)
+
+. replace crp_high=1 if n_30710_0_0>=3 & n_30710_0_0~=.
+(106,654 real changes made)
+
+. replace crp_high=0 if crp_high~=1 & n_30710_0_0~=.
+(361,388 real changes made)
+
+. label var crp_high "elevated C-reactive protein, >=3 g/l"
+
+. tab crp_high
+
+   elevated |
+ C-reactive |
+   protein, |
+    >=3 g/l |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    361,388       77.21       77.21
+          1 |    106,654       22.79      100.00
+------------+-----------------------------------
+      Total |    468,042      100.00
+
+. su n_30690_0_0, det
+
+                          30690-0.0
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%        3.223           .601
+ 5%        3.888          1.432
+10%        4.262          1.498       Obs             469,062
+25%        4.906          1.551       Sum of Wgt.     469,062
+
+50%         5.65                      Mean           5.692391
+                        Largest       Std. Dev.      1.145052
+75%        6.424          13.53
+90%        7.165         13.615       Variance       1.311143
+95%         7.64         13.719       Skewness       .2857448
+99%        8.606          15.46       Kurtosis       3.338256
+
+. capture drop tc_high
+
+. gen tc_high=.
+(501,936 missing values generated)
+
+. replace tc_high=1 if n_30690_0_0>=6.21 & n_30690_0_0~=.
+(146,204 real changes made)
+
+. replace tc_high=0 if tc_high~=1 & n_30690_0_0~=.
+(322,858 real changes made)
+
+. label var tc_high "elevated total cholesterol, >=6.21 mmol/L"
+
+. tab tc_high
+
+   elevated |
+      total |
+cholesterol |
+   , >=6.21 |
+     mmol/L |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    322,858       68.83       68.83
+          1 |    146,204       31.17      100.00
+------------+-----------------------------------
+      Total |    469,062      100.00
+
+. su n_30760_0_0, det
+
+                          30760-0.0
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%         .775           .219
+ 5%         .917           .226
+10%        1.003           .228       Obs             429,393
+25%         1.17           .252       Sum of Wgt.     429,393
+
+50%        1.398                      Mean           1.447981
+                        Largest       Std. Dev.      .3823173
+75%        1.674          4.107
+90%         1.96          4.129       Variance       .1461665
+95%        2.147          4.186       Skewness       .7755426
+99%        2.539          4.401       Kurtosis       3.958505
+
+. capture drop hdl_low
+
+. gen hdl_low=.
+(501,936 missing values generated)
+
+. replace hdl_low=1 if n_30760_0_0<1.034 & n_30760_0_0~=.
+(52,612 real changes made)
+
+. replace hdl_low=0 if hdl_low~=1 & n_30760_0_0~=.
+(376,781 real changes made)
+
+. label var hdl_low "low HDL-C, <1.034 mmol/L"
+
+. tab hdl_low
+
+ low HDL-C, |
+     <1.034 |
+     mmol/L |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    376,781       87.75       87.75
+          1 |     52,612       12.25      100.00
+------------+-----------------------------------
+      Total |    429,393      100.00
+
+. su n_30750_0_0,det
+
+                          30750-0.0
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%           26             15
+ 5%         29.1           15.3
+10%         30.5           15.3       Obs             465,985
+25%         32.8           15.3       Sum of Wgt.     465,985
+
+50%         35.2                      Mean           36.13249
+                        Largest       Std. Dev.      6.777488
+75%         37.9          265.6
+90%         41.1          266.3       Variance       45.93435
+95%         45.1          296.1       Skewness       4.895934
+99%         64.7          515.2       Kurtosis       95.75652
+
+. capture drop ghp_high
+
+. gen ghp_high=.
+(501,936 missing values generated)
+
+. replace ghp_high=1 if n_30750_0_0>=46 & n_30750_0_0~=.
+(21,305 real changes made)
+
+. replace ghp_high=0 if ghp_high~=1 & n_30750_0_0~=.
+(444,680 real changes made)
+
+. label var ghp_high "High glycated hemoglobin A1c, >=46 mmol/mol"
+
+. tab ghp_high
+
+       High |
+   glycated |
+ hemoglobin |
+  A1c, >=46 |
+   mmol/mol |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    444,680       95.43       95.43
+          1 |     21,305        4.57      100.00
+------------+-----------------------------------
+      Total |    465,985      100.00
+
+. su n_102_0_0,det
+
+                           102-0.0
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%           47             30
+ 5%           53             30
+10%           56             30       Obs             467,541
+25%           62             30       Sum of Wgt.     467,541
+
+50%           68                      Mean           69.59805
+                        Largest       Std. Dev.      11.66107
+75%           76            169
+90%           85            172       Variance       135.9805
+95%           90            174       Skewness       .6441144
+99%          102            174       Kurtosis        4.06495
+
+. capture drop rhr_high
+
+. gen rhr_high=.
+(501,936 missing values generated)
+
+. replace rhr_high=1 if n_102_0_0>=90 & n_102_0_0~=.
+(26,480 real changes made)
+
+. replace rhr_high=0 if rhr_high~=1 & n_102_0_0~=.
+(441,061 real changes made)
+
+. label var rhr_high "Resting pulse rate, >=90 beats/min"
+
+. tab rhr_high
+
+    Resting |
+pulse rate, |
+       >=90 |
+  beats/min |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    441,061       94.34       94.34
+          1 |     26,480        5.66      100.00
+------------+-----------------------------------
+      Total |    467,541      100.00
+
+. su n_4080_0_0,det
+
+                          4080-0.0
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%          101             62
+ 5%          110             68
+10%          116             69       Obs             467,528
+25%          126             69       Sum of Wgt.     467,528
+
+50%          138                      Mean            139.745
+                        Largest       Std. Dev.      19.69766
+75%          152            254
+90%          166            260       Variance       387.9977
+95%          175            264       Skewness       .4963569
+99%          192            268       Kurtosis       3.395823
+
+. capture drop sbp_high
+
+. gen sbp_high=.
+(501,936 missing values generated)
+
+. replace sbp_high=1 if n_4080_0_0>=140 & n_4080_0_0~=.
+(220,916 real changes made)
+
+. replace sbp_high=0 if sbp_high~=1 & n_4080_0_0~=.
+(246,612 real changes made)
+
+. label var sbp_high "Systolic blood pressure >=140 mm Hg"
+
+. tab sbp_high
+
+   Systolic |
+      blood |
+   pressure |
+>=140 mm Hg |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    246,612       52.75       52.75
+          1 |    220,916       47.25      100.00
+------------+-----------------------------------
+      Total |    467,528      100.00
+
+. su n_4079_0_0,det
+
+                          4079-0.0
+-------------------------------------------------------------
+      Percentiles      Smallest
+ 1%           59             32
+ 5%           65             35
+10%           69             35       Obs             467,541
+25%           75             38       Sum of Wgt.     467,541
+
+50%           82                      Mean           82.20741
+                        Largest       Std. Dev.      10.70166
+75%           89            142
+90%           96            143       Variance       114.5256
+95%          100            148       Skewness       .2598506
+99%          109            148       Kurtosis       3.243022
+
+. capture drop dbp_high
+
+. gen dbp_high=.
+(501,936 missing values generated)
+
+. replace dbp_high=1 if n_4079_0_0>=90 & n_4079_0_0~=.
+(112,247 real changes made)
+
+. replace dbp_high=0 if dbp_high~=1 & n_4079_0_0~=.
+(355,294 real changes made)
+
+. label var dbp_high "Diastolic blood pressure >=90 mm Hg"
+
+. tab dbp_high
+
+  Diastolic |
+      blood |
+   pressure |
+ >=90 mm Hg |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    355,294       75.99       75.99
+          1 |    112,247       24.01      100.00
+------------+-----------------------------------
+      Total |    467,541      100.00
+
+. capture drop allostatic
+
+. gen allostatic=.
+(501,936 missing values generated)
+
+. replace allostatic=albumin_low+crp_high+whr_high+tc_high+hdl_low+ghp_high+rhr_
+> high+sbp_high+dbp_high
+(378,748 real changes made)
+
+. save, replace
+file /opt/notebooks/HEALTH_UKB.dta saved
+
+. capture drop zcomorbid
+
+. egen zcomorbid=std(comorbid)
+(862 missing values generated)
+
+. capture drop zbmi
+
+. egen zbmi=std(bmi)
+(3,103 missing values generated)
+
+. capture drop zsrh
+
+. egen zsrh=std(srhbr)
+(3,484 missing values generated)
+
+. capture drop zallostatic
+
+. egen zallostatic=std(allostatic)
+(123,188 missing values generated)
+
+. capture drop rowmissHEALTH
+
+. egen rowmissHEALTH=rowmiss(zcomorbid zbmi zsrh zallostatic)
+
+. tab rowmissHEALTH
+
+rowmissHEAL |
+         TH |      Freq.     Percent        Cum.
+------------+-----------------------------------
+          0 |    375,831       74.88       74.88
+          1 |    122,863       24.48       99.35
+          2 |      2,339        0.47       99.82
+          3 |        516        0.10       99.92
+          4 |        387        0.08      100.00
+------------+-----------------------------------
+      Total |    501,936      100.00
+
+. capture drop HEALTH
+
+. egen HEALTH=rmean(zcomorbid zbmi zsrh zallostatic) if rowmissHEALTH<=2
+(903 missing values generated)
+
+. su HEALTH
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+      HEALTH |    501,033    .0011156    .6943012  -1.919778   7.051047
+
+. save, replace
+file /opt/notebooks/HEALTH_UKB.dta saved
+
+. tab s_2443_0_0
+
+            2443-0.0 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+         Do not know |      1,279        0.26        0.26
+                  No |    472,941       94.40       94.65
+Prefer not to answer |        404        0.08       94.73
+                 Yes |     26,381        5.27      100.00
+---------------------+-----------------------------------
+               Total |    501,005      100.00
+
+. capture drop n_2443_0_0
+
+. gen n_2443_0_0=.
+(501,936 missing values generated)
+
+. replace n_2443_0_0=1 if s_2443_0_0=="Yes"
+(26,381 real changes made)
+
+. replace n_2443_0_0=0 if s_2443_0_0=="No"
+(472,941 real changes made)
+
+. replace n_2443_0_0=-1 if s_2443_0_0=="Do not know"
+(1,279 real changes made)
+
+. replace n_2443_0_0=-3 if s_2443_0_0=="Prefer not to answer"
+(404 real changes made)
+
+. capture drop diabetes
+
+. gen diabetes = n_2443_0_0
+(931 missing values generated)
+
+. recode diabetes -3 = 0 -1 =0
+(diabetes: 1683 changes made)
+
+. label var diabetes "previously diagnosed with diabetes"
+
+. tab s_1160_0_0
+
+            1160-0.0 |      Freq.     Percent        Cum.
+---------------------+-----------------------------------
+                   1 |         35        0.01        0.01
+                  10 |      7,092        1.42        1.42
+                  11 |        680        0.14        1.56
+                  12 |      1,166        0.23        1.79
+                  13 |         75        0.01        1.81
+                  14 |        101        0.02        1.83
+                  15 |         49        0.01        1.84
+                  16 |         47        0.01        1.85
+                  17 |          1        0.00        1.85
+                  18 |         13        0.00        1.85
+                  19 |          2        0.00        1.85
+                   2 |        181        0.04        1.88
+                  20 |          8        0.00        1.89
+                  21 |          1        0.00        1.89
+                  22 |          1        0.00        1.89
+                  23 |          1        0.00        1.89
+                   3 |        840        0.17        2.05
+                   4 |      4,606        0.92        2.97
+                   5 |     21,904        4.37        7.35
+                   6 |     95,545       19.07       26.41
+                   7 |    192,164       38.35       64.77
+                   8 |    144,139       28.77       93.53
+                   9 |     29,075        5.80       99.34
+         Do not know |      2,939        0.59       99.92
+Prefer not to answer |        384        0.08      100.00
+---------------------+-----------------------------------
+               Total |    501,049      100.00
+
+. capture drop n_1160_0_0
+
+. gen n_1160_0_0=""
+(501,936 missing values generated)
+
+. replace n_1160_0_0=s_1160_0_0 if s_1160_0_0~="Do not know" & s_1160_0_0~="Pref
+> er not to answer"
+variable n_1160_0_0 was str1 now str2
+(497,726 real changes made)
+
+. destring n_1160_0_0,replace
+n_1160_0_0: all characters numeric; replaced as byte
+(4210 missing values generated)
+
+. capture drop sleep_duration
+
+. gen sleep_duration=n_1160_0_0 if n_1160_0_0>0
+(4,210 missing values generated)
+
+. save "/opt/notebooks/HEALTH_UKB", replace
+file /opt/notebooks/HEALTH_UKB.dta saved
+
+. capture log close
